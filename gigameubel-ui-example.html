@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gigameubel AI Email Assistant - Dashboard (MOCKUP)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(139,69,19,0.3);
+            border-left: 3px solid #8B4513;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #8B4513;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: #8B4513;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 8px 12px 8px 35px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        /* Inbox View */
+        .inbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .inbox-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #8B4513;
+            color: white;
+            border-color: #8B4513;
+        }
+
+        .email-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .email-item {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: start;
+            gap: 15px;
+        }
+
+        .email-item:hover {
+            background: #f8f9fa;
+        }
+
+        .email-checkbox {
+            margin-top: 2px;
+        }
+
+        .email-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .email-status.unread {
+            background: #8B4513;
+        }
+
+        .email-content {
+            flex: 1;
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .email-from {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .email-time {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .email-subject {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .email-preview {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .email-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .email-tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: #f0f0f0;
+        }
+
+        .email-tag.language {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .email-tag.intent {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .email-tag.confidence {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .email-tag.confidence.low {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .email-tag.afas {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        /* Draft View */
+        .draft-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .draft-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .draft-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .draft-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,69,19,0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .draft-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .draft-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .draft-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .draft-editor {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 300px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .draft-toolbar {
+            background: white;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-btn {
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* AFAS Data Panel */
+        .afas-panel {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .afas-panel h4 {
+            color: #e65100;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .afas-data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .afas-data-item {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid #ff9800;
+        }
+
+        .afas-data-item strong {
+            display: block;
+            color: #e65100;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .afas-data-item span {
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Rules Management */
+        .rules-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .rule-item {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rule-content {
+            flex: 1;
+        }
+
+        .rule-trigger {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .rule-action {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .rule-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .rule-toggle.active {
+            background: #4caf50;
+        }
+
+        .rule-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .rule-toggle.active::after {
+            transform: translateX(26px);
+        }
+
+        /* FAQ Collection */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .faq-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .faq-answer {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .faq-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card.primary {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .stat-change {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .stat-change.positive {
+            color: #4caf50;
+        }
+
+        .stat-change.negative {
+            color: #f44336;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(to right, #f0f0f0 0%, #f8f9fa 50%, #f0f0f0 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Settings */
+        .settings-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .settings-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .setting-label {
+            flex: 1;
+        }
+
+        .setting-label h4 {
+            font-size: 15px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .setting-label p {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-field {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .select-field {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(139,69,19,0.3);
+            transition: all 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(139,69,19,0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>🛋️ Gigameubel Assistant</h2>
+        <div class="subtitle">Email Assistant Dashboard (MOCKUP)</div>
+    </div>
+    <nav class="nav-menu">
+        <a href="#inbox" class="nav-item active" onclick="showSection('inbox')">
+            <span class="nav-icon">📧</span>
+            <span>Inbox</span>
+            <span class="nav-badge">15</span>
+        </a>
+        <a href="#rules" class="nav-item" onclick="showSection('rules')">
+            <span class="nav-icon">⚙️</span>
+            <span>Rules</span>
+        </a>
+        <a href="#faq" class="nav-item" onclick="showSection('faq')">
+            <span class="nav-icon">❓</span>
+            <span>FAQ Collection</span>
+        </a>
+        <a href="#stats" class="nav-item" onclick="showSection('stats')">
+            <span class="nav-icon">📊</span>
+            <span>Statistics</span>
+        </a>
+        <a href="#settings" class="nav-item" onclick="showSection('settings')">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="search-box">
+                <input type="text" placeholder="Search emails, customers, orders...">
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-primary">Sync Microsoft 365</button>
+            <button class="btn btn-secondary">Sync AFAS</button>
+            <div class="user-info">
+                <span>Admin User</span>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <!-- Inbox Section -->
+        <div id="inbox-section" class="section-content">
+            <div class="inbox-header">
+                <h1>Email Inbox</h1>
+                <div class="inbox-filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Unprocessed</button>
+                    <button class="filter-btn">High Priority</button>
+                    <button class="filter-btn">Low Confidence</button>
+                    <button class="filter-btn">AFAS Data</button>
+                </div>
+            </div>
+
+            <div class="email-list">
+                <div class="email-item" onclick="showDraft('lisa-vandenberg')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status unread"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Lisa van den Berg</span>
+                            <span class="email-time">5 min ago</span>
+                        </div>
+                        <div class="email-subject">Vraag over Copenhagen bankstel</div>
+                        <div class="email-preview">Ik heb vorige week de Copenhagen hoekbank besteld. Wat is de leveringstatus? En is de Malmo stof geschikt voor katten?</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇳🇱 Dutch</span>
+                            <span class="email-tag intent">Order Status + Product Info</span>
+                            <span class="email-tag afas">AFAS Order Found</span>
+                            <span class="email-tag confidence">96% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('john-smith')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">John Smith</span>
+                            <span class="email-time">18 min ago</span>
+                        </div>
+                        <div class="email-subject">Dining table delivery to Amsterdam</div>
+                        <div class="email-preview">When can I expect delivery of my Nordic Oak dining table? I need it before my housewarming party on Nov 15.</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇬🇧 English</span>
+                            <span class="email-tag intent">Delivery Inquiry</span>
+                            <span class="email-tag afas">AFAS Order Found</span>
+                            <span class="email-tag confidence">98% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('anna-weber')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status unread"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Anna Weber</span>
+                            <span class="email-time">42 min ago</span>
+                        </div>
+                        <div class="email-subject">Stoff-Muster für Sofas</div>
+                        <div class="email-preview">Können Sie mir Stoffmuster für die Malmo und Oslo Kollektionen zusenden? Ich interessiere mich für neutrale Farben.</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇩🇪 German</span>
+                            <span class="email-tag intent">Product Inquiry</span>
+                            <span class="email-tag confidence">94% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('sophie-laurent')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Sophie Laurent</span>
+                            <span class="email-time">1 hour ago</span>
+                        </div>
+                        <div class="email-subject">Retour canapé - trop grand</div>
+                        <div class="email-preview">Le canapé Stockholm est malheureusement trop grand pour mon salon. Puis-je le retourner? Quelle est la procédure?</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇫🇷 French</span>
+                            <span class="email-tag intent">Return Request</span>
+                            <span class="email-tag afas">AFAS Order Found</span>
+                            <span class="email-tag confidence">92% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draft Edit/Verify Section -->
+        <div id="draft-section" class="section-content" style="display: none;">
+            <div class="draft-container">
+                <div class="draft-header">
+                    <h1 class="draft-title">Review Draft Response</h1>
+                    <div class="draft-actions">
+                        <button class="btn btn-outline">Save Draft</button>
+                        <button class="btn btn-secondary">Regenerate</button>
+                        <button class="btn btn-primary">Approve & Send</button>
+                    </div>
+                </div>
+
+                <!-- AFAS Data Panel -->
+                <div class="afas-panel">
+                    <h4>📊 AFAS Order Data (GM-2024-18947)</h4>
+                    <div class="afas-data-grid">
+                        <div class="afas-data-item">
+                            <strong>ORDER STATUS</strong>
+                            <span>In Production</span>
+                        </div>
+                        <div class="afas-data-item">
+                            <strong>ORDERED DATE</strong>
+                            <span>15 Oct 2024</span>
+                        </div>
+                        <div class="afas-data-item">
+                            <strong>EXPECTED DELIVERY</strong>
+                            <span>Week 45-46 (4-11 Nov)</span>
+                        </div>
+                        <div class="afas-data-item">
+                            <strong>PRODUCT</strong>
+                            <span>Copenhagen Hoekbank L-vorm</span>
+                        </div>
+                        <div class="afas-data-item">
+                            <strong>FABRIC</strong>
+                            <span>Malmo Light Grey</span>
+                        </div>
+                        <div class="afas-data-item">
+                            <strong>CUSTOMER HISTORY</strong>
+                            <span>2 previous orders</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="draft-split">
+                    <div class="draft-section">
+                        <h3>Original Email</h3>
+                        <div class="draft-editor" contenteditable="false">
+                            <strong>From:</strong> lisa.vandenberg@gmail.com<br><br>
+                            Beste Gigameubel team,<br><br>
+                            Ik heb vorige week de Copenhagen hoekbank in de stof Malmo Light Grey besteld (ordernummer GM-2024-18947).<br><br>
+                            Ik heb een paar vragen: Wat is de huidige leveringstatus? En kunnen jullie mij vertellen of de Malmo stof geschikt is voor een huishouden met katten? Ik maak me zorgen over krabschade.<br><br>
+                            Ook vraag ik me af of ik nog kan upgraden naar de premium zitkussens? En zo ja, wat zijn de meerkosten?<br><br>
+                            Alvast bedankt!<br>
+                            Lisa van den Berg
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <h3>AI Draft Response</h3>
+                        <div class="draft-toolbar">
+                            <button class="toolbar-btn">Bold</button>
+                            <button class="toolbar-btn">Italic</button>
+                            <button class="toolbar-btn">Link</button>
+                            <button class="toolbar-btn">Product</button>
+                        </div>
+                        <div class="draft-editor" contenteditable="true">
+                            Beste Lisa,<br><br>
+                            Wat fijn dat je voor de Copenhagen hoekbank hebt gekozen - een prachtig modern bankstel!<br><br>
+                            <strong>Leveringstatus (uit AFAS):</strong><br>
+                            Je order GM-2024-18947 is momenteel in productie. De verwachte levertijd is 3-4 weken vanaf besteldatum (besteld op 15 oktober). We plannen de levering in voor week 45-46. Je ontvangt 2 dagen voor levering een bevestiging met een specifiek tijdvenster.<br><br>
+                            <strong>Malmo stof en huisdieren:</strong><br>
+                            De Malmo Light Grey is een geweven polyester stof met Martindale waarde van 55.000 toeren - zeer slijtvast! Voor huishoudens met katten is dit een uitstekende keuze vanwege de strakke weving.<br><br>
+                            <strong>Upgrade naar premium zitkussens:</strong><br>
+                            Ja, dat kan nog! Voor de hoekbank zijn de meerkosten €245,-. Deze upgrade verhoogt het zitcomfort door gebruik van HR50 koudschuim. Laat binnen 48 uur weten als je dit wilt.<br><br>
+                            Met vriendelijke groet,<br>
+                            Gigameubel Team
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <h4>AI Context & Metadata</h4>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 15px;">
+                        <div>
+                            <strong>Confidence:</strong> 96%<br>
+                            <strong>Language:</strong> Dutch
+                        </div>
+                        <div>
+                            <strong>Intent:</strong> Order Status + Info<br>
+                            <strong>Processing Time:</strong> 1.2s
+                        </div>
+                        <div>
+                            <strong>Sources Used:</strong><br>
+                            - AFAS Order Data<br>
+                            - Product Catalog<br>
+                            - Fabric Database
+                        </div>
+                        <div>
+                            <strong>Products Referenced:</strong><br>
+                            - Copenhagen Hoekbank<br>
+                            - Malmo Fabric<br>
+                            - Premium Cushions
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggested Rule Section -->
+                <div id="suggested-rule" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border: 1px solid #81c784; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h4 style="color: #2e7d32; margin-bottom: 10px;">💡 Suggested New Rule</h4>
+                            <p style="margin-bottom: 10px; color: #1b5e20; font-weight: 500;">Based on this email, we recommend adding this automation rule:</p>
+                            <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; color: #333; margin-bottom: 8px;">
+                                    When customer asks about fabric and pets
+                                </div>
+                                <div style="color: #666; font-size: 14px;">
+                                    → Auto-include Martindale ratings, care instructions, and pet-friendly recommendations
+                                </div>
+                            </div>
+                            <p style="font-size: 13px; color: #555; margin-bottom: 15px;">
+                                This rule was triggered because the customer asked: <em>"Is de Malmo stof geschikt voor een huishouden met katten?"</em>
+                            </p>
+                        </div>
+                        <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn btn-primary" onclick="approveRule()" style="background: #4caf50; border: none;">
+                                ✓ Approve Rule
+                            </button>
+                            <button class="btn btn-outline" onclick="dismissRule()" style="font-size: 14px;">
+                                Dismiss
+                            </button>
+                        </div>
+                    </div>
+                    <div id="rule-approved" style="display: none; background: #4caf50; color: white; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center;">
+                        ✓ Rule approved! This will be applied to all future responses about fabrics and pets.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Section -->
+        <div id="rules-section" class="section-content" style="display: none;">
+            <div class="inbox-header">
+                <h1>Automation Rules</h1>
+                <button class="btn btn-primary" onclick="showModal('add-rule')">+ Add Rule</button>
+            </div>
+
+            <div class="rules-container">
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When email contains order number</div>
+                        <div class="rule-action">→ Auto-fetch AFAS order data and include delivery status in response</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When customer asks about "levertijd" or "delivery"</div>
+                        <div class="rule-action">→ Check AFAS for order status and include estimated delivery window</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When confidence score &lt; 80%</div>
+                        <div class="rule-action">→ Flag for manual review and notify team lead</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When email mentions fabric/stof care</div>
+                        <div class="rule-action">→ Include relevant Martindale ratings and maintenance guide links</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When customer asks about store locations</div>
+                        <div class="rule-action">→ Include addresses, opening hours, and available inventory per location</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">When return request detected</div>
+                        <div class="rule-action">→ Check AFAS order age and auto-include return policy and form link</div>
+                    </div>
+                    <div class="rule-toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Collection Section -->
+        <div id="faq-section" class="section-content" style="display: none;">
+            <div class="inbox-header">
+                <h1>FAQ Collection</h1>
+                <button class="btn btn-primary" onclick="showModal('add-faq')">+ Add to FAQ</button>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <div class="faq-question">Hoe lang duurt de levertijd voor meubels?</div>
+                    <div class="faq-answer">Standaard meubels uit voorraad leveren we binnen 2-3 werkdagen. Voor op maat gemaakte meubels is de levertijd 3-6 weken,afhankelijk van de stoffenkeuze en drukte.</div>
+                    <div class="faq-meta">
+                        <span>Used 127 times</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Can I return furniture if it doesn't fit?</div>
+                    <div class="faq-answer">Yes! You have 30 days to return furniture. We offer free pickup for items over €500. Please ensure the item is in original condition with all packaging.</div>
+                    <div class="faq-meta">
+                        <span>Used 89 times</span>
+                        <span>🇬🇧 EN</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Welke stoffen zijn het meest slijtvast?</div>
+                    <div class="faq-answer">Voor hoge slijtvastheid adviseren we stoffen met een Martindale-waarde van 50.000+ toeren. Onze Malmo (55.000) en Oslo (60.000) collecties zijn perfect voor intensief gebruik en gezinnen met kinderen of huisdieren.</div>
+                    <div class="faq-meta">
+                        <span>Used 76 times</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Wird die Montage angeboten?</div>
+                    <div class="faq-answer">Ja, wir bieten professionelle Montage für alle Möbel an. Die Kosten hängen vom Produkt ab (€75-€200). Unsere Monteure nehmen auch Verpackungsmaterial mit.</div>
+                    <div class="faq-meta">
+                        <span>Used 54 times</span>
+                        <span>🇩🇪 DE</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Puis-je commander des échantillons de tissu?</div>
+                    <div class="faq-answer">Oui! Nous envoyons jusqu'à 5 échantillons de tissu gratuitement. Commandez via notre site web ou contactez notre service client. Livraison sous 2-3 jours ouvrables.</div>
+                    <div class="faq-meta">
+                        <span>Used 43 times</span>
+                        <span>🇫🇷 FR</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Kan ik meubels in de winkel bekijken?</div>
+                    <div class="faq-answer">Ja! We hebben showrooms in Amsterdam, Rotterdam, Utrecht en Eindhoven. Veel van onze online collectie staat uitgestald. Check onze website voor actuele voorraad per locatie.</div>
+                    <div class="faq-meta">
+                        <span>Used 91 times</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div id="stats-section" class="section-content" style="display: none;">
+            <h1 style="margin-bottom: 30px;">Performance Statistics</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-value">1,842</div>
+                    <div class="stat-label">Emails Processed</div>
+                    <div class="stat-change positive">↑ 28% vs last week</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">1.2s</div>
+                    <div class="stat-label">Avg Processing Time</div>
+                    <div class="stat-change positive">↓ 0.4s improvement</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">95%</div>
+                    <div class="stat-label">Draft Accuracy</div>
+                    <div class="stat-change positive">↑ 3% improvement</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">€3,750</div>
+                    <div class="stat-label">Monthly Savings</div>
+                    <div class="stat-change">125 hours saved</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">847</div>
+                    <div class="stat-label">AFAS API Calls</div>
+                    <div class="stat-change">Real-time order data</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Email Volume by Language</h3>
+                    <select class="select-field" id="language-chart-range" onchange="updateLanguageChart()">
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90" selected>Last 90 days</option>
+                    </select>
+                </div>
+                <canvas id="languageChart" width="800" height="300" style="max-width: 100%;"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Response Time Trend</h3>
+                    <select class="select-field" id="response-chart-period" onchange="updateResponseChart()">
+                        <option value="daily">Daily</option>
+                        <option value="weekly" selected>Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <canvas id="responseChart" width="800" height="300" style="max-width: 100%;"></canvas>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-section" class="section-content" style="display: none;">
+            <h1 style="margin-bottom: 30px;">Settings</h1>
+
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>AI Configuration</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Confidence Threshold</h4>
+                            <p>Minimum confidence score for auto-draft generation</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="number" class="input-field" value="75" min="0" max="100">
+                            <span>%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Default Response Language</h4>
+                            <p>Language to use when detection is uncertain</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="select-field">
+                                <option>Dutch</option>
+                                <option>English</option>
+                                <option>German</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Include Product Links</h4>
+                            <p>Automatically add product URLs to responses</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Microsoft 365 Integration</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Tenant ID</h4>
+                            <p>Your Microsoft 365 tenant identifier</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="text" class="input-field" value="••••••••-••••-••••">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Mailbox Address</h4>
+                            <p>Email address to monitor</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="email" class="input-field" value="info@gigameubel.nl">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Sync Frequency</h4>
+                            <p>How often to check for new emails</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="select-field">
+                                <option>Every minute</option>
+                                <option>Every 2 minutes</option>
+                                <option>Every 5 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>AFAS Integration</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>AFAS Environment</h4>
+                            <p>Your AFAS environment identifier</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="text" class="input-field" value="••••••••••••">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>API Token</h4>
+                            <p>AFAS REST API authentication token</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="password" class="input-field" value="••••••••••••">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Auto-fetch Order Data</h4>
+                            <p>Automatically retrieve order info when order number detected</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Include Stock Levels</h4>
+                            <p>Add current inventory information to product responses</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Notifications</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Email Notifications</h4>
+                            <p>Get alerts for high-priority emails</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Teams Integration</h4>
+                            <p>Send notifications to Microsoft Teams channel</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="text" class="input-field" placeholder="Customer Support Team">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>AFAS Sync Errors</h4>
+                            <p>Alert when AFAS API calls fail</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<div class="fab" onclick="showModal('compose')">+</div>
+
+<!-- Modal for Adding Rules/FAQ -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Add New Rule</h2>
+            <span class="modal-close" onclick="closeModal()">×</span>
+        </div>
+        <div id="modal-body">
+            <!-- Dynamic content based on action -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(section) {
+        // Hide all sections
+        document.querySelectorAll('.section-content').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Show selected section
+        document.getElementById(section + '-section').style.display = 'block';
+
+        // Update nav active state
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
+        });
+        if (event && event.target) {
+            const navItem = event.target.closest('.nav-item');
+            if (navItem) navItem.classList.add('active');
+        }
+    }
+
+    function showDraft(emailId) {
+        // Prevent checkbox from being checked when clicking on email
+        if (event.target.type === 'checkbox') return;
+
+        // Hide all sections
+        document.querySelectorAll('.section-content').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Show draft section
+        document.getElementById('draft-section').style.display = 'block';
+
+        // Update content based on which email was clicked
+        updateDraftContent(emailId);
+    }
+
+    function updateDraftContent(emailId) {
+        // This function would update the draft content based on the email clicked
+        // For now, it shows the existing draft content
+        // In a real implementation, this would fetch the specific email data
+
+        // Add a back button to return to inbox
+        const draftHeader = document.querySelector('.draft-header');
+        if (draftHeader && !document.getElementById('back-to-inbox')) {
+            const backButton = document.createElement('button');
+            backButton.id = 'back-to-inbox';
+            backButton.className = 'btn btn-outline';
+            backButton.innerHTML = '← Back to Inbox';
+            backButton.onclick = () => showSection('inbox');
+            draftHeader.insertBefore(backButton, draftHeader.firstChild);
+        }
+    }
+
+    function approveRule() {
+        // Show success message
+        document.getElementById('rule-approved').style.display = 'block';
+
+        // Hide the action buttons
+        const ruleSection = document.getElementById('suggested-rule');
+        const buttons = ruleSection.querySelectorAll('button');
+        buttons.forEach(btn => btn.style.display = 'none');
+
+        // In a real implementation, this would:
+        // 1. Send the rule to the backend
+        // 2. Add it to the rules database
+        // 3. Apply it to future responses
+
+        // After 3 seconds, fade out the entire suggestion
+        setTimeout(() => {
+            ruleSection.style.opacity = '0.7';
+        }, 3000);
+    }
+
+    function dismissRule() {
+        // Hide the suggested rule section
+        const ruleSection = document.getElementById('suggested-rule');
+        ruleSection.style.display = 'none';
+
+        // In a real implementation, this would:
+        // 1. Log the dismissal for analytics
+        // 2. Potentially adjust future rule suggestions
+    }
+
+    function showModal(type) {
+        const modal = document.getElementById('modal');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+
+        if (type === 'add-rule') {
+            title.textContent = 'Add New Automation Rule';
+            body.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Trigger Condition</label>
+                        <input type="text" class="input-field" style="width: 100%;" placeholder="e.g., When email contains order number">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Action</label>
+                        <textarea class="input-field" style="width: 100%; min-height: 100px;" placeholder="What should happen when this condition is met?"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="btn btn-primary">Add Rule</button>
+                    </div>
+                `;
+        } else if (type === 'add-faq') {
+            title.textContent = 'Add to FAQ Collection';
+            body.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Question</label>
+                        <input type="text" class="input-field" style="width: 100%;" placeholder="Enter the frequently asked question">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Answer</label>
+                        <textarea class="input-field" style="width: 100%; min-height: 150px;" placeholder="Enter the standard answer"></textarea>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Language</label>
+                        <select class="select-field" style="width: 100%;">
+                            <option>Dutch</option>
+                            <option>English</option>
+                            <option>German</option>
+                            <option>French</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button class="btn btn-primary">Add to FAQ</button>
+                    </div>
+                `;
+        }
+
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('active');
+    }
+
+    // Toggle switches
+    document.querySelectorAll('.rule-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    });
+
+    // Chart functions
+    function generateLanguageData(days) {
+        const data = [];
+        const languages = ['Dutch', 'English', 'German', 'French', 'Spanish', 'Other'];
+        const basePercentages = [70, 15, 8, 4, 2, 1];
+
+        for (let i = 0; i < days; i++) {
+            const dayData = {};
+            let total = 0;
+            basePercentages.forEach((base, index) => {
+                const variation = (Math.random() - 0.5) * 10;
+                const value = Math.max(0, base + variation);
+                dayData[languages[index]] = Math.round(value);
+                total += dayData[languages[index]];
+            });
+            // Normalize to 100%
+            Object.keys(dayData).forEach(lang => {
+                dayData[lang] = Math.round((dayData[lang] / total) * 100);
+            });
+            data.push(dayData);
+        }
+        return data;
+    }
+
+    function generateResponseTimeData(days, period) {
+        const data = [];
+        const startTime = 300; // Starting at 5 minutes
+        const endTime = 20;   // Target end time
+
+        const points = period === 'daily' ? days : period === 'weekly' ? Math.ceil(days / 7) : Math.ceil(days / 30);
+
+        // Calculate the decay rate for exponential improvement
+        const decayRate = Math.log(endTime / startTime) / points;
+
+        for (let i = 0; i < points; i++) {
+            // Exponential decay for smooth downward trend
+            const baseTime = startTime * Math.exp(decayRate * i);
+
+            // Add realistic variation based on period
+            let variation = 0;
+            if (period === 'daily') {
+                variation = (Math.random() - 0.5) * 0.15;
+                const dayOfWeek = i % 7;
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    variation += 0.1;
+                }
+            } else if (period === 'weekly') {
+                variation = (Math.random() - 0.5) * 0.2;
+            } else {
+                variation = (Math.random() - 0.5) * 0.25;
+            }
+
+            // Add occasional spikes
+            if (Math.random() < 0.1) {
+                variation += 0.15 + Math.random() * 0.15;
+            }
+
+            data.push(Math.max(0.5, baseTime + variation));
+        }
+
+        return data;
+    }
+
+    function drawLanguageChart() {
+        const canvas = document.getElementById('languageChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const range = parseInt(document.getElementById('language-chart-range')?.value || '90');
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Generate data
+        const data = generateLanguageData(range);
+        const aggregated = {
+            'Dutch': 0,
+            'English': 0,
+            'German': 0,
+            'French': 0,
+            'Spanish': 0,
+            'Other': 0
+        };
+
+        data.forEach(day => {
+            Object.keys(day).forEach(lang => {
+                aggregated[lang] += day[lang];
+            });
+        });
+
+        // Calculate averages
+        Object.keys(aggregated).forEach(lang => {
+            aggregated[lang] = Math.round(aggregated[lang] / data.length);
+        });
+
+        // Draw pie chart
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 40;
+
+        const colors = ['#8B4513', '#D2691E', '#3498db', '#9b59b6', '#1abc9c', '#95a5a6'];
+        const languages = Object.keys(aggregated);
+        let currentAngle = -Math.PI / 2;
+
+        languages.forEach((lang, index) => {
+            const percentage = aggregated[lang];
+            const sliceAngle = (percentage / 100) * Math.PI * 2;
+
+            // Draw slice
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = colors[index];
+            ctx.fill();
+
+            // Draw label
+            const labelAngle = currentAngle + sliceAngle / 2;
+            const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+            const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            if (percentage > 5) {
+                ctx.fillText(`${lang}`, labelX, labelY - 10);
+                ctx.fillText(`${percentage}%`, labelX, labelY + 10);
+            }
+
+            currentAngle += sliceAngle;
+        });
+
+        // Draw legend
+        let legendY = 30;
+        languages.forEach((lang, index) => {
+            ctx.fillStyle = colors[index];
+            ctx.fillRect(canvas.width - 120, legendY, 15, 15);
+
+            ctx.fillStyle = '#333';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${lang} (${aggregated[lang]}%)`, canvas.width - 95, legendY + 12);
+
+            legendY += 25;
+        });
+    }
+
+    function drawResponseChart() {
+        const canvas = document.getElementById('responseChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const range = parseInt(document.getElementById('language-chart-range')?.value || '90');
+        const period = document.getElementById('response-chart-period')?.value || 'weekly';
+
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Generate data
+        const data = generateResponseTimeData(range, period);
+
+        // Chart dimensions
+        const padding = 50;
+        const chartWidth = canvas.width - padding * 2;
+        const chartHeight = canvas.height - padding * 2;
+
+        // Draw axes
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding);
+        ctx.stroke();
+
+        // Y-axis labels
+        ctx.fillStyle = '#666';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+
+        const maxTime = Math.max(...data);
+        const minTime = Math.min(...data);
+        const ySteps = 5;
+
+        for (let i = 0; i <= ySteps; i++) {
+            const y = padding + (chartHeight / ySteps) * i;
+            const value = maxTime - ((maxTime - minTime) / ySteps) * i;
+
+            ctx.fillText(value.toFixed(1) + 's', padding - 10, y);
+
+            // Grid lines
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(canvas.width - padding, y);
+            ctx.stroke();
+        }
+
+        // X-axis labels
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+
+        const xStep = chartWidth / (data.length - 1);
+        const labelInterval = Math.max(1, Math.floor(data.length / 10));
+
+        for (let i = 0; i < data.length; i++) {
+            if (i % labelInterval === 0 || i === data.length - 1) {
+                const x = padding + xStep * i;
+                const label = period === 'daily' ? `Day ${i + 1}` :
+                    period === 'weekly' ? `Week ${i + 1}` :
+                        `Month ${i + 1}`;
+                ctx.fillText(label, x, canvas.height - padding + 10);
+            }
+        }
+
+        // Draw line chart
+        ctx.strokeStyle = '#8B4513';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        data.forEach((value, index) => {
+            const x = padding + xStep * index;
+            const y = padding + ((maxTime - value) / (maxTime - minTime)) * chartHeight;
+
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+
+        ctx.stroke();
+
+        // Draw points
+        data.forEach((value, index) => {
+            const x = padding + xStep * index;
+            const y = padding + ((maxTime - value) / (maxTime - minTime)) * chartHeight;
+
+            ctx.fillStyle = '#8B4513';
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Add value label for every few points
+            if (index % labelInterval === 0 || index === data.length - 1) {
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(value.toFixed(2) + 's', x, y - 8);
+            }
+        });
+
+        // Add trend line
+        const firstValue = data[0];
+        const lastValue = data[data.length - 1];
+        const improvement = ((firstValue - lastValue) / firstValue * 100).toFixed(1);
+
+        ctx.fillStyle = '#4caf50';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`↓ ${improvement}% improvement`, padding + 10, padding - 20);
+    }
+
+    function updateLanguageChart() {
+        drawLanguageChart();
+    }
+
+    function updateResponseChart() {
+        drawResponseChart();
+    }
+
+    // Initialize charts when page loads
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            drawLanguageChart();
+            drawResponseChart();
+        }, 100);
+    });
+
+    // Redraw charts when stats section is shown
+    const originalShowSection = showSection;
+    window.showSection = function(section) {
+        originalShowSection(section);
+        if (section === 'stats') {
+            setTimeout(() => {
+                drawLanguageChart();
+                drawResponseChart();
+            }, 100);
+        }
+    };
+</script>
+</body>
+</html>
