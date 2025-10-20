@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gigameubel - Intelligente E-mail Automatisering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff20" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,133.3C960,128,1056,96,1152,90.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .hero .tagline {
+            font-size: 18px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .value-card .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .value-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .value-card p {
+            color: #7f8c8d;
+            line-height: 1.8;
+        }
+
+        .workflow-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin: 40px 0;
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: #e0e0e0;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .step-content p {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .step-tech {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #8B4513;
+            margin-right: 8px;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .demo-container {
+            background: #2c3e50;
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+        }
+
+        .demo-screen {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+
+        .email-preview {
+            border-left: 3px solid #8B4513;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        .email-meta {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .email-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .response-draft {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tech-logo {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .pricing-table {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .pricing-header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-body {
+            padding: 40px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            padding-top: 30px;
+            border-top: 2px solid #8B4513;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 16px;
+            margin: 60px 0;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .timeline {
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .timeline-date {
+            min-width: 120px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 30px;
+            border-left: 2px solid #e0e0e0;
+        }
+
+        .timeline-content h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .timeline-content p {
+            color: #7f8c8d;
+        }
+
+        .feature-comparison {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+        }
+
+        .feature-comparison th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .feature-comparison td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .check {
+            color: #4caf50;
+            font-size: 20px;
+        }
+
+        .cross {
+            color: #f44336;
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+<div class="hero">
+    <div class="hero-content">
+        <h1>⚡ Intelligente E-mail Automatisering voor Gigameubel</h1>
+        <p class="subtitle">Transformeer de klantenservice met AI-Gestuurde antwoordgeneratie</p>
+        <p class="tagline">🎯 95% Tijdsbesparing • 🌍 Meertalig • 🚀 30 Seconden Verwerking • 📕Volledige kennis mbt Gigameubel</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Waardepropositie -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Het Gigameubel voordeel</h2>
+            <p>Van handmatige antwoorden naar grootschalige e-mailexcellentie</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">⏱️</div>
+                <h3>5 Minuten → 30 Seconden</h3>
+                <p>Verminder de voorbereidingstijd voor e-mailantwoorden met 90%. Onze AI analyseert inkomende e-mails en genereert nauwkeurige conceptantwoorden in minder dan 30 seconden, gebruikmakend van jullie productcatalogus en kennisbank.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🌍</div>
+                <h3>Echt Meertalig</h3>
+                <p>Detecteer automatisch de taal van de klant en reageer natuurlijk in Nederlands, Engels, Duits, Frans, Spaans en meer. Geen taalbarrières of vertaalvertragingen meer.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🎯</div>
+                <h3>Gigameubel Kennis</h3>
+                <p>Benut Gigameubel's complete productcatalogus, maatgidsen, stoffeninformatie, verzendbeleid en retourprocedures. Elk antwoord is accuraat, relevant en merkconsistent.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🔄</div>
+                <h3>AFAS Integratie</h3>
+                <p>Directe koppeling met AFAS voor real-time orderstatus, leveringstijden, voorraadinformatie en klanthistorie. Onmiddellijk actuele informatie in elk antwoord.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">✅</div>
+                <h3>Menselijk Toezicht</h3>
+                <p>Concepten verschijnen in de <a href="https://brainvineai.github.io/showcase/gigameubel-ui-example.html">interface</a> voor controle voordat ze worden verzonden. Het Gigameubel team behoudt volledige controle terwijl uren repetitief werk worden bespaard.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">📊</div>
+                <h3>Intelligente Inzichten</h3>
+                <p>Volg reactietijden en detecteer veelvoorkomende vragen. Gebruik data om zowel AI-antwoorden als bedrijfsprocessen te verbeteren.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hoe het werkt -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Hoe Het Werkt</h2>
+            <p>Intelligente automatisering die perfect past in de bestaande workflow</p>
+        </div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>E-mail komt binnen in Microsoft 365</h4>
+                    <p>Klant stuurt een e-mail naar jullie supportadres (bijv. info@gigameubel.nl)</p>
+                    <p>De e-mail wordt automatisch gedetecteerd via Microsoft Graph API.</p>
+                    <p>De e-mail wordt naar onze workflow gestuurd.</p>
+                    <span class="step-tech">Microsoft 365</span>
+                    <span class="step-tech">Microsoft Graph API</span>
+                    <span class="step-tech">Brainvine AI workflow</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>AI Analyse & Taaldetectie</h4>
+                    <p>Ons systeem detecteert direct de e-mailtaal en analyseert de inhoud.</p>
+                    <p>Identificeert intentie: productvraag, leveringstatus, retourinformatie, stoffenadvies, etc.</p>
+                    <span class="step-tech">Natural Language Processing</span>
+                    <span class="step-tech">Intent Classificatie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>AFAS data ophalen</h4>
+                    <p>Real-time koppeling met AFAS systeem:</p>
+                    <p>• Orderstatus en tracking informatie<br>
+                        • Leveringstijden en voorraadposities<br>
+                        • Klanthistorie en eerdere aankopen<br>
+                        • Facturatie en betaalstatus</p>
+                    <span class="step-tech">AFAS REST API</span>
+                    <span class="step-tech">Real-time Data</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Kennisbank doorzoeken</h4>
+                    <p>Doorzoekt alle Gigameubel kennis:</p>
+                    <p>• Productcatalogus met specs, afmetingen, materialen<br>
+                        • Meubelstoffen database met onderhoudsinstructies<br>
+                        • FAQ database in meerdere talen<br>
+                        • Verzend- en retourbeleid<br>
+                        • Online en fysieke winkel informatie</p>
+                    <span class="step-tech">Vector Search</span>
+                    <span class="step-tech">RAG Pipeline</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Concept generatie</h4>
+                    <p>AI genereert een professioneel antwoord in de taal van de klant.</p>
+                    <p>Inclusief relevante productlinks, leveringstijden uit AFAS, en beleidsinformatie.</p>
+                    <span class="step-tech">GPT-5</span>
+                    <span class="step-tech">Context Injectie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Concept review in <a href="https://brainvineai.github.io/showcase/gigameubel-ui-example.html">dashboard</a></h4>
+                    <p>Het concept verschijnt direct in ons review dashboard.</p>
+                    <p>Inclusief betrouwbaarheidsscore en bronreferenties voor transparantie.</p>
+                    <span class="step-tech"><a href="https://brainvineai.github.io/showcase/gigameubel-ui-example.html">Review Dashboard</a></span>
+                    <span class="step-tech">Conceptbeheer</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h4>Controle door medewerker & Verzenden</h4>
+                    <p>Het Gigameubel team controleert het concept, maakt eventuele aanpassingen en verzendt via Microsoft 365.</p>
+                    <p>Gemiddelde bewerkingstijd: minder dan 30 seconden voor 85% van de e-mails.</p>
+                    <span class="step-tech">Menselijk toezicht</span>
+                    <span class="step-tech">Kwaliteitsborging</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Zie het in actie</h2>
+            <p>Echt voorbeeld van hoe Gigameubel e-mails worden verwerkt</p>
+        </div>
+
+        <div class="demo-container">
+            <h3 style="margin-bottom: 20px;">📧 Inkomende klant e-mail</h3>
+            <div class="demo-screen">
+                <div class="email-preview">
+                    <div class="email-meta">
+                        <strong>Van:</strong> lisa.vandenberg@gmail.com<br>
+                        <strong>Onderwerp:</strong> Vraag over Copenhagen bankstel
+                    </div>
+                    <div class="email-content">
+                        <p>Beste Gigameubel team,</p>
+                        <p>Ik heb vorige week de Copenhagen hoekbank in de stof Malmo Light Grey besteld (ordernummer GM-2024-18947).</p>
+                        <p>Ik heb een paar vragen: Wat is de huidige leveringstatus? En kunnen jullie mij vertellen of de Malmo stof geschikt is voor een huishouden met katten? Ik maak me zorgen over krabschade.</p>
+                        <p>Ook vraag ik me af of ik nog kan upgraden naar de premium zitkussens? En zo ja, wat zijn de meerkosten?</p>
+                        <p>Alvast bedankt!<br>Lisa van den Berg</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="display: inline-block; background: #8B4513; color: white; padding: 10px 20px; border-radius: 20px;">
+                        ⚡ AI verwerking + AFAS lookup (5-30 seconden)
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 30px;">🤖 Gegenereerd conceptantwoord <small>(let op: niet getraind op echte gigameubel data)</small></h4>
+                <div class="response-draft">
+                    <p>Beste Lisa,</p>
+                    <p>Wat fijn dat je voor de Copenhagen hoekbank hebt gekozen - een prachtig modern bankstel!</p>
+
+                    <p><strong>Leveringstatus (uit AFAS):</strong><br>
+                        Je order GM-2024-18947 is momenteel in productie. De verwachte levertijd is 3-4 weken vanaf besteldatum (besteld op 15 oktober). We plannen de levering in voor week 45-46. Je ontvangt 2 dagen voor levering een bevestiging met een specifiek tijdvenster van onze logistieke partner.</p>
+
+                    <p><strong>Malmo stof en huisdieren:</strong><br>
+                        De Malmo Light Grey is een geweven polyester stof met Martindale waarde van 55.000 toeren - dat betekent zeer slijtvast! Voor huishoudens met katten adviseren wij altijd een stof met hoge Martindale waarde en een strakke weving, en Malmo voldoet daar perfect aan. De stof is krabbestendiger dan de meeste alternatieven.</p>
+
+                    <p><strong>Praktische tips voor katten:</strong><br>
+                        • Plaats een krabpaal in de buurt<br>
+                        • Houd de nagels van je kat kort<br>
+                        • De Malmo stof is makkelijk schoon te maken met een vochtige doek<br>
+                        • Vermijd scherpe sieraden die in de stof kunnen haken</p>
+
+                    <p><strong>Upgrade naar premium zitkussens:</strong><br>
+                        Ja, dat kan nog! Onze Copenhagen is modulair en we kunnen de premium HR50 zitkussens toevoegen aan je order. Voor de hoekbank formaat die jij hebt besteld zijn de meerkosten €245,-. Deze upgrade verhoogt het zitcomfort aanzienlijk door gebruik van koudschuim met hogere dichtheid (50 kg/m³ t.o.v. standaard 35 kg/m³).</p>
+
+                    <p>Als je de upgrade wilt, laat het ons dan binnen 48 uur weten, dan verwerken we dit voordat de productie van je kussens start. Je kunt ook gewoon op deze e-mail antwoorden of ons bellen op 085-1234567.</p>
+
+                    <p>Heb je nog meer vragen over onderhoud van de stof of andere opties? Laat het gerust weten!</p>
+
+                    <p>Met vriendelijke groet,<br>
+                        Gigameubel Klantenservice Team</p>
+
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+                        <strong>AI Context Gebruikt:</strong> AFAS Order Data (GM-2024-18947), Product DB (Copenhagen), Stoffen Database (Malmo specs), Upgrade Opties, Huisdieradvies KB<br>
+                        <strong>Betrouwbaarheid:</strong> 96%<br>
+                        <strong>Taal:</strong> Nederlands (automatisch gedetecteerd)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technische Architectuur -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Technische Excellentie</h2>
+            <p>Enterprise-grade technologie op maat voor Gigameubel</p>
+        </div>
+
+        <div class="workflow-container">
+            <h3>🏗️ Systeemarchitectuur</h3>
+            <p style="margin: 20px 0;">Onze oplossing integreert naadloos met de bestaande infrastructuur:</p>
+
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <span>📧</span>
+                    <strong>Microsoft 365 Mail</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🔧</span>
+                    <strong>AFAS Systeem</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🤖</span>
+                    <strong>GPT-5 of vergelijkbaar</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🔍</span>
+                    <strong>Pinecone Vector DB</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🔒</span>
+                    <strong>Enterprise Beveiliging</strong>
+                </div>
+            </div>
+
+            <h4 style="margin-top: 40px;">🔄 AFAS Integratie Mogelijkheden</h4>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Order Management:</strong> Real-time orderstatus, tracking, leveringsinformatie</p>
+                <p><strong>Voorraad:</strong> Live voorraadniveaus per artikel en locatie (online/winkels)</p>
+                <p><strong>Klantdata:</strong> Aankoophistorie, voorkeuren, contactinformatie</p>
+                <p><strong>Leveringen:</strong> Geplande leveringen, routes, tijdvensters</p>
+                <p><strong>Facturatie:</strong> Factuurstatus, betaalinformatie, openstaande posten</p>
+                <p><strong>Retourprocessen:</strong> Retouraanvragen, status, creditnota's</p>
+            </div>
+
+            <h4 style="margin-top: 40px;">🔒 Beveiliging & Compliance</h4>
+            <ul style="margin: 20px 0; line-height: 2;">
+                <li>✅ AVG-compliant</li>
+                <li>✅ End-to-end encryptie voor alle dataoverdrachten</li>
+                <li>✅ Geen klantdata gebruikt voor AI-training</li>
+                <li>✅ Regelmatige beveiligingsaudits</li>
+                <li>✅ Microsoft 365 security compliance</li>
+            </ul>
+
+            <h4 style="margin-top: 40px;">📊 Gigameubel Kennisbank Integratie (indien beschikbaar)</h4>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Productcatalogus:</strong> Alle meubelen met volledige specificaties, afmetingen, materialen</p>
+                <p><strong>Stoffendatabase:</strong> Alle stoffen met Martindale waarden, onderhoudsinstructies, kleurechtheid</p>
+                <p><strong>Maatgidsen:</strong> Ruimte-advisering, samenstelling tips, configuratie opties</p>
+                <p><strong>Winkel Voorraad:</strong> Beschikbaarheid per fysieke locatie (via AFAS)</p>
+                <p><strong>Beleid:</strong> Verzending, retouren, garanties, montage in 12 talen</p>
+                <p><strong>FAQ Database:</strong> 2.000+ veelgestelde vragen en antwoorden</p>
+                <p><strong>Onderhoudsinstructies:</strong> Per materiaaltype (stof, leer, hout, metaal)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prijzen -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Investering & ROI</h2>
+            <p>Transparante prijzen met gegarandeerde return on investment</p>
+        </div>
+
+        <div class="pricing-table">
+            <div class="pricing-header">
+                <h3>Gigameubel Maatwerk Oplossing</h3>
+                <p>Afgestemd op volume en vereisten</p>
+            </div>
+            <div class="pricing-body">
+                <div class="price-row">
+                    <span>Setup & Integratie</span>
+                    <span>€3.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Microsoft 365 & AFAS API Koppeling</span>
+                    <span>€1.800 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Kennisbank Import & Training</span>
+                    <span>€1.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Maandelijks Abonnement</span>
+                    <span>€450/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>AI Verwerkingskosten (GPT-5)</span>
+                    <span>~€50/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Vector Database (Pinecone)</span>
+                    <span>€80/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Data updates</span>
+                    <span>€70/maand</span>
+                </div>
+                <div class="price-row">
+                    <span><strong>Totale Maandelijkse Kosten</strong></span>
+                    <span><strong>€650/maand</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; margin: 40px 0;">
+            <h3 style="color: #2e7d32; margin-bottom: 20px;">💰 Return on Investment</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h4>Kostenbesparing</h4>
+                    <p>Tijd bespaard: 125 uur/maand</p>
+                    <p>Arbeidskosten: €30/uur</p>
+                    <p><strong>Maandelijkse besparing: €3.750</strong></p>
+                </div>
+                <div>
+                    <h4>ROI Berekening</h4>
+                    <p>Maandelijkse besparing: €3.750</p>
+                    <p>Maandelijkse kosten: €650</p>
+                    <p><strong>Netto voordeel: €3.100/maand</strong></p>
+                    <p><strong>ROI: 375% 🚀</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vergelijking -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Wat onze oplossing beter maakt</h2>
+            <p>Zie hoe wij ons verhouden tot alternatieven</p>
+        </div>
+
+        <table class="feature-comparison">
+            <thead>
+            <tr>
+                <th>Functie</th>
+                <th>Onze Oplossing</th>
+                <th>Generieke Chatbots</th>
+                <th>Handmatig Proces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Meertalige Ondersteuning</td>
+                <td><span class="check">✓</span> 100+ talen</td>
+                <td><span class="check">✓</span> Beperkt</td>
+                <td><span class="cross">✗</span> Afhankelijk van personeel</td>
+            </tr>
+            <tr>
+                <td>AFAS Integratie</td>
+                <td><span class="check">✓</span> Real-time data</td>
+                <td><span class="cross">✗</span> Niet beschikbaar</td>
+                <td><span class="check">✓</span> Handmatig opzoeken</td>
+            </tr>
+            <tr>
+                <td>Productkennis</td>
+                <td><span class="check">✓</span> Volledige catalogus</td>
+                <td><span class="cross">✗</span> Alleen basis</td>
+                <td><span class="check">✓</span> Als getraind</td>
+            </tr>
+            <tr>
+                <td>Reactietijd</td>
+                <td><span class="check">✓</span> 30 seconden</td>
+                <td><span class="check">✓</span> Direct</td>
+                <td><span class="cross">✗</span> 5+ minuten</td>
+            </tr>
+            <tr>
+                <td>Nauwkeurigheid</td>
+                <td><span class="check">✓</span> >95%</td>
+                <td><span class="cross">✗</span> 60-70%</td>
+                <td><span class="check">✓</span> Variabel</td>
+            </tr>
+            <tr>
+                <td>Menselijk Toezicht</td>
+                <td><span class="check">✓</span> Altijd</td>
+                <td><span class="cross">✗</span> Nee</td>
+                <td><span class="check">✓</span> Ja</td>
+            </tr>
+            <tr>
+                <td>Kosten per E-mail</td>
+                <td><span class="check">✓</span> €0,00 - €0,03 </td>
+                <td><span class="check">✓</span> €0,05</td>
+                <td><span class="cross">✗</span> €2,50</td>
+            </tr>
+            <tr>
+                <td>Schaalbaarheid</td>
+                <td><span class="check">✓</span> Onbeperkt</td>
+                <td><span class="check">✓</span> Onbeperkt</td>
+                <td><span class="cross">✗</span> Beperkt</td>
+            </tr>
+            <tr>
+                <td>Maatwerk Integratie</td>
+                <td><span class="check">✓</span> Volledig</td>
+                <td><span class="cross">✗</span> Beperkt</td>
+                <td>N.v.t.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Ondersteuning -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Uitgebreide ondersteuning</h2>
+            <p>Wij staan elke stap aan jullie zijde</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">🎓</div>
+                <h3>Trainingsprogramma</h3>
+                <p>• Onboarding / trainingssessie<br>
+                    • Snelle referentiegidsen<br>
+                    • AFAS integratie setup hulp</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">💬</div>
+                <h3>Toegewijde Support</h3>
+                <p>
+                    • Snelle reactie<br>
+                    • Toegewezen accountmanager</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">📈</div>
+                <h3>Continue Verbetering</h3>
+                <p>• Nieuwe functie-uitrol<br>
+                    • AI model updates inbegrepen<br>
+                    • Regelmatige prestatie reviews</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
