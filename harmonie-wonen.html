@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonie Wonen - Ontwerp Je Droomhuis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-teal: #1a5f5f;
+            --primary-green: #2d5f4f;
+            --accent-terracotta: #d4725a;
+            --accent-gold: #c9a961;
+            --cream: #f8f5f0;
+            --off-white: #fefdfb;
+            --dark-gray: #2c2c2c;
+            --light-gray: #e8e6e3;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--off-white);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .top-bar {
+            background-color: var(--primary-teal);
+            color: white;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+
+        .top-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .top-bar a:hover {
+            text-decoration: underline;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--primary-teal);
+            stroke-width: 2;
+        }
+
+        .logo span {
+            color: var(--accent-terracotta);
+            margin-left: -10px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover {
+            color: var(--primary-teal);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 25px;
+            width: 250px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+        }
+
+        .icon-link {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-teal);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 700px;
+            background: linear-gradient(165deg, #f5f2ed 0%, #faf8f5 50%, #f0ebe3 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(26, 95, 95, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 40%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(201, 169, 97, 0.06) 0%, transparent 65%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text {
+            max-width: 650px;
+            padding-right: 3rem;
+        }
+
+        .hero-text h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+            color: var(--primary-green);
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.35rem;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-teal);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(26, 95, 95, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-green);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(26, 95, 95, 0.35);
+        }
+
+        .cta-secondary {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s;
+        }
+
+        .cta-secondary:hover {
+            gap: 1rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            width: 45%;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-card {
+            position: absolute;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .hero-card:hover {
+            transform: scale(1.05) !important;
+        }
+
+        .hero-card-1 {
+            width: 280px;
+            height: 320px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-6deg);
+            z-index: 3;
+            background: linear-gradient(135deg, #fff 0%, #faf8f5 100%);
+        }
+
+        .hero-card-2 {
+            width: 240px;
+            height: 280px;
+            top: 45%;
+            left: 25%;
+            transform: translate(-50%, -50%) rotate(8deg);
+            z-index: 2;
+            background: linear-gradient(135deg, var(--accent-terracotta) 0%, #e88871 100%);
+        }
+
+        .hero-card-3 {
+            width: 200px;
+            height: 240px;
+            top: 60%;
+            left: 70%;
+            transform: translate(-50%, -50%) rotate(-12deg);
+            z-index: 1;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #d4b872 100%);
+        }
+
+        .hero-card-icon {
+            font-size: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            opacity: 0.9;
+        }
+
+        .hero-decoration {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(26, 95, 95, 0.05);
+        }
+
+        .hero-decoration-1 {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            right: 15%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-decoration-2 {
+            width: 80px;
+            height: 80px;
+            bottom: 15%;
+            right: 25%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .hero-decoration-3 {
+            width: 60px;
+            height: 60px;
+            top: 25%;
+            right: 5%;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Category Nav */
+        .category-nav {
+            background-color: var(--cream);
+            padding: 1.5rem 0;
+        }
+
+        .category-nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+
+        .category-chip {
+            display: inline-block;
+            padding: 0.7rem 1.5rem;
+            background-color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-chip:hover {
+            border-color: var(--primary-teal);
+            color: var(--primary-teal);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, var(--accent-terracotta), #e88871);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 4rem;
+            box-shadow: 0 4px 20px rgba(212, 114, 90, 0.2);
+        }
+
+        .promo-banner h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .promo-banner p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, var(--cream), var(--light-gray));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--accent-gold);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .product-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+        }
+
+        .product-price span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Room Showcase */
+        .room-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .room-card {
+            position: relative;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .room-card:hover {
+            transform: scale(1.02);
+        }
+
+        .room-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.7));
+            z-index: 1;
+        }
+
+        .room-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            color: white;
+            z-index: 2;
+        }
+
+        .room-card-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .room-card-content p {
+            margin-bottom: 1rem;
+            opacity: 0.95;
+        }
+
+        .room-card-content a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid white;
+            padding-bottom: 2px;
+        }
+
+        .room-woonkamer {
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-green)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect fill="%231a5f5f" width="400" height="400"/><rect x="50" y="200" width="120" height="80" rx="5" fill="%23f8f5f0" opacity="0.3"/><circle cx="300" cy="150" r="40" fill="%23c9a961" opacity="0.3"/></svg>');
+            background-size: cover;
+        }
+
+        .room-keuken {
+            background: linear-gradient(135deg, var(--accent-terracotta), #e88871),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect fill="%23d4725a" width="400" height="400"/><rect x="100" y="150" width="200" height="150" rx="5" fill="%23f8f5f0" opacity="0.3"/></svg>');
+            background-size: cover;
+        }
+
+        .room-slaapkamer {
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-gold)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect fill="%232d5f4f" width="400" height="400"/><rect x="80" y="180" width="240" height="120" rx="5" fill="%23f8f5f0" opacity="0.3"/><circle cx="100" cy="120" r="30" fill="%23c9a961" opacity="0.3"/></svg>');
+            background-size: cover;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background-color: var(--cream);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 3rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-item h4 {
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-item p {
+            color: var(--text-secondary);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-teal));
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .newsletter h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            background-color: var(--accent-terracotta);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #c2614a;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding: 2rem 2rem 0;
+            border-top: 1px solid #444;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Chatbot Styles */
+        .chat-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-green) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(26, 95, 95, 0.3);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(26, 95, 95, 0.4);
+        }
+
+        .chat-button.active {
+            animation: none;
+        }
+
+        .chat-icon {
+            font-size: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .chat-button.active .chat-icon {
+            transform: rotate(360deg);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(26, 95, 95, 0.3), 0 0 0 0 rgba(26, 95, 95, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(26, 95, 95, 0.3), 0 0 0 15px rgba(26, 95, 95, 0);
+            }
+        }
+
+        .chat-widget {
+            position: fixed;
+            bottom: 6rem;
+            right: 6rem;
+            width: 680px;
+            height: calc(100vh - 9rem);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0px 55px 105px rgba(0, 0, 0, 0.6);//0 20px 60px rgba(0, 0, 0, 0.2);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-widget::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: -1;
+            background: white;
+        }
+
+        .chat-widget.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-green) 100%);
+            color: white;
+            padding: 1.5rem 1.5rem 2rem;
+            position: relative;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        .chat-header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .chat-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: white;
+            transition: all 0.3s;
+            z-index: 2;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: var(--cream);
+            position: relative;
+        }
+
+        .chat-messages {
+            position: relative;
+        }
+
+        .chat-welcome {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-welcome h4 {
+            color: var(--primary-teal);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-welcome p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .chat-quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-quick-actions h5 {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .quick-action-btn {
+            background: white;
+            border: 2px solid var(--light-gray);
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--primary-teal);
+            background: var(--off-white);
+            transform: translateX(5px);
+        }
+
+        .quick-action-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-messages {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-message {
+            background: white;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            max-width: 85%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.user {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-green) 100%);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-message.bot {
+            background: white;
+            align-self: flex-start;
+        }
+
+        .chat-footer {
+            padding: 1.25rem;
+            background: white;
+            border-top: 1px solid var(--light-gray);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+        }
+
+        .chat-input::placeholder {
+            color: #aaa;
+        }
+
+        .chat-send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-green) 100%);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(26, 95, 95, 0.3);
+        }
+
+        .chat-send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 0.9rem 1.2rem;
+            background: white;
+            border-radius: 12px;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-teal);
+            border-radius: 50%;
+            animation: typing 1.4s ease-in-out infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Product Card in Chat */
+        .chat-product-card {
+            position: relative;
+            width: 100%;
+            background: white;
+            border: 2px solid var(--primary-teal);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(26, 95, 95, 0.2);
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .chat-product-card:hover {
+            border-color: var(--accent-terracotta);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(26, 95, 95, 0.3);
+        }
+
+        .chat-product-card::before {
+            content: '✨';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .chat-product-image-container {
+            width: 100%;
+            height: 200px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .chat-product-image {
+            max-width: 100%;
+            max-height: 100%;
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .chat-product-info {
+            padding: 1.2rem;
+        }
+
+        .chat-product-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-terracotta), #e88871);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .chat-product-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-product-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .chat-product-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .chat-product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-teal);
+        }
+
+        .chat-product-original-price {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            margin-left: 0.5rem;
+        }
+
+        .chat-product-cta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-teal);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .chat-product-cta::after {
+            content: '→';
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .chat-product-card:hover .chat-product-cta::after {
+            transform: translateX(5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 3rem 0;
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+                letter-spacing: -1px;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .cta-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .chat-widget {
+                width: calc(100vw - 2rem);
+                height: calc(100vh - 12rem);
+                right: 1rem;
+                bottom: 5rem;
+            }
+
+            .chat-button {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 60px;
+                height: 60px;
+            }
+
+            .chat-icon {
+                font-size: 1.6rem;
+            }
+
+            .chat-product-card::before {
+                top: -4px;
+                right: -4px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div>✨ Gratis bezorging vanaf €75 | Gratis retourneren binnen 365 dagen</div>
+            <div>
+                <a href="#">Klantenservice</a>
+                <a href="#">Winkels</a>
+                <a href="#">NL</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-main">
+            <a href="#" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                </svg>
+                Harmonie<span>Wonen</span>
+            </a>
+            <nav>
+                <a href="#">Producten</a>
+                <a href="#">Kamers</a>
+                <a href="#">Aanbiedingen</a>
+                <a href="#">Inspiratie</a>
+                <a href="#">Advies</a>
+            </nav>
+            <div class="header-actions">
+                <input type="text" class="search-box" placeholder="Zoek producten...">
+                <span class="icon-link">👤</span>
+                <span class="icon-link">🛒</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <div class="category-nav-content">
+            <a href="#" class="category-chip">Woonkamers</a>
+            <a href="#" class="category-chip">Keukens</a>
+            <a href="#" class="category-chip">Slaapkamers</a>
+            <a href="#" class="category-chip">Badkamers</a>
+            <a href="#" class="category-chip">Werkkamers</a>
+            <a href="#" class="category-chip">Eetkamers</a>
+            <a href="#" class="category-chip">Tuinmeubelen</a>
+            <a href="#" class="category-chip">Opberging</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-decoration hero-decoration-1"></div>
+        <div class="hero-decoration hero-decoration-2"></div>
+        <div class="hero-decoration hero-decoration-3"></div>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Creëer Jouw Perfecte Ruimte</h1>
+                <p>Ontdek tijdloze meubelen en accessoires die jouw huis omtoveren tot een thuis vol harmonie en stijl. Design dat blijft, kwaliteit die meegaat.</p>
+                <div class="cta-group">
+                    <a href="#" class="cta-button">Shop de Collectie</a>
+                    <a href="#" class="cta-secondary">Bekijk Inspiratie →</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-card hero-card-1">
+                    <div class="hero-card-icon">🛋️</div>
+                </div>
+                <div class="hero-card hero-card-2">
+                    <div class="hero-card-icon">💡</div>
+                </div>
+                <div class="hero-card hero-card-3">
+                    <div class="hero-card-icon">🪴</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promo Banner -->
+    <section>
+        <div class="promo-banner">
+            <h3>🎉 Voorjaars Sale - Tot 40% Korting</h3>
+            <p>Profiteer van spectaculaire kortingen op geselecteerde woonkamer meubelen. Nog 5 dagen!</p>
+        </div>
+
+        <!-- New Arrivals -->
+        <div class="section-header">
+            <h2>Nieuw Binnengekomen</h2>
+            <p>Ontdek onze laatste collectie vol frisse ontwerpen en moderne klassiekers</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    🛋️
+                    <span class="product-badge">NIEUW</span>
+                </div>
+                <div class="product-info">
+                    <h3>Nordic Modulaire Bank</h3>
+                    <p>Comfortabele 3-zits bank met wasbare hoezen</p>
+                    <div class="product-price">€899,- <span>€1.199,-</span></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🪑
+                </div>
+                <div class="product-info">
+                    <h3>Essence Eetkamerstoel</h3>
+                    <p>Set van 4 - Eiken met velours bekleding</p>
+                    <div class="product-price">€379,-</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    💡
+                    <span class="product-badge">-30%</span>
+                </div>
+                <div class="product-info">
+                    <h3>Luna Hanglamp</h3>
+                    <p>Scandinavisch design, verstelbare hoogte</p>
+                    <div class="product-price">€139,- <span>€199,-</span></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    📚
+                </div>
+                <div class="product-info">
+                    <h3>Vita Boekenkast</h3>
+                    <p>Modulair systeem in eiken of walnoot</p>
+                    <div class="product-price">€549,-</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🛏️
+                    <span class="product-badge">NIEUW</span>
+                </div>
+                <div class="product-info">
+                    <h3>Serenity Boxspring</h3>
+                    <p>160x200 cm - Met opbergruimte</p>
+                    <div class="product-price">€1.299,-</div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    🪴
+                </div>
+                <div class="product-info">
+                    <h3>Verde Plantenstandaard</h3>
+                    <p>Zwart metaal, 3 niveaus</p>
+                    <div class="product-price">€79,-</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Showcase -->
+    <section>
+        <div class="section-header">
+            <h2>Shop Per Ruimte</h2>
+            <p>Vind de perfecte stijl voor elke kamer in jouw huis</p>
+        </div>
+
+        <div class="room-showcase">
+            <div class="room-card room-woonkamer">
+                <div class="room-card-content">
+                    <h3>Woonkamers</h3>
+                    <p>Van gezellig tot minimalistisch</p>
+                    <a href="#">Bekijk collectie →</a>
+                </div>
+            </div>
+
+            <div class="room-card room-keuken">
+                <div class="room-card-content">
+                    <h3>Keukens</h3>
+                    <p>Functioneel en stijlvol koken</p>
+                    <a href="#">Bekijk collectie →</a>
+                </div>
+            </div>
+
+            <div class="room-card room-slaapkamer">
+                <div class="room-card-content">
+                    <h3>Slaapkamers</h3>
+                    <p>Jouw persoonlijke oase van rust</p>
+                    <a href="#">Bekijk collectie →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section>
+        <div class="benefits">
+            <div class="section-header">
+                <h2>Waarom Harmonie Wonen?</h2>
+                <p>Jouw tevredenheid staat centraal</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚚</div>
+                    <h4>Gratis Bezorging</h4>
+                    <p>Bij bestellingen vanaf €75 bezorgen wij gratis bij jou thuis</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">↩️</div>
+                    <h4>365 Dagen Retour</h4>
+                    <p>Niet tevreden? Stuur het binnen een jaar kosteloos retour</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏆</div>
+                    <h4>Kwaliteitsgarantie</h4>
+                    <p>5 jaar garantie op al onze meubelen</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌱</div>
+                    <h4>Duurzaam</h4>
+                    <p>100% FSC-gecertificeerd hout en milieuvriendelijke materialen</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section>
+        <div class="newsletter">
+            <h3>Blijf op de Hoogte</h3>
+            <p>Ontvang exclusieve aanbiedingen, styling tips en nieuwe collecties</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Jouw e-mailadres">
+                <button type="submit">Inschrijven</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Klantenservice</h4>
+                <ul>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Veelgestelde Vragen</a></li>
+                    <li><a href="#">Bezorging & Retour</a></li>
+                    <li><a href="#">Garantie</a></li>
+                    <li><a href="#">Montageservice</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Over Ons</h4>
+                <ul>
+                    <li><a href="#">Ons Verhaal</a></li>
+                    <li><a href="#">Duurzaamheid</a></li>
+                    <li><a href="#">Vacatures</a></li>
+                    <li><a href="#">Showrooms</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ontdek</h4>
+                <ul>
+                    <li><a href="#">Interieur Inspiratie</a></li>
+                    <li><a href="#">Styling Advies</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Kamer Planner</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Volg Ons</h4>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Harmonie Wonen. Alle rechten voorbehouden. | Algemene Voorwaarden | Privacy | Cookies</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chat-button" id="chatButton">
+        <span class="chat-icon">💬</span>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <button class="chat-close" id="chatClose">✕</button>
+            <div class="chat-header-content">
+                <h3>Hey! 👋</h3>
+                <p>Waarmee kunnen we je helpen?</p>
+            </div>
+        </div>
+
+        <div class="chat-body" id="chatBody">
+            <div class="chat-welcome">
+                <h4>Welkom bij Harmonie Wonen!</h4>
+                <p>Super dat je er bent! Heb je vragen over onze producten, bezorging, of wil je styling advies? Wij staan voor je klaar. Typ je vraag hieronder of kies een van de snelle opties!</p>
+            </div>
+
+            <div class="chat-quick-actions">
+                <h5>Populaire vragen:</h5>
+                <button class="quick-action-btn" onclick="handleQuickAction('bezorging')">
+                    <span class="quick-action-icon">🚚</span>
+                    <span>Hoe werkt de bezorging?</span>
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('retour')">
+                    <span class="quick-action-icon">↩️</span>
+                    <span>Kan ik mijn bestelling retourneren?</span>
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('maten')">
+                    <span class="quick-action-icon">📏</span>
+                    <span>Hulp nodig bij maten kiezen?</span>
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('advies')">
+                    <span class="quick-action-icon">✨</span>
+                    <span>Ik wil styling advies</span>
+                </button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages"></div>
+        </div>
+
+        <div class="chat-footer">
+            <div class="chat-input-wrapper">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type je vraag hier...">
+                <button class="chat-send-btn" id="chatSend">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatButton = document.getElementById('chatButton');
+        const chatWidget = document.getElementById('chatWidget');
+        const chatClose = document.getElementById('chatClose');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatBody = document.getElementById('chatBody');
+
+        let demoShown = false;
+        let secondDemoShown = false;
+        let isTypingDemo = false;
+        let lastMessageWasUser = false;
+
+        // Toggle chat widget
+        chatButton.addEventListener('click', () => {
+            chatWidget.classList.toggle('active');
+            chatButton.classList.toggle('active');
+            if (chatWidget.classList.contains('active')) {
+                chatInput.focus();
+            }
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWidget.classList.remove('active');
+            chatButton.classList.remove('active');
+        });
+
+        // Demo flow - triggers on first input click
+        chatInput.addEventListener('click', function demoTrigger() {
+            if (!demoShown && !isTypingDemo) {
+                demoShown = true;
+                isTypingDemo = true;
+                chatInput.blur(); // Remove focus during demo
+                startFirstDemo();
+                chatInput.removeEventListener('click', demoTrigger);
+            }
+        });
+
+        // Second demo - triggers on second input click
+        chatInput.addEventListener('click', function secondDemoTrigger() {
+            if (demoShown && !secondDemoShown && !isTypingDemo) {
+                secondDemoShown = true;
+                isTypingDemo = true;
+                chatInput.blur(); // Remove focus during demo
+                startSecondDemo();
+                chatInput.removeEventListener('click', secondDemoTrigger);
+            }
+        });
+
+        // Typing animation function with instant finish on overflow
+        async function typeInInput(text, speed = 50) {
+            chatInput.value = '';
+            let hasOverflowed = false;
+
+            for (let i = 0; i < text.length; i++) {
+                chatInput.value += text[i];
+                chatInput.scrollLeft = chatInput.scrollWidth; // Scroll input to show typing
+
+                // Check if text is now overflowing (scrolling)
+                if (!hasOverflowed && chatInput.scrollWidth > chatInput.clientWidth) {
+                    hasOverflowed = true;
+                    // Instantly finish typing the rest
+                    chatInput.value = text;
+                    chatInput.scrollLeft = chatInput.scrollWidth;
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, speed));
+            }
+        }
+
+        // Start the first demo (couch question)
+        async function startFirstDemo() {
+            const demoQuestion = "Hoi! Ik ben geïnteresseerd in de Serenity Modulaire Hoekbank 6-zits die ik op jullie site zag. Ik heb wel een paar vragen: zijn er extra bezorgkosten voor zo'n grote bank? En hoe groot is deze bank precies? Mijn woonkamer is namelijk 8 bij 4 meter en ik wil zeker weten dat het past. Oh, en nog iets belangrijks: ik woon op de 12e verdieping... is dat een probleem voor de bezorging? 😅";
+
+            const demoAnswer = "Hey! Super dat je interesse hebt in de Serenity Modulaire Hoekbank 6-zits! 😊 Laat me al je vragen beantwoorden:\n\n📦 **Bezorgkosten:** Normaal is bezorging gratis vanaf €75, maar voor extra zware items (zoals deze bank van 230kg) rekenen we €49,- extra aan voor veilige bezorging met 2 monteurs.\n\n📏 **Afmetingen:** De Serenity 6-zits is 340cm breed × 240cm diep × 85cm hoog. Met jouw woonkamer van 8×4 meter (dus 800×400cm) past deze bank perfect! Je houdt zelfs nog lekker veel ruimte over voor een salontafel en looproutes. 🛋️\n\n🏢 **12e verdieping:** Geen probleem! Voor verdiepingen hoger dan de 5e is een werkende lift wel verplicht (trap is helaas niet mogelijk met zo'n grote bank). Jullie hebben toch een lift, neem ik aan? De lift moet minimaal 210cm hoog en 110cm breed zijn.\n\n💡 **Extra tip:** Deze bank is modulair, dus we kunnen hem in delen naar boven brengen en bij jou thuis in elkaar zetten. Montage is inbegrepen bij de €49,- bezorgkosten!\n\nWil je dat ik deze voor je reserveer? Hij is nu op voorraad en we kunnen binnen 5-7 werkdagen leveren! 🚚✨";
+
+            // Type the first question
+            await typeInInput(demoQuestion, 30);
+
+            // Wait a moment
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // Click send button (with visual feedback)
+            chatSend.style.transform = 'scale(0.9)';
+            await new Promise(resolve => setTimeout(resolve, 100));
+            chatSend.style.transform = 'scale(1)';
+
+            // Add user message
+            addMessage(chatInput.value, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Wait for "bot to type"
+            await new Promise(resolve => setTimeout(resolve, 2500));
+
+            // Hide typing indicator and show response
+            hideTypingIndicator();
+            addMessage(demoAnswer, 'bot');
+
+            isTypingDemo = false;
+            chatInput.placeholder = 'Klik hier voor een follow-up vraag...';
+        }
+
+        // Start the second demo (hocker question)
+        async function startSecondDemo() {
+            const followUpQuestion = "Oh dat klinkt perfect! Hebben jullie ook een hocker die goed bij deze bank past?";
+
+            const followUpAnswer = "Ja zeker! 🎉 De **Serenity Hocker** is speciaal ontworpen als perfect match voor deze bank! Hij heeft dezelfde stof en kleuropties (wij raden natuurlijk aan om dezelfde kleur te kiezen voor een mooie harmonie 😉).\n\n📐 De hocker is **90cm × 90cm × 45cm** - ideaal als voetensteun of extra zitplek.\n💰 Prijs: **€179,-**\n\n**Leuke combideal:** Als je de bank én hocker samen bestelt, krijg je **€30,- korting** op de hocker! Dan betaal je dus maar €149,- in plaats van €179,-. De bezorgkosten van €49,- blijven hetzelfde (ook de hocker wordt dan meegenomen). 🚚\n\nZal ik ze allebei voor je reserveren? 😊";
+
+            // Type follow-up question
+            await typeInInput(followUpQuestion, 40);
+
+            // Wait a moment
+            await new Promise(resolve => setTimeout(resolve, 600));
+
+            // Click send button
+            chatSend.style.transform = 'scale(0.9)';
+            await new Promise(resolve => setTimeout(resolve, 100));
+            chatSend.style.transform = 'scale(1)';
+
+            // Add follow-up user message
+            addMessage(chatInput.value, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Wait for "bot to type"
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Hide typing indicator and show follow-up response
+            hideTypingIndicator();
+            addMessage(followUpAnswer, 'bot');
+
+            // Wait a moment, then show product card
+            await new Promise(resolve => setTimeout(resolve, 800));
+            addProductCard({
+                name: 'Serenity Hocker',
+                description: 'Modulaire hocker in dezelfde stijl als de Serenity bank',
+                price: '€149,-',
+                originalPrice: '€179,-',
+                image: 'images/hocker.webp',
+                badge: 'COMBIDEAL -€30'
+            });
+
+            isTypingDemo = false;
+            chatInput.placeholder = 'Type je vraag hier...';
+        }
+
+        // Add product card to chat
+        function addProductCard(product) {
+            const productCard = document.createElement('div');
+            productCard.className = 'chat-product-card';
+            productCard.style.marginTop = '1rem';
+            productCard.onclick = () => {
+                alert('Product pagina wordt geopend! (Demo functie)');
+            };
+
+            productCard.innerHTML = `
+                <div class="chat-product-image-container">
+                    <img src="${product.image}" alt="${product.name}" class="chat-product-image">
+                </div>
+                <div class="chat-product-info">
+                    ${product.badge ? `<span class="chat-product-badge">${product.badge}</span>` : ''}
+                    <div class="chat-product-name">${product.name}</div>
+                    <div class="chat-product-desc">${product.description}</div>
+                    <div class="chat-product-pricing">
+                        <div>
+                            <span class="chat-product-price">${product.price}</span>
+                            ${product.originalPrice ? `<span class="chat-product-original-price">${product.originalPrice}</span>` : ''}
+                        </div>
+                        <div class="chat-product-cta">Bekijk product</div>
+                    </div>
+                </div>
+            `;
+
+            chatMessages.appendChild(productCard);
+
+            // Simple scroll logic: if product card after user message, scroll down 50px
+            if (lastMessageWasUser) {
+                setTimeout(() => {
+                    chatBody.scrollTop += 50;
+                }, 10);
+            }
+        }
+
+        // Handle sending messages
+        function sendMessage() {
+            if (isTypingDemo) return; // Don't allow sending during demo
+
+            const message = chatInput.value.trim();
+            if (message === '') return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate bot response
+            setTimeout(() => {
+                hideTypingIndicator();
+                addMessage('Bedankt voor je bericht! Een van onze medewerkers komt zo snel mogelijk bij je terug. Gemiddelde responstijd is 2-3 minuten. 😊', 'bot');
+            }, 1500);
+        }
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !isTypingDemo) {
+                sendMessage();
+            }
+        });
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+
+            // Parse **bold** markdown and handle line breaks
+            let formattedText = text;
+
+            // Convert **text** to <strong>text</strong>
+            formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Handle line breaks
+            if (formattedText.includes('\n')) {
+                formattedText = formattedText.replace(/\n/g, '<br>');
+            }
+
+            messageDiv.innerHTML = formattedText;
+            chatMessages.appendChild(messageDiv);
+
+            // Simple scroll logic: if bot message after user message, scroll down 50px
+            if (sender === 'bot' && lastMessageWasUser) {
+                setTimeout(() => {
+                    chatBody.scrollTop += 50;
+                }, 10);
+            }
+
+            // Track what type of message was just added
+            lastMessageWasUser = (sender === 'user');
+        }
+
+        // Typing indicator
+        let typingIndicator = null;
+
+        function showTypingIndicator() {
+            typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingIndicator);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            if (typingIndicator) {
+                typingIndicator.remove();
+                typingIndicator = null;
+            }
+        }
+
+        // Handle quick action buttons
+        function handleQuickAction(action) {
+            if (isTypingDemo) return; // Don't allow during demo
+
+            const responses = {
+                'bezorging': 'Wij bieden gratis bezorging aan bij bestellingen vanaf €75! Je bestelling wordt binnen 3-5 werkdagen bij je thuis bezorgd. Je kunt ook kiezen voor expreslevering binnen 24 uur. 🚚',
+                'retour': 'Absoluut! Bij Harmonie Wonen heb je maar liefst 365 dagen de tijd om je bestelling kosteloos te retourneren. Niet goed? Geld terug! Zo simpel is het. 💚',
+                'maten': 'Natuurlijk helpen we je graag! Op elke productpagina vind je gedetailleerde maattabellen en afmetingen. Twijfel je nog? Stuur me gerust de link naar het product en ik geef je persoonlijk advies! 📏',
+                'advies': 'Wat leuk dat je styling advies wilt! 🎨 Vertel me: welke ruimte wil je inrichten? En wat is je favoriete stijl? (bijv. minimalistisch, gezellig, modern, vintage...)'
+            };
+
+            addMessage(getQuestionText(action), 'user');
+            showTypingIndicator();
+
+            setTimeout(() => {
+                hideTypingIndicator();
+                addMessage(responses[action], 'bot');
+            }, 1200);
+        }
+
+        function getQuestionText(action) {
+            const questions = {
+                'bezorging': 'Hoe werkt de bezorging?',
+                'retour': 'Kan ik mijn bestelling retourneren?',
+                'maten': 'Hulp nodig bij maten kiezen?',
+                'advies': 'Ik wil styling advies'
+            };
+            return questions[action];
+        }
+    </script>
+</body>
+</html>
