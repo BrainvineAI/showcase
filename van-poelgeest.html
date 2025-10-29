@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Van Poelgeest BMW & MINI - AI-Gestuurde Klantervaring</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            background: #000000;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .top-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-container img {
+            height: 35px;
+            width: auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(26, 26, 26, 0.85) 100%), url('images/poelgeesthero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 100px 20px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 122, 255, 0.03));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 22px;
+            margin-bottom: 35px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .hero-badge {
+            background: rgba(0, 122, 255, 0.15);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            color: #000000;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: #666666;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #e5e5e5;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: #007AFF;
+        }
+
+        .value-card .icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .value-card .icon.icon-no-bg {
+            background: none!important;
+        }
+
+        .value-card .icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .value-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .value-card p {
+            color: #666666;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .workflow-container {
+            background: #f5f5f7;
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid #e5e5e5;
+            margin: 50px 0;
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 45px;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 65px;
+            width: 2px;
+            height: calc(100% + 25px);
+            background: linear-gradient(to bottom, #007AFF, #e5e5e5);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-right: 25px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 5px;
+        }
+
+        .step-content h4 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #666666;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .step-tech {
+            display: inline-block;
+            background: white;
+            border: 1px solid #e5e5e5;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #007AFF;
+            margin-right: 8px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .demo-container {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            margin: 50px 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .demo-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 35px;
+            color: #1a1a1a;
+        }
+
+        .chat-preview {
+            border-left: 4px solid #007AFF;
+            padding-left: 25px;
+            margin: 25px 0;
+        }
+
+        .chat-message {
+            background: #f5f5f7;
+            padding: 15px 20px;
+            border-radius: 18px;
+            margin: 12px 0;
+            max-width: 80%;
+        }
+
+        .chat-message.customer {
+            background: #007AFF;
+            color: white;
+            margin-left: auto;
+        }
+
+        .chat-message.agent {
+            background: #f5f5f7;
+            color: #1a1a1a;
+        }
+
+        .chat-meta {
+            color: #666666;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            border-color: #007AFF;
+            transform: translateY(-2px);
+        }
+
+        .tech-item svg {
+            width: 24px;
+            height: 24px;
+            color: #007AFF;
+        }
+
+        .pricing-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+            margin: 50px auto;
+            max-width: 900px;
+        }
+
+        .pricing-header {
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .pricing-body {
+            padding: 45px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 16px;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 24px;
+            margin-top: 25px;
+            padding-top: 35px;
+            border-top: 2px solid #007AFF;
+            color: #000000;
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .integration-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .integration-card:hover {
+            border-color: #007AFF;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .integration-card h4 {
+            font-size: 20px;
+            margin: 15px 0;
+            color: #000000;
+        }
+
+        .integration-card p {
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .integration-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .integration-icon svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 122, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .feature-comparison {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 50px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e5e5;
+        }
+
+        .feature-comparison th {
+            background: #f5f5f7;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #000000;
+            font-size: 16px;
+        }
+
+        .feature-comparison td {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 15px;
+        }
+
+        .feature-comparison tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check {
+            color: #34C759;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #FF3B30;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #000000 0%, #2e4892 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: left;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .footer-logo {
+            height: 35px;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+
+            .value-props {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+    <div class="top-nav-content">
+        <div class="logo-container">
+            <img src="images/vanpoelgeest.webp" alt="Van Poelgeest Logo">
+            <span style="color: white; font-size: 34px; margin-bottom: 6px;">×</span>
+            <img src="images/brainvine-logo.svg" alt="Brainvine Logo">
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Premium Digitale Klantervaring voor <br><img style="margin-top: 25px;" src="images/vanpoelgeest.webp"/></h1>
+        <p class="subtitle">Van formulieren naar gesprekken: AI-gestuurde klantenservice op BMW-niveau</p>
+
+        <div class="hero-badges">
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                <span>24/7 Conversational AI</span>
+            </div>
+            <div class="hero-badge">
+                <img src="images/rdw_logo.jpeg" alt="BMW" style="width: 18px; height: auto;">
+                <span>RDW/Kenteken Integratie</span>
+            </div>
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>Direct Lead Kwalificatie</span>
+            </div>
+            <div class="hero-badge">
+                <img src="images/mini-white.svg" alt="MINI" style="width: 18px; height: auto;">
+                <span>9 Vestigingen, 1 Platform</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Waardepropositie -->
+    <div class="section">
+        <div class="section-header">
+            <h2>De toekomst van automotive klantenservice</h2>
+            <p>Breng de premium showroom-ervaring naar online</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <h3>Van Formulieren naar Gesprekken</h3>
+                <p>Vervang statische webformulieren door natuurlijke, intelligente gesprekken. Bezoekers krijgen direct antwoord op vragen over sales, onderhoud, financiering, accessoires en lopende acties - 24/7, in elke vestiging.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #1f2937 0%, #374151 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <h3>RDW Kenteken Check Integratie</h3>
+                <p>Automatisch voertuiggegevens ophalen via kenteken. De AI-agent kent direct merk, model, bouwjaar, motortype en onderhoudshistorie. Perfect voor inruilwaarderingen, onderhoudsvragen en accessoire-advies.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #7c2d12 0%, #ea580c 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h3>Slimme Lead Kwalificatie</h3>
+                <p>De AI-agent kwalificeert leads in het gesprek: koopintentie, budget, tijdlijn, voorkeur vestiging. Warme leads gaan direct naar jullie LMS of vestigingsmailboxen met volledige context.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                </div>
+                <h3>Freshworks & HubSpot Integratie</h3>
+                <p>Naadloze koppeling met jullie Freshworks suite (Freshdesk, Freshchat, Freshcaller), HubSpot CRM en Monday.com. Alle klantinteracties - social, mail, telefoon, chat - in één intelligent systeem.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #065f46 0%, #10b981 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <h3>Klachtanalyse & Actieadviezen</h3>
+                <p>Bundel en analyseer al jullie klantcontact. AI detecteert patronen, signaleert problemen vroegtijdig en genereert concrete verbeteradviezen. Minder klachten, meer tijd voor mensen.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <h3>Intern Kennis Assistent</h3>
+                <p>Niet alleen voor klanten - ook jullie teams krijgen een AI-assistent. Medewerkers vinden direct antwoorden over productspecificaties, processen, beleid en klanthistorie. Organisatie-breed inzetbaar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hoe het werkt -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Van klik naar conversatie in 6 stappen</h2>
+            <p>Intelligente automatisering voor alle 9 vestigingen</p>
+        </div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Bezoeker start gesprek</h4>
+                    <p>Klant komt op jullie website, webshop of Facebook. In plaats van een formulier opent een chatvenster.</p>
+                    <p>De AI-agent stelt zich voor en vraagt hoe het kan helpen: testrit, onderhoud, inruilwaarde, financiering?</p>
+                    <span class="step-tech">Website Widget</span>
+                    <span class="step-tech">Facebook Messenger</span>
+                    <span class="step-tech">Freshchat</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>RDW Kenteken Lookup</h4>
+                    <p>Bij inruilwaardering of onderhoudsvraag: klant geeft kenteken in.</p>
+                    <p>Agent haalt direct alle voertuigdata op via RDW API: merk, model, jaar, motortype, APK-datum, kilometerstand historie.</p>
+                    <span class="step-tech">RDW Kenteken API</span>
+                    <span class="step-tech">Voertuig Database</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Klantherkenning & Context</h4>
+                    <p>Bij terugkerende klanten: automatisch herkenning via email of telefoonnummer.</p>
+                    <p>Agent haalt klanthistorie op uit HubSpot en Freshdesk: eerdere aankopen, openstaande tickets, voorkeuren.</p>
+                    <p>Gepersonaliseerd gesprek op basis van volledige klantcontext.</p>
+                    <span class="step-tech">HubSpot CRM</span>
+                    <span class="step-tech">Freshdesk API</span>
+                    <span class="step-tech">Datalake Integratie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Intelligente vraagbeantwoording</h4>
+                    <p>Agent doorzoekt jullie complete kennisbank:</p>
+                    <p>• BMW & MINI productinformatie en specificaties<br>
+                       • Onderhoudsschema's en serviceprijzen per vestiging<br>
+                       • Financieringsopties en actievoorwaarden<br>
+                       • Accessoirecatalogi en installatiekosten<br>
+                       • Voorraad en beschikbaarheid per locatie</p>
+                    <span class="step-tech">Vector Search</span>
+                    <span class="step-tech">RAG Pipeline</span>
+                    <span class="step-tech">Product Database</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Lead Kwalificatie & Routing</h4>
+                    <p>Agent detecteert koopintentie en kwalificeert de lead in het gesprek.</p>
+                    <p>Op basis van woonplaats/voorkeur wordt de lead gekoppeld aan de juiste vestiging.</p>
+                    <p>Warme leads gaan direct naar vestigingsmanager met volledige gesprekshistorie.</p>
+                    <span class="step-tech">Lead Scoring</span>
+                    <span class="step-tech">Vestiging Routing</span>
+                    <span class="step-tech">LMS Integratie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Follow-up & Analyse</h4>
+                    <p>Gesprek wordt opgeslagen in Freshdesk/HubSpot met tags en prioriteit.</p>
+                    <p>Monday.com wordt automatisch bijgewerkt bij klachten of bijzondere verzoeken.</p>
+                    <p>Dashboard toont patronen: welke vragen komen vaak? Waar lopen klanten tegenaan? Welke vestiging converteert het best?</p>
+                    <span class="step-tech">Freshdesk Tickets</span>
+                    <span class="step-tech">Monday.com Updates</span>
+                    <span class="step-tech">Analytics Dashboard</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="section">
+        <div class="section-header">
+            <div style="text-align: center">
+                <img src="images/car5.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
+            </div>
+            <h2>Zie het in actie</h2>
+            <p>Echt voorbeeld van een klantinteractie</p>
+        </div>
+
+        <div class="demo-container">
+            <h3 style="margin-bottom: 20px; font-size: 28px; display: flex; align-items: center; gap: 12px;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                AI Gesprek: Inruilwaarde Check
+            </h3>
+            <div class="demo-screen">
+                <div class="chat-preview">
+                    <div class="chat-message agent">
+                        <strong>Van Poelgeest AI Assistent</strong>
+                        <p>Goedemiddag! Welkom bij Van Poelgeest BMW & MINI. Waarmee kan ik u helpen?</p>
+                        <div class="chat-meta">14:23</div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <p>Hoi, ik wil graag weten wat mijn auto waard is als ik deze inruil voor een nieuwe BMW.</p>
+                        <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:24</div>
+                    </div>
+
+                    <div class="chat-message agent">
+                        <strong>Van Poelgeest AI Assistent</strong>
+                        <p>Natuurlijk help ik u graag met een inruilwaardering! Mag ik uw kenteken even hebben? Dan kan ik direct de gegevens van uw auto opzoeken.</p>
+                        <div class="chat-meta">14:24</div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <p>XX-123-YY</p>
+                        <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:25</div>
+                    </div>
+
+                    <div class="chat-message agent">
+                        <strong>Van Poelgeest AI Assistent</strong>
+                        <p>✓ <strong>Voertuiggegevens gevonden:</strong></p>
+                        <p>• Merk: BMW<br>
+                           • Model: 3-Serie 320i<br>
+                           • Bouwjaar: 2019<br>
+                           • Brandstof: Benzine<br>
+                           • Vermogen: 184 PK<br>
+                           • APK geldig tot: 15-03-2026</p>
+                        <p>Op basis van de huidige markt en de staat van uw auto kan de inruilwaarde tussen de €22.000 en €25.000 liggen. Voor een exacte waardering nodigen we u graag uit bij een van onze vestigingen.</p>
+                        <p>Heeft u al een nieuwe BMW op het oog?</p>
+                        <div class="chat-meta">14:25 • RDW API</div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <p>Ja, ik kijk naar de nieuwe 4-Serie. Wat zijn de financieringsmogelijkheden?</p>
+                        <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:26</div>
+                    </div>
+
+                    <div class="chat-message agent">
+                        <strong>Van Poelgeest AI Assistent</strong>
+                        <p>Uitstekende keuze! Voor de BMW 4-Serie bieden wij verschillende financieringsopties:</p>
+                        <p><strong>BMW Financial Services:</strong><br>
+                           • Private Lease vanaf €599/maand<br>
+                           • Financial Lease vanaf €549/maand<br>
+                           • Operational Lease vanaf €679/maand</p>
+                        <p><strong>Actie deze maand:</strong> 3,9% rente i.p.v. 4,5% op alle 4-Serie modellen!</p>
+                        <p>Mag ik u doorverbinden met een adviseur van onze vestiging Amsterdam voor een persoonlijk gesprek en proefrit?</p>
+                        <div class="chat-meta">14:26 • Productkennis + Acties</div>
+                    </div>
+
+                    <div class="chat-message customer">
+                        <p>Ja graag! Liefst deze week nog.</p>
+                        <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:27</div>
+                    </div>
+
+                    <div class="chat-message agent">
+                        <strong>Van Poelgeest AI Assistent</strong>
+                        <p>Perfect! Ik heb uw aanvraag doorgezet naar onze vestiging Amsterdam. U wordt binnen 2 uur gebeld door een adviseur om een afspraak in te plannen.</p>
+                        <p><strong>Uw aanvraag:</strong><br>
+                           • Inruilauto: BMW 3-Serie 320i (2019)<br>
+                           • Interesse: BMW 4-Serie<br>
+                           • Vestiging: Amsterdam<br>
+                           • Urgentie: Deze week</p>
+                        <p>Is er verder nog iets waarmee ik u kan helpen?</p>
+                        <div class="chat-meta">14:27 • Lead → LMS + Email</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #f5f5f7; border-radius: 10px; border-left: 3px solid #007AFF;">
+                    <p style="font-size: 13px; color: #666666; margin: 0;"><strong>Automatische acties uitgevoerd:</strong></p>
+                    <p style="font-size: 13px; color: #666666; margin: 8px 0 0 0;">
+                        ✓ RDW kenteken lookup<br>
+                        ✓ Lead gescoord: Hoog (koopintentie + budget)<br>
+                        ✓ Toegewezen aan: Vestiging Amsterdam<br>
+                        ✓ Email naar: amsterdam@van-poelgeest.nl<br>
+                        ✓ HubSpot CRM bijgewerkt met volledige gesprekshistorie<br>
+                        ✓ Freshdesk ticket aangemaakt (prioriteit: hoog)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Integraties -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Naadloze Integraties</h2>
+            <p>Alle systemen verbonden in één intelligent platform</p>
+        </div>
+
+        <div class="integration-grid">
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <h4>Freshworks Suite</h4>
+                <p>Volledige integratie met Freshdesk (tickets), Freshchat (live chat) en Freshcaller (telefonie). Alle klantinteracties in één overzicht.</p>
+            </div>
+
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+                <h4>HubSpot CRM</h4>
+                <p>Synchronisatie van contacten, deals, klanthistorie en notes. Leads worden automatisch gekwalificeerd en toegewezen.</p>
+            </div>
+
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                </div>
+                <h4>RDW Kenteken API</h4>
+                <p>Realtime voertuigdata: merk, model, bouwjaar, brandstof, vermogen, APK-status. Essentieel voor inruilwaarderingen en onderhoud.</p>
+            </div>
+
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 8l2 2 4-4"/></svg>
+                </div>
+                <h4>Monday.com</h4>
+                <p>Automatische klachtenregistratie en follow-up tracking. Probleemsignalering en escalatie naar management bij patronen.</p>
+            </div>
+
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </div>
+                <h4>Facebook Business</h4>
+                <p>Directe integratie met Facebook Messenger. Klanten kunnen via social media contact opnemen - agent reageert automatisch.</p>
+            </div>
+
+            <div class="integration-card">
+                <div class="integration-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                </div>
+                <h4>Datalake & LMS</h4>
+                <p>Koppeling met jullie interne datalake, sales systemen en Lead Management System. Volledige data-toegang voor gepersonaliseerde service.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistieken -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Verwachte Impact</h2>
+            <p>Gebaseerd op automotive retail benchmarks</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">3x</div>
+                <div class="stat-label">Hogere conversie vs. formulieren</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Beschikbaarheid alle vestigingen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">Vragen direct beantwoord</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">60%</div>
+                <div class="stat-label">Reductie repetitieve vragen</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prijzen -->
+    <div class="section">
+        <div class="section-header">
+            <div style="text-align: center">
+                <img src="images/car1.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
+            </div>
+            <h2>Investering</h2>
+            <p>Schaalbaar platform voor al jullie vestigingen</p>
+        </div>
+
+        <div class="pricing-table">
+            <div class="pricing-header">
+                <h3>Van Poelgeest Enterprise Oplossing</h3>
+                <p style="opacity: 0.9;">9 vestigingen, 1 platform</p>
+            </div>
+            <div class="pricing-body">
+                <div class="price-row">
+                    <span>Setup & Platform Ontwikkeling</span>
+                    <span>€8.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Kennisbank Import & AI Training</span>
+                    <span>€3.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>RDW API & Data Integraties (Freshworks, HubSpot, Monday)</span>
+                    <span>€2.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Maandelijks Platform Abonnement</span>
+                    <span>€1.250/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>AI Verwerkingskosten (GPT-5 / Claude 4.5)</span>
+                    <span>~€350/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Data & Analytics Dashboard</span>
+                    <span>€200/maand</span>
+                </div>
+                <div class="price-row">
+                    <span><strong>Totale Maandelijkse Kosten</strong></span>
+                    <span><strong>€1.800/maand</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 40px; border-radius: 16px; margin: 50px 0; border: 1px solid #86efac;">
+            <h3 style="color: #065f46; margin-bottom: 25px; font-size: 28px;">Return on Investment</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h4 style="color: #047857; margin-bottom: 15px;">Conversie Verbetering</h4>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Website bezoekers/maand: 45.000</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Conversie lift: +2% (formulier → gesprek)</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Extra leads/maand: 900</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #065f46; margin-top: 15px;">Waarde: ~€180.000/maand</p>
+                </div>
+                <div>
+                    <h4 style="color: #047857; margin-bottom: 15px;">Efficiëntie Winst</h4>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Tijdsbesparing support: 120 uur/maand</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Arbeidskosten: €35/uur</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Betere leadkwalificatie: 40% tijdwinst sales</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #065f46; margin-top: 15px;">Besparing: €4.200/maand</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vergelijking -->
+    <div class="section">
+        <div class="section-header">
+            <div style="text-align: center">
+                <img src="images/car4.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
+            </div>
+            <h2>Waarom Brainvine voor Van Poelgeest</h2>
+            <p>Automotive-specifieke oplossing vs. generieke chatbots</p>
+        </div>
+
+        <table class="feature-comparison">
+            <thead>
+            <tr>
+                <th>Functionaliteit</th>
+                <th>Brainvine AI Agent</th>
+                <th>Standaard Chatbots</th>
+                <th>Handmatig Proces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>RDW Kenteken Integratie</td>
+                <td><span class="check">✓</span> Realtime voertuigdata</td>
+                <td><span class="cross">✗</span> Niet mogelijk</td>
+                <td><span class="check">✓</span> Handmatig opzoeken</td>
+            </tr>
+            <tr>
+                <td>Multi-vestiging Support</td>
+                <td><span class="check">✓</span> 9 vestigingen, 1 platform</td>
+                <td><span class="cross">✗</span> Per locatie apart</td>
+                <td><span class="check">✓</span> Versnipperd</td>
+            </tr>
+            <tr>
+                <td>Freshworks Integratie</td>
+                <td><span class="check">✓</span> Volledig geïntegreerd</td>
+                <td><span class="cross">✗</span> Beperkte koppeling</td>
+                <td><span class="check">✓</span> Handmatig invoeren</td>
+            </tr>
+            <tr>
+                <td>Lead Kwalificatie</td>
+                <td><span class="check">✓</span> AI-gestuurd + context</td>
+                <td><span class="cross">✗</span> Basis scoring</td>
+                <td><span class="check">✓</span> Handmatig (tijdrovend)</td>
+            </tr>
+            <tr>
+                <td>BMW/MINI Productkennis</td>
+                <td><span class="check">✓</span> Volledige catalogus</td>
+                <td><span class="cross">✗</span> Beperkte kennis</td>
+                <td><span class="check">✓</span> Expert-afhankelijk</td>
+            </tr>
+            <tr>
+                <td>Intern Knowledge Assistant</td>
+                <td><span class="check">✓</span> Voor alle medewerkers</td>
+                <td><span class="cross">✗</span> Alleen klantgericht</td>
+                <td><span class="cross">✗</span> N.v.t.</td>
+            </tr>
+            <tr>
+                <td>Klachtanalyse & Patronen</td>
+                <td><span class="check">✓</span> Automatisch + adviezen</td>
+                <td><span class="cross">✗</span> Geen analyse</td>
+                <td><span class="check">✓</span> Handmatig (wekelijks)</td>
+            </tr>
+            <tr>
+                <td>Zelf Beheerbaar</td>
+                <td><span class="check">✓</span> Volledige controle</td>
+                <td><span class="cross">✗</span> Vendor locked-in</td>
+                <td><span class="check">✓</span> Ja</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Use Cases -->
+    <div class="section">
+        <div class="section-header">
+            <div style="text-align: center">
+                <img src="images/car7.webp" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
+            </div>
+            <h2>Concrete Toepassingen</h2>
+            <p>Hoe Van Poelgeest de AI-agent inzet</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3>Testrit Planning</h3>
+                <p>Klant vraagt testrit → AI checkt beschikbaarheid per vestiging → planning direct in agenda → bevestiging naar klant en showroom.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <h3>Onderhoud Herinnering</h3>
+                <p>Via kenteken check: APK verloopt binnenkort? Agent stuurt proactieve reminder met afspraaklink en geschatte kosten.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3>Financiering Calculator</h3>
+                <p>Interactieve berekening van lease, financiering of private lease opties. Inclusief inruilwaarde en actievoorwaarden.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                </div>
+                <h3>Accessoires Advies</h3>
+                <p>Op basis van gekocht model: agent suggereert passende accessoires (dakdragers, winterbanden, trekhaak). Direct bestellen mogelijk.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                </div>
+                <h3>Interne Support Tool</h3>
+                <p>Medewerkers vragen AI: "Wat is het beleid voor inruilgarantie?" of "Welke accessoires passen bij BMW X3 2024?" Direct antwoord met bronvermelding.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon" style="background: linear-gradient(135deg, #713f12 0%, #d97706 100%);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <h3>Klachtanalyse Dashboard</h3>
+                <p>Wekelijkse rapportage: meest voorkomende klachten, trend-analyse, automatische suggesties voor verbeteringen. Directe koppeling naar Monday.com.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<img src="images/car7.webp" alt="Premium Dashboard" style="position: absolute;
+    right: -10%;
+    height: auto;
+    margin: auto;
+    width: 1000px">
+
+<footer>
+
+    <div class="container">
+        <img src="images/brainvine-logo.svg" alt="Brainvine AI" class="footer-logo">
+        <p style="font-size: 16px; margin-bottom: 15px;">© 2025 Brainvine AI</p>
+        <p style="font-size: 14px;">
+            Gespecialiseerd in AI oplossingen die écht werken.<br>
+            <a href="mailto:info@brainvine.ai">info@brainvine.ai</a>
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
