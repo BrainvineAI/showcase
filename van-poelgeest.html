@@ -571,6 +571,95 @@
             opacity: 0.95;
         }
 
+        /* Collapsible Sections */
+        .collapsible-trigger {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 25px 30px;
+            cursor: pointer;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .collapsible-trigger:hover {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+        }
+
+        .collapsible-trigger h3 {
+            color: #0c4a6e;
+            font-size: 24px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .collapsible-trigger .arrow {
+            font-size: 28px;
+            color: #0284c7;
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible-trigger.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .collapsible-content.active {
+            max-height: 10000px;
+        }
+
+        /* Email/Ticket Demo Styles */
+        .email-demo {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .email-header {
+            background: #f5f5f7;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .email-content {
+            line-height: 1.8;
+            color: #1a1a1a;
+        }
+
+        .email-content p {
+            margin-bottom: 15px;
+        }
+
+        .response-draft {
+            background: #f0f9ff;
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .response-draft p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 36px;
@@ -582,6 +671,10 @@
 
             .value-props {
                 grid-template-columns: 1fr;
+            }
+
+            .collapsible-trigger h3 {
+                font-size: 18px;
             }
         }
     </style>
@@ -685,15 +778,179 @@
         </div>
     </div>
 
-    <!-- Hoe het werkt -->
+    <!-- Automated Support Agent -->
     <div class="section">
         <div class="section-header">
-            <div style="text-align: center">
-                <img src="images/m1.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
-            </div>
-            <h2>Van klik naar conversatie in 6 stappen</h2>
-            <p>Intelligente automatisering voor alle 9 vestigingen</p>
+            <h2>AI Support Agent voor Freshdesk & E-mail</h2>
+            <p>Automatische conceptantwoorden binnen seconden - jullie team beoordeelt en verstuurt</p>
         </div>
+
+        <div style="background: linear-gradient(135deg, #f5f5f7 0%, #e5e5e7 100%); padding: 50px; border-radius: 20px; margin: 40px 0;">
+            <h3 style="font-size: 28px; margin-bottom: 30px; color: #000; text-align: center;">📧 Van Inkomend Ticket naar Klaar Antwoord in 30 Seconden</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 80px 1fr; gap: 30px; align-items: center; margin: 40px 0;">
+                <!-- Incoming Ticket -->
+                <div>
+                    <h4 style="margin-bottom: 20px; color: #007AFF;">📥 Inkomend Freshdesk Ticket</h4>
+                    <div class="email-demo">
+                        <div class="email-header">
+                            <strong>Van:</strong> lisa.janssen@email.nl<br>
+                            <strong>Ticket #:</strong> 47382<br>
+                            <strong>Prioriteit:</strong> Normaal<br>
+                            <strong>Onderwerp:</strong> Vraag over onderhoud BMW X3
+                        </div>
+                        <div class="email-content">
+                            <p>Beste Van Poelgeest,</p>
+                            <p>Mijn BMW X3 (kenteken: AB-123-CD, bouwjaar 2020) moet binnenkort naar de APK. Ik zie dat deze op 15 februari verloopt.</p>
+                            <p>Kan ik bij jullie terecht voor een grote beurt + APK gecombineerd? En wat zijn ongeveer de kosten? Ik woon in Haarlem, welke vestiging is het dichtsbij?</p>
+                            <p>Ook vraag ik me af: is het verstandig om nu alvast de banden te vervangen? Ze zijn nu 4 jaar oud.</p>
+                            <p>Met vriendelijke groet,<br>Lisa Janssen</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing Arrow -->
+                <div style="text-align: center;">
+                    <div style="background: #007AFF; color: white; padding: 15px; border-radius: 50%; margin: 0 auto 15px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                        🤖
+                    </div>
+                    <div style="font-size: 32px; color: #007AFF;">→</div>
+                    <div style="margin-top: 15px; font-size: 13px; color: #666; font-weight: 600;">AI Verwerking<br>5-30 sec</div>
+                </div>
+
+                <!-- Generated Response -->
+                <div>
+                    <h4 style="margin-bottom: 20px; color: #10b981;">📤 Gegenereerd Conceptantwoord</h4>
+                    <div class="response-draft">
+                        <p>Beste Lisa,</p>
+                        <p>Bedankt voor je bericht! Natuurlijk kunnen wij je helpen met de APK en onderhoudsbeurt van je BMW X3.</p>
+
+                        <p><strong>APK + Grote Beurt Combi-actie:</strong><br>
+                        Voor jouw BMW X3 2020 bieden wij een scherpe combideal aan:<br>
+                        • APK keuring: €59<br>
+                        • Grote beurt (incl. olie, filters, controles): €485<br>
+                        • Totaal combi: €499 (bespaar €45!)</p>
+
+                        <p><strong>Dichtsbijzijnde vestiging:</strong><br>
+                        Onze vestiging Haarlem is het meest geschikt voor jou! Adres: Waarderpolder 105, 2031 ED Haarlem. Je kunt bellen naar 023-5123456 voor een afspraak.</p>
+
+                        <p><strong>Advies banden (4 jaar oud):</strong><br>
+                        Goede vraag! Voor de X3 adviseren wij vervanging na 5-6 jaar of bij minder dan 3mm profiel. Als je vooral lokaal rijdt, kun je nog wel even wachten. Rijd je veel snelweg of vakantie? Dan is vervanging verstandig. Wij controleren de banden gratis tijdens de beurt en geven persoonlijk advies.</p>
+
+                        <p><strong>Mogelijke afspraakmomenten:</strong><br>
+                        • Dinsdag 12 februari, 09:00<br>
+                        • Woensdag 13 februari, 14:30<br>
+                        • Donderdag 14 februari, 11:00</p>
+
+                        <p>Stuur een bevestiging van je voorkeur, dan reserveren wij direct de tijd voor je!</p>
+
+                        <p>Met vriendelijke groet,<br>
+                        Van Poelgeest BMW & MINI - Vestiging Haarlem</p>
+
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #0284c7; font-size: 12px; color: #0c4a6e;">
+                            <strong>🤖 AI Context Gebruikt:</strong> RDW Kenteken Check (AB-123-CD), Vestiging Routing (Haarlem), Onderhoudsprijzen X3, Afsprakenkalender, Banden Adviesrichtlijnen<br>
+                            <strong>✅ Kwaliteit:</strong> 96% - Klaar voor review<br>
+                            <strong>⏱️ Verwerkingstijd:</strong> 18 seconden
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.15); border-left: 4px solid #10b981; padding: 25px; border-radius: 8px; margin-top: 40px;">
+                <h4 style="color: #065f46; font-size: 20px; margin-bottom: 15px;">✅ Wat gebeurt er automatisch?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ RDW Kenteken Lookup</strong><br>
+                        <span style="font-size: 14px;">Automatisch voertuiggegevens ophalen voor context</span></p>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ Vestiging Routing</strong><br>
+                        <span style="font-size: 14px;">Dichtstbijzijnde locatie op basis van postcode klant</span></p>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ Kennisbank Raadpleging</strong><br>
+                        <span style="font-size: 14px;">Onderhoudsprijzen, actiesparticuliere klant, beleid</span></p>
+                    </div>
+                    <div>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ Agenda Integratie</strong><br>
+                        <span style="font-size: 14px;">Beschikbare afspraaktijden voor gekozen vestiging</span></p>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ Toon & Consistentie</strong><br>
+                        <span style="font-size: 14px;">Van Poelgeest huisstijl en communicatiestijl</span></p>
+                        <p style="margin: 8px 0; color: #064e3b;"><strong>→ Kwaliteitscheck</strong><br>
+                        <span style="font-size: 14px;">Alleen concepten >90% betrouwbaarheid naar team</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; text-align: center;">
+                <p style="font-size: 18px; color: #666; margin-bottom: 20px;"><strong>Jullie team beoordeelt, past aan indien nodig, en verstuurt met één klik</strong></p>
+                <div style="display: inline-flex; gap: 20px; align-items: center;">
+                    <div style="background: white; border: 2px solid #007AFF; padding: 15px 30px; border-radius: 8px;">
+                        <span style="font-size: 32px; font-weight: 700; color: #007AFF;">60-80%</span><br>
+                        <span style="font-size: 14px; color: #666;">tickets direct verstuurbaar</span>
+                    </div>
+                    <div style="background: white; border: 2px solid #10b981; padding: 15px 30px; border-radius: 8px;">
+                        <span style="font-size: 32px; font-weight: 700; color: #10b981;">75%</span><br>
+                        <span style="font-size: 14px; color: #666;">sneller dan handmatig</span>
+                    </div>
+                    <div style="background: white; border: 2px solid #7c3aed; padding: 15px 30px; border-radius: 8px;">
+                        <span style="font-size: 32px; font-weight: 700; color: #7c3aed;">24/7</span><br>
+                        <span style="font-size: 14px; color: #666;">concepten klaar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: white; border: 2px solid #e5e5e5; border-radius: 16px; padding: 40px; margin: 40px 0;">
+            <h3 style="font-size: 26px; margin-bottom: 30px; color: #000;">🎯 Welke Kanalen Worden Ondersteund?</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;">
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">E-mail</h4>
+                    <p style="font-size: 14px; color: #666;">Alle mailboxen per vestiging + info@</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🎫</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Freshdesk Tickets</h4>
+                    <p style="font-size: 14px; color: #666;">Automatische triage + prioritering</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Freshchat</h4>
+                    <p style="font-size: 14px; color: #666;">Live chat → automatisch concept</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📱</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Facebook Messenger</h4>
+                    <p style="font-size: 14px; color: #666;">Social media interacties</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📞</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Freshcaller Logs</h4>
+                    <p style="font-size: 14px; color: #666;">Follow-up suggesties na calls</p>
+                </div>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💼</div>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">HubSpot</h4>
+                    <p style="font-size: 14px; color: #666;">CRM context in elk antwoord</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collapsible: Hoe het werkt -->
+    <div class="section">
+        <div class="collapsible-trigger" onclick="toggleSection('workflow-section')">
+            <h3>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                On Page Alternatief: Proactieve Chat Interface voor Website Bezoekers
+            </h3>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="collapsible-content" id="workflow-section">
+            <div class="section-header">
+                <div style="text-align: center">
+                    <img src="images/m1.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
+                </div>
+                <h2>Van klik naar conversatie in 6 stappen</h2>
+                <p>Intelligente automatisering voor alle 9 vestigingen</p>
+            </div>
 
         <div class="workflow-container">
             <div class="workflow-step">
@@ -775,11 +1032,9 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Live Demo -->
-    <div class="section">
-        <div class="section-header">
+        <!-- Live Demo Section within same collapsible -->
+        <div class="section-header" style="margin-top: 80px;">
             <div style="text-align: center">
                 <img src="images/car5.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
             </div>
@@ -790,7 +1045,7 @@
         <div class="demo-container">
             <h3 style="margin-bottom: 20px; font-size: 28px; display: flex; align-items: center; gap: 12px;">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                AI Gesprek: Inruilwaarde Check
+                AI Gesprek: Van Volvo naar BMW met 7 Zitplaatsen
             </h3>
             <div class="demo-screen">
                 <div class="chat-preview">
@@ -801,66 +1056,84 @@
                     </div>
 
                     <div class="chat-message customer">
-                        <p>Hoi, ik wil graag weten wat mijn auto waard is als ik deze inruil voor een nieuwe BMW.</p>
+                        <p>Hoi, ik heb nu een Volvo XC90 en ben benieuwd naar een vergelijkbare BMW met ook 7 zitplaatsen. Wat zou mijn Volvo waard zijn als inruil?</p>
                         <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:24</div>
                     </div>
 
                     <div class="chat-message agent">
                         <strong>Van Poelgeest AI Assistent</strong>
-                        <p>Natuurlijk help ik u graag met een inruilwaardering! Mag ik uw kenteken even hebben? Dan kan ik direct de gegevens van uw auto opzoeken.</p>
+                        <p>Uitstekend! Voor 7-zitters hebben wij de BMW X7 en X5 (optioneel met 7 zitplaatsen). Beide fantastische alternatieven voor uw XC90!</p>
+                        <p>Voor de inruilwaardering heb ik uw kenteken en km stand nodig. Mag ik die even?</p>
                         <div class="chat-meta">14:24</div>
                     </div>
 
                     <div class="chat-message customer">
-                        <p>XX-123-YY</p>
+                        <p>ZH-816-P, 105.000 km</p>
                         <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:25</div>
                     </div>
 
                     <div class="chat-message agent">
                         <strong>Van Poelgeest AI Assistent</strong>
                         <p>✓ <strong>Voertuiggegevens gevonden:</strong></p>
-                        <p>• Merk: BMW<br>
-                           • Model: 3-Serie 320i<br>
+                        <img src="images/xc90-nobg.png" alt="Volvo XC90" style="width: 120px; height: auto; margin-bottom: 10px; border-radius: 8px;">
+                        <p>• Merk: Volvo<br>
+                           • Model: XC90 T8 Twin Engine<br>
                            • Bouwjaar: 2019<br>
-                           • Brandstof: Benzine<br>
-                           • Vermogen: 184 PK<br>
-                           • APK geldig tot: 15-03-2026</p>
-                        <p>Op basis van de huidige markt en de staat van uw auto kan de inruilwaarde tussen de €22.000 en €25.000 liggen. Voor een exacte waardering nodigen we u graag uit bij een van onze vestigingen.</p>
-                        <p>Heeft u al een nieuwe BMW op het oog?</p>
+                           • Kilometerstand: 105.000km<br>
+                           • Brandstof: Plug-in Hybrid (Elektriciteit + Benzine)<br>
+                           • Vermogen: 391 PK (287 kW)<br>
+                           • Aantal zitplaatsen: 7<br>
+                           • APK geldig tot: 12-03-2027<br>
+                           • Catalogusprijs destijds: €90.554</p>
+                        <p>Een mooie auto! Op basis van de huidige markt en de staat (hybride aandrijflijn, 7 zitplaatsen, premium uitvoering) schatten wij de inruilwaarde tussen de €42.000 en €46.000. Voor een exacte waardering nodigen we u graag uit bij een van onze vestigingen.</p>
                         <div class="chat-meta">14:25 • RDW API</div>
                     </div>
 
                     <div class="chat-message customer">
-                        <p>Ja, ik kijk naar de nieuwe 4-Serie. Wat zijn de financieringsmogelijkheden?</p>
+                        <p>Goed om te weten! Welke BMW zou het beste passen? Ik vind het belangrijk dat het hybride of elektrisch is, en natuurlijk die 7 zitplaatsen.</p>
                         <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:26</div>
                     </div>
 
                     <div class="chat-message agent">
                         <strong>Van Poelgeest AI Assistent</strong>
-                        <p>Uitstekende keuze! Voor de BMW 4-Serie bieden wij verschillende financieringsopties:</p>
-                        <p><strong>BMW Financial Services:</strong><br>
-                           • Private Lease vanaf €599/maand<br>
-                           • Financial Lease vanaf €549/maand<br>
-                           • Operational Lease vanaf €679/maand</p>
-                        <p><strong>Actie deze maand:</strong> 3,9% rente i.p.v. 4,5% op alle 4-Serie modellen!</p>
-                        <p>Mag ik u doorverbinden met een adviseur van onze vestiging Amsterdam voor een persoonlijk gesprek en proefrit?</p>
-                        <div class="chat-meta">14:26 • Productkennis + Acties</div>
+                        <p>Perfect! Dan zijn er twee topkandidaten voor u:</p>
+                        <div style="display: flex; gap: 15px; margin: 15px 0;">
+                            <img src="images/x7.png" alt="BMW X7" style="width: 140px; height: auto; border-radius: 8px;">
+                        </div>
+                        <p><strong>1. BMW X7 xDrive40i (optioneel 7 zitplaatsen):</strong><br>
+                           • Mild-hybrid technologie<br>
+                           • 381 PK, zeer ruim en luxe<br>
+                           • Vanaf €109.900 (met 7-zits configuratie)<br>
+                           • Perfect voor lange afstanden</p>
+
+                        <div style="display: flex; gap: 15px; margin: 15px 0;">
+                            <img src="images/ix.png" alt="BMW iX" style="width: 140px; height: auto; border-radius: 8px;">
+                        </div>
+                        <p><strong>2. BMW iX xDrive50 (optioneel 7 zitplaatsen):</strong><br>
+                           • Volledig elektrisch<br>
+                           • 523 PK, 630 km actieradius<br>
+                           • Vanaf €119.900 (met 7-zits configuratie)<br>
+                           • Meest innovatieve optie</p>
+                        <p>Met uw inruilwaarde van ca. €44.000 komt de netto investering respectievelijk op €65.900 en €75.900.</p>
+                        <p><strong>Actie deze maand:</strong> Bij inruil van een plug-in hybrid krijgt u €2.500 extra inruilbonus op elektrische modellen!</p>
+                        <div class="chat-meta">14:26 • Productkennis + Acties + Berekeningen</div>
                     </div>
 
                     <div class="chat-message customer">
-                        <p>Ja graag! Liefst deze week nog.</p>
+                        <p>Wow, de iX klinkt interessant! Kan ik deze komen proefrijden? Liefst in Amsterdam.</p>
                         <div class="chat-meta" style="color: rgba(255,255,255,0.8);">14:27</div>
                     </div>
 
                     <div class="chat-message agent">
                         <strong>Van Poelgeest AI Assistent</strong>
-                        <p>Perfect! Ik heb uw aanvraag doorgezet naar onze vestiging Amsterdam. U wordt binnen 2 uur gebeld door een adviseur om een afspraak in te plannen.</p>
+                        <p>Zeker! Onze vestiging Amsterdam heeft de iX xDrive50 op voorraad voor proefritten. Ik zie dat u in Zuid-Holland woont - Amsterdam is goed bereikbaar voor u.</p>
+                        <p>Ik heb uw aanvraag direct doorgezet. Een adviseur belt u vandaag nog om een proefrit in te plannen en uw XC90 persoonlijk te waarderen.</p>
                         <p><strong>Uw aanvraag:</strong><br>
-                           • Inruilauto: BMW 3-Serie 320i (2019)<br>
-                           • Interesse: BMW 4-Serie<br>
+                           • Inruilauto: Volvo XC90 T8 Twin Engine (2019, 7 zitplaatsen)<br>
+                           • Interesse: BMW iX xDrive50 met 7 zitplaatsen<br>
                            • Vestiging: Amsterdam<br>
-                           • Urgentie: Deze week</p>
-                        <p>Is er verder nog iets waarmee ik u kan helpen?</p>
+                           • Inruilbonus: €2.500 (hybrid → elektrisch)</p>
+                        <p>U ontvangt binnen 2 uur een telefoontje!</p>
                         <div class="chat-meta">14:27 • Lead → LMS + Email</div>
                     </div>
                 </div>
@@ -868,16 +1141,20 @@
                 <div style="margin-top: 30px; padding: 20px; background: #f5f5f7; border-radius: 10px; border-left: 3px solid #007AFF;">
                     <p style="font-size: 13px; color: #666666; margin: 0;"><strong>Automatische acties uitgevoerd:</strong></p>
                     <p style="font-size: 13px; color: #666666; margin: 8px 0 0 0;">
-                        ✓ RDW kenteken lookup<br>
-                        ✓ Lead gescoord: Hoog (koopintentie + budget)<br>
+                        ✓ RDW kenteken lookup (ZH-816-P) → volledige voertuigdata<br>
+                        ✓ Inruilwaarde berekend op basis van marktdata<br>
+                        ✓ Vergelijkbare BMW modellen met 7 zitplaatsen geselecteerd<br>
+                        ✓ Actievoorwaarden toegepast (€2.500 hybrid bonus)<br>
+                        ✓ Lead gescoord: Zeer Hoog (premium inruil + elektrisch interesse)<br>
                         ✓ Toegewezen aan: Vestiging Amsterdam<br>
                         ✓ Email naar: amsterdam@van-poelgeest.nl<br>
                         ✓ HubSpot CRM bijgewerkt met volledige gesprekshistorie<br>
-                        ✓ Freshdesk ticket aangemaakt (prioriteit: hoog)
+                        ✓ Freshdesk ticket aangemaakt (prioriteit: zeer hoog)
                     </p>
                 </div>
             </div>
         </div>
+        </div> <!-- Close collapsible-content -->
     </div>
 
     <!-- Integraties -->
@@ -1187,6 +1464,21 @@
         </p>
     </div>
 </footer>
+
+<script>
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId);
+    const trigger = content.previousElementSibling;
+
+    if (content.classList.contains('active')) {
+        content.classList.remove('active');
+        trigger.classList.remove('active');
+    } else {
+        content.classList.add('active');
+        trigger.classList.add('active');
+    }
+}
+</script>
 
 </body>
 </html>
