@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrauliek24 - Intelligente Klantenservice Automatisering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            background: #39B1C8;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .top-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #39B1C8 0%, #1c7a8e 100%);
+            color: white;
+            padding: 100px 20px 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(57, 177, 200, 0.05));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 22px;
+            margin-bottom: 35px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .hero-badge {
+            background: rgba(57, 177, 200, 0.15);
+            border: 1px solid rgba(57, 177, 200, 0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            color: #003d4f;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: #6b7280;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,61,79,0.1);
+            border-color: #39B1C8;
+        }
+
+        .value-card .icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #39B1C8 0%, #2a8a9e 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .value-card .icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .value-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #003d4f;
+            font-weight: 600;
+        }
+
+        .value-card p {
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .workflow-container {
+            background: #f9fafb;
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid #e5e7eb;
+            margin: 50px 0;
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 45px;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 65px;
+            width: 2px;
+            height: calc(100% + 25px);
+            background: linear-gradient(to bottom, #39B1C8, #e5e7eb);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #39B1C8 0%, #2a8a9e 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-right: 25px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(57, 177, 200, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 5px;
+        }
+
+        .step-content h4 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #003d4f;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #6b7280;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .step-tech {
+            display: inline-block;
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #39B1C8;
+            margin-right: 8px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #39B1C8 0%, #2a8a9e 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(57, 177, 200, 0.2);
+        }
+
+        .stat-number {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .demo-container {
+            background: linear-gradient(135deg, #39B1C8 0%, #1c7a8e 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            margin: 50px 0;
+            box-shadow: 0 20px 50px rgba(57, 177, 200, 0.3);
+        }
+
+        .demo-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 35px;
+            color: #333;
+        }
+
+        .email-preview {
+            border-left: 4px solid #39B1C8;
+            padding-left: 25px;
+            margin: 25px 0;
+        }
+
+        .email-meta {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .email-content {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .response-draft {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            border-color: #39B1C8;
+            transform: translateY(-2px);
+        }
+
+        .tech-item svg {
+            width: 24px;
+            height: 24px;
+            color: #39B1C8;
+        }
+
+        .pricing-table {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            margin: 50px auto;
+            max-width: 900px;
+        }
+
+        .pricing-header {
+            background: linear-gradient(135deg, #39B1C8 0%, #2a8a9e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .pricing-body {
+            padding: 45px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 16px;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 24px;
+            margin-top: 25px;
+            padding-top: 35px;
+            border-top: 2px solid #39B1C8;
+            color: #003d4f;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #39B1C8 0%, #1c7a8e 100%);
+            color: white;
+            padding: 90px 40px;
+            text-align: center;
+            border-radius: 20px;
+            margin: 80px 0;
+        }
+
+        .cta-section h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 35px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #39B1C8 0%, #2a8a9e 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(57, 177, 200, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .feature-comparison {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 50px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-comparison th {
+            background: #f9fafb;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #003d4f;
+            font-size: 16px;
+        }
+
+        .feature-comparison td {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        .feature-comparison tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check {
+            color: #10b981;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #ef4444;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .trust-badge svg {
+            width: 24px;
+            height: 24px;
+            color: #39B1C8;
+        }
+
+        .trust-badge span {
+            font-weight: 500;
+            color: #003d4f;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #39B1C8 0%, #1c7a8e 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .footer-logo {
+            height: 35px;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+
+            .value-props {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+    <div class="top-nav-content">
+        <div class="logo-container">
+            <img src="images/hydrauliek24-logo.svg" alt="Hydrauliek24 Logo">
+            <span style="color: white; font-size: 34px;">×</span>
+            <img src="images/brainvine-logo.svg" alt="Brainvine Logo">
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Intelligente Klantenservice voor Hydrauliek24</h1>
+        <p class="subtitle">Transformeer technische klantenservice met AI-gestuurde antwoordgeneratie</p>
+
+        <div class="hero-badges">
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>90% Tijdsbesparing</span>
+            </div>
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                <span>Meertalig</span>
+            </div>
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>30 Seconden Verwerking</span>
+            </div>
+            <div class="hero-badge">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Volledige Productkennis</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Waardepropositie -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Het Hydrauliek24 voordeel</h2>
+            <p>Van handmatige technische support naar geautomatiseerde excellentie</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3>10 Minuten → 30 Seconden</h3>
+                <p>Verminder de voorbereidingstijd voor technische klantvragen met 95%. Onze AI analyseert complexe vragen over hydraulische componenten en genereert nauwkeurige conceptantwoorden, gebruikmakend van jullie complete productcatalogus en technische specificaties.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                </div>
+                <h3>Echt Meertalig</h3>
+                <p>Detecteer automatisch de taal van de klant en reageer natuurlijk in Nederlands, Engels, Duits en meer. Ideaal voor jullie internationale klantenkring in de maritieme, offshore en industriële sectoren.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <h3>Hydrauliek Expertise</h3>
+                <p>Benut Hydrauliek24's complete productcatalogus van 50.000+ hydraulische componenten: powerpacks, cilinders, pompen, koppelingen, hydromotoren en stuurventielen. Elk antwoord bevat accurate technische specificaties en maatvoeringen.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3>Menselijk Toezicht</h3>
+                <p>Concepten verschijnen in een overzichtelijk dashboard voor controle voordat ze worden verzonden. Het Hydrauliek24 team behoudt volledige controle terwijl uren repetitief werk worden bespaard.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                </div>
+                <h3>Zendesk Integratie</h3>
+                <p>Naadloze integratie met jullie bestaande Zendesk Support systeem. Alle tickets, contacthistorie en klantgegevens worden automatisch gesynchroniseerd en bijgewerkt.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                </div>
+                <h3>Technische Configuratoren</h3>
+                <p>Automatisch suggereren van relevante configuratoren (powerpack, cilinder, hydrauliekslang) op basis van klantvragen. Verhoog conversie door klanten direct naar de juiste tool te leiden.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hoe het werkt -->
+    <div class="section" id="demo">
+        <div class="section-header">
+            <h2>Hoe Het Werkt</h2>
+            <p>Intelligente automatisering die perfect past in de bestaande workflow</p>
+        </div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Ticket komt binnen in Zendesk</h4>
+                    <p>Klant stuurt een vraag via email, contactformulier of chat naar klantenservice@hydrauliek24.nl</p>
+                    <p>Het ticket wordt automatisch aangemaakt in Zendesk met alle klantgegevens.</p>
+                    <p>Onze workflow detecteert nieuwe tickets en start de verwerking.</p>
+                    <span class="step-tech">Zendesk API</span>
+                    <span class="step-tech">Brainvine AI workflow</span>
+                    <span class="step-tech">Real-time Sync</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>AI Analyse & Taaldetectie</h4>
+                    <p>Het systeem detecteert direct de taal en analyseert de technische inhoud.</p>
+                    <p>Identificeert intentie: productspecificaties, technisch advies, levertijd, offerte-aanvraag, retour, etc.</p>
+                    <span class="step-tech">Natural Language Processing</span>
+                    <span class="step-tech">Intent Classificatie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Kennisbank doorzoeken</h4>
+                    <p>Doorzoekt alle Hydrauliek24 kennis:</p>
+                    <p>• 50.000+ producten met technische specs en maatvoeringen<br>
+                       • Configuratoren (powerpack, cilinder, slang, motor)<br>
+                       • Technische handleidingen en installatierichtlijnen<br>
+                       • Verzend- en retourbeleid<br>
+                       • Eerdere succesvolle antwoorden op vergelijkbare vragen</p>
+                    <span class="step-tech">Vector Search</span>
+                    <span class="step-tech">RAG Pipeline</span>
+                    <span class="step-tech">Database</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Concept generatie</h4>
+                    <p>AI genereert een professioneel technisch antwoord in de taal van de klant.</p>
+                    <p>Inclusief relevante productlinks, technische tekeningen, configuratorlinks en maatvoeringen.</p>
+                    <span class="step-tech">GPT-5 / Claude 4.5</span>
+                    <span class="step-tech">Context Injectie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Concept review in dashboard</h4>
+                    <p>Het concept verschijnt direct in het review dashboard binnen Zendesk.</p>
+                    <p>Inclusief betrouwbaarheidsscore en bronreferenties voor transparantie.</p>
+                    <span class="step-tech">Review Dashboard</span>
+                    <span class="step-tech">Zendesk App</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Controle door medewerker & Verzenden</h4>
+                    <p>Het Hydrauliek24 team controleert het concept, maakt eventuele aanpassingen en verzendt.</p>
+                    <p>Gemiddelde bewerkingstijd: minder dan 30 seconden voor 85% van de vragen.</p>
+                    <p>Ticket wordt automatisch bijgewerkt in Zendesk met juiste status en tags.</p>
+                    <span class="step-tech">Menselijk toezicht</span>
+                    <span class="step-tech">Kwaliteitsborging</span>
+                    <span class="step-tech">Zendesk Update</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Zie het in actie</h2>
+            <p>Echt voorbeeld van hoe Hydrauliek24 klantvragen worden verwerkt</p>
+        </div>
+
+        <div class="demo-container">
+            <h3 style="margin-bottom: 20px; font-size: 28px; display: flex; align-items: center; gap: 12px;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 32px; height: 32px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                Inkomende klant email
+            </h3>
+            <div class="demo-screen">
+                <div class="email-preview">
+                    <div class="email-meta">
+                        <strong>Van:</strong> j.vandenberg@maritimesolutions.nl<br>
+                        <strong>Onderwerp:</strong> Hydraulische cilinder voor scheepskraan - advies nodig
+                    </div>
+                    <div class="email-content">
+                        <p>Beste Hydrauliek24 team,</p>
+                        <p>Wij hebben een dubbelwerkende hydraulische cilinder nodig voor een scheepskraan op een 45m offshore support vessel.</p>
+                        <p>Specificaties waar we naar zoeken:</p>
+                        <p>- Slag: minimaal 800mm<br>
+                           - Druk: 250 bar werkdruk<br>
+                           - Zuigerdiameter: ongeveer 80mm<br>
+                           - Moet bestand zijn tegen zilte omgeving (offshore)<br>
+                           - Bij voorkeur met gelenkogen montage</p>
+                        <p>Hebben jullie hier een passende cilinder voor? Wat is de levertijd en kunnen jullie deze evt. RVS uitvoeren voor betere corrosiebestendigheid?</p>
+                        <p>Ook zou ik graag advies willen over de juiste koppelingen voor dit soort offshore toepassingen.</p>
+                        <p>Met vriendelijke groet,<br>
+                        Ir. Jan van den Berg<br>
+                        Maritime Solutions B.V.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 35px 0;">
+                    <div style="display: inline-block; background: #39B1C8; color: white; padding: 12px 25px; border-radius: 25px; font-weight: 600;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        AI verwerking (8-30 seconden)
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 35px; font-size: 22px; display: flex; align-items: center; gap: 10px;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 28px; height: 28px; color: #10b981;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Gegenereerd conceptantwoord
+                    <small style="font-size: 13px; color: #6b7280; font-weight: 400;">(demonstratie - niet getraind op echte Hydrauliek24 data)</small>
+                </h4>
+                <div class="response-draft">
+                    <p>Beste Ir. van den Berg,</p>
+                    <p>Dank voor uw aanvraag. Voor uw offshore scheepskraan toepassing hebben wij zeker passende oplossingen!</p>
+
+                    <p><strong>Aanbevolen cilinder:</strong><br>
+                    Op basis van uw specificaties adviseer ik onze dubbelwerkende cilinder met gelenkogen, speciaal geschikt voor maritieme/offshore toepassingen:</p>
+                    <p>• Zuigerdiameter: 80mm (standaard)<br>
+                       • Stangdiameter: 45mm (standaard voor deze toepassing)<br>
+                       • Slag: 800mm<br>
+                       • Werkdruk: tot 250 bar<br>
+                       • Montage: gelenkogen (DIN 71752 uitvoering)<br>
+                       • SKU: <a href="#">DC-80-45-800-GEL</a></p>
+
+                    <p><strong>RVS uitvoering voor offshore:</strong><br>
+                    Voor offshore toepassingen raden wij inderdaad een RVS zuigerstang (RVS 416) aan voor optimale corrosiebestendigheid. De cilinderbuis kan worden uitgevoerd met extra corrosiebescherming. De meerprijs voor RVS stang bedraagt ca. €180,- voor deze maat.</p>
+
+                    <p><strong>Koppelingen voor offshore:</strong><br>
+                    Voor offshore hydrauliek adviseren wij:<br>
+                    • RVS snelkoppelingen flat-face type (lekvrij onder druk)<br>
+                    • Metrische perskoppelingen met RVS ferrules<br>
+                    • JIC 37° koppelingen (RVS uitvoering) als alternatief<br>
+                    Bekijk onze <a href="#">keuzehulp hydraulische koppelingen</a> voor de juiste selectie.</p>
+
+                    <p><strong>Levertijd & Engineering:</strong><br>
+                    Standaard uitvoering: 3-5 werkdagen<br>
+                    RVS zuigerstang uitvoering: 7-10 werkdagen</p>
+
+                    <p>Met vriendelijke groet,<br>
+                    Hydrauliek24 Team<br>
+                    Vakkundige service, engineering en eigen werkplaats</p>
+
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #d1fae5; font-size: 12px; color: #059669;">
+                        <strong>AI Context:</strong> Product DB (Cilinders offshore), Technische specs, Materialen kennisbank, Koppelingen keuzehulp<br>
+                        <strong>Betrouwbaarheid:</strong> 94% • <strong>Taal:</strong> Nederlands • <strong>Segment:</strong> B2B Maritiem/Offshore
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technische Architectuur -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Technische Excellentie</h2>
+            <p>Enterprise-grade technologie op maat voor Hydrauliek24</p>
+        </div>
+
+        <div class="workflow-container">
+            <h3 style="font-size: 28px; margin-bottom: 30px; color: #003d4f;">Systeemarchitectuur</h3>
+            <p style="margin: 20px 0; color: #6b7280;">Onze oplossing integreert naadloos met de bestaande infrastructuur:</p>
+
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+                    <strong>Zendesk Support</strong>
+                </div>
+                <div class="tech-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <strong>GPT-5 / Claude 4.5</strong>
+                </div>
+                <div class="tech-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <strong>RAG Vector DB</strong>
+                </div>
+                <div class="tech-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    <strong>Enterprise Beveiliging</strong>
+                </div>
+            </div>
+
+            <h4 style="margin-top: 50px; font-size: 22px; color: #003d4f;">Zendesk Integratie</h4>
+            <ul style="margin: 20px 0; line-height: 2; color: #4b5563;">
+                <li><span class="check">✓</span> Real-time ticket synchronisatie</li>
+                <li><span class="check">✓</span> Automatische klantgegevens ophalen (orderhistorie, eerdere tickets)</li>
+                <li><span class="check">✓</span> Zendesk App voor concept review binnen jullie workflow</li>
+                <li><span class="check">✓</span> Automatische tags en prioriteit toekenning</li>
+                <li><span class="check">✓</span> SLA tracking en rapportage</li>
+                <li><span class="check">✓</span> Multi-channel support (email, chat, contactformulier)</li>
+            </ul>
+
+            <h4 style="margin-top: 40px; font-size: 22px; color: #003d4f;">Hydrauliek24 Kennisbank Integratie</h4>
+            <div style="background: white; padding: 25px; border-radius: 12px; margin: 20px 0; border: 1px solid #e5e7eb;">
+                <p style="margin-bottom: 12px;"><strong>Productcatalogus:</strong> 50.000+ hydraulische componenten met volledige technische specificaties</p>
+                <p style="margin-bottom: 12px;"><strong>Configuratoren:</strong> Powerpack, Cilinder, Hydrauliekslang, Hydromotor, Schema configuratoren</p>
+                <p style="margin-bottom: 12px;"><strong>Technische Data:</strong> Drukklassen, maatvoeringen, materiaalspecificaties, DIN/ISO normen</p>
+                <p style="margin-bottom: 12px;"><strong>Segmenten:</strong> Maritiem, Offshore, Wegenbouw, Garage, Transport, Defensie, Bouwmachines</p>
+                <p><strong>FAQ Database:</strong> Veelgestelde technische vragen per productcategorie</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistieken -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Verwachte Impact</h2>
+            <p>Reële cijfers op basis van vergelijkbare B2B technische webshops</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">90%</div>
+                <div class="stat-label">Tijdsbesparing per ticket</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">30s</div>
+                <div class="stat-label">Gemiddelde verwerkingstijd</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Nauwkeurigheid technische info</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Beschikbaarheid</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prijzen -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Investering & ROI</h2>
+            <p>Transparante prijzen met gegarandeerde return on investment</p>
+        </div>
+
+        <div class="pricing-table">
+            <div class="pricing-header">
+                <h3>Hydrauliek24 Maatwerk Oplossing</h3>
+                <p style="opacity: 0.9;">Afgestemd op volume en vereisten</p>
+            </div>
+            <div class="pricing-body">
+                <div class="price-row">
+                    <span>Setup & Integratie</span>
+                    <span>€3.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Kennisbank Import & Training</span>
+                    <span>€1.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Maandelijks Abonnement</span>
+                    <span>€450/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>AI Verwerkingskosten (GPT-5 / Claude 4.5)</span>
+                    <span>~€50/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Vector Database (RAG)</span>
+                    <span>€80/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Data updates</span>
+                    <span>€70/maand</span>
+                </div>
+                <div class="price-row">
+                    <span><strong>Totale Maandelijkse Kosten</strong></span>
+                    <span><strong>€650/maand</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 40px; border-radius: 16px; margin: 50px 0; border: 1px solid #a7f3d0;">
+            <h3 style="color: #065f46; margin-bottom: 25px; font-size: 28px;">Return on Investment</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h4 style="color: #047857; margin-bottom: 15px;">Kostenbesparing</h4>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Tijd bespaard: 125 uur/maand</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Arbeidskosten: €30/uur</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #065f46; margin-top: 15px;">Maandelijkse besparing: €3.750</p>
+                </div>
+                <div>
+                    <h4 style="color: #047857; margin-bottom: 15px;">ROI Berekening</h4>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Maandelijkse besparing: €3.750</p>
+                    <p style="margin-bottom: 8px; color: #064e3b;">Maandelijkse kosten: €650</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #065f46; margin-top: 15px;">Netto voordeel: €3.100/maand</p>
+                    <p style="font-size: 28px; font-weight: 700; color: #065f46; margin-top: 10px;">ROI: 375%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vergelijking -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Waarom onze oplossing beter is</h2>
+            <p>Zie hoe wij ons verhouden tot alternatieven voor technische B2B support</p>
+        </div>
+
+        <table class="feature-comparison">
+            <thead>
+            <tr>
+                <th>Functie</th>
+                <th>Onze Oplossing</th>
+                <th>Standaard Chatbots</th>
+                <th>Handmatig Proces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Technische Productkennis</td>
+                <td><span class="check">✓</span> 50.000+ producten met specs</td>
+                <td><span class="cross">✗</span> Beperkte kennis</td>
+                <td><span class="check">✓</span> Indien engineer beschikbaar</td>
+            </tr>
+            <tr>
+                <td>Meertalige Ondersteuning</td>
+                <td><span class="check">✓</span> 100+ talen</td>
+                <td><span class="check">✓</span> Beperkt</td>
+                <td><span class="cross">✗</span> Afhankelijk van personeel</td>
+            </tr>
+            <tr>
+                <td>Configurator Integratie</td>
+                <td><span class="check">✓</span> Automatisch suggereren</td>
+                <td><span class="cross">✗</span> Niet mogelijk</td>
+                <td><span class="check">✓</span> Handmatig</td>
+            </tr>
+            <tr>
+                <td>Verwerkingstijd</td>
+                <td><span class="check">✓</span> 30 seconden</td>
+                <td><span class="check">✓</span> Direct (maar vaak onjuist)</td>
+                <td><span class="cross">✗</span> 10+ minuten</td>
+            </tr>
+            <tr>
+                <td>Technische Nauwkeurigheid</td>
+                <td><span class="check">✓</span> 95%</td>
+                <td><span class="cross">✗</span> 40-60%</td>
+                <td><span class="check">✓</span> 98% (maar langzaam)</td>
+            </tr>
+            <tr>
+                <td>Menselijk Toezicht</td>
+                <td><span class="check">✓</span> Altijd (concepten)</td>
+                <td><span class="cross">✗</span> Nee (automatisch)</td>
+                <td><span class="check">✓</span> Ja</td>
+            </tr>
+            <tr>
+                <td>B2B / Technische Focus</td>
+                <td><span class="check">✓</span> Volledig</td>
+                <td><span class="cross">✗</span> Consumer gericht</td>
+                <td><span class="check">✓</span> Mogelijk</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Ondersteuning -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Uitgebreide ondersteuning</h2>
+            <p>Wij staan elke stap aan jullie zijde</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <h3>Trainingsprogramma</h3>
+                <p>• Uitgebreide onboarding<br>
+                   • Snelle referentiegidsen
+                   </p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </div>
+                <h3>Toegewijde Support</h3>
+                <p>• Email support<br>
+                   • Telefonische support op afspraak<br>
+                   • Toegewezen accountmanager</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <h3>Continue Verbetering</h3>
+                <p>• productkennis updates<br>
+                   • AI model optimalisatie<br>
+                   • Nieuwe functies<br>
+                   • Rapportages en inzichten</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <img src="images/brainvine-logo.svg" alt="Brainvine AI" class="footer-logo">
+        <p style="font-size: 16px; margin-bottom: 15px;">© 2025 Brainvine AI</p>
+        <p style="font-size: 14px;">
+            Gespecialiseerd in AI oplossingen die écht werken.<br>
+            <a href="mailto:info@brainvine.ai">info@brainvine.ai</a>
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
