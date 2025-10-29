@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastertools - Intelligente E-mail Automatisering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+
+        /* Top Navigation Bar */
+        .top-nav {
+            background: #1f4898;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .top-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 40px;
+            width: auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2f63c8 0%, #1f4898 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff20" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,133.3C960,128,1056,96,1152,90.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .hero .tagline {
+            font-size: 18px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .value-card .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2c67da 0%, #1f4898 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .value-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .value-card p {
+            color: #7f8c8d;
+            line-height: 1.8;
+        }
+
+        .workflow-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin: 40px 0;
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 60px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: #e0e0e0;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2c67da 0%, #1f4898 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .step-content p {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .step-tech {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #1f4898;
+            margin-right: 8px;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2c67da 0%, #1f4898 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .demo-container {
+            background: #2c3e50;
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+        }
+
+        .demo-screen {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+
+        .email-preview {
+            border-left: 3px solid #1f4898;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        .email-meta {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .email-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .response-draft {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tech-logo {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .pricing-table {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .pricing-header {
+            background: linear-gradient(135deg, #2c67da 0%, #1f4898 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-body {
+            padding: 40px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            padding-top: 30px;
+            border-top: 2px solid #1f4898;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 16px;
+            margin: 60px 0;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #2c67da 0%, #1f4898 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        .timeline {
+            margin: 40px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .timeline-date {
+            min-width: 120px;
+            font-weight: bold;
+            color: #1f4898;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 30px;
+            border-left: 2px solid #e0e0e0;
+        }
+
+        .timeline-content h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .timeline-content p {
+            color: #7f8c8d;
+        }
+
+        .feature-comparison {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+        }
+
+        .feature-comparison th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .feature-comparison td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .check {
+            color: #4caf50;
+            font-size: 20px;
+        }
+
+        .cross {
+            color: #f44336;
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="top-nav-content">
+        <div class="logo-container">
+            <img src="images/mastertools.svg" alt="Mastertools Logo">
+            <span style="color: white; font-size: 34px;margin-bottom:6px">×</span>
+            <img src="images/brainvine-logo.svg" alt="Brainvine Logo">
+        </div>
+    </div>
+</div>
+
+<div class="hero">
+    <div class="hero-content">
+        <h1>🔧 Intelligente E-mail Automatisering voor Mastertools</h1>
+        <p class="subtitle">Transformeer zakelijke klantenservice met AI-Gestuurde antwoordgeneratie</p>
+        <p class="tagline">🎯 95% Tijdsbesparing • 🌍 Meertalig • 🚀 30 Seconden Verwerking • 📕 Volledige kennis van Mastertools assortiment</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Waardepropositie -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Het Mastertools voordeel</h2>
+            <p>Van handmatig naar geautomatiseerde e-mailexcellentie</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">⏱️</div>
+                <h3>5 Minuten → 30 Seconden</h3>
+                <p>Verminder de voorbereidingstijd voor e-mailantwoorden met 90%. Onze AI analyseert inkomende e-mails en genereert nauwkeurige conceptantwoorden in minder dan 30 seconden, gebruikmakend van jullie complete productcatalogus van Makita, Milwaukee, Bosch Professional, DeWALT en Stanley.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🌍</div>
+                <h3>Echt Meertalig</h3>
+                <p>Detecteer automatisch de taal van de klant en reageer natuurlijk in Nederlands, Engels, Duits, Frans en meer. Perfect voor jullie zakelijke klanten in België en Duitsland die btw-vrij bestellen.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🎯</div>
+                <h3>Mastertools Kennis</h3>
+                <p>Benut Mastertools' complete gereedschapscatalogus, technische specificaties, verzendbeleid, retourprocedures en zakelijke offerteprocessen. Elk antwoord is accuraat, relevant en merkconsistent.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">✅</div>
+                <h3>Menselijk Toezicht</h3>
+                <p>Concepten verschijnen in de <a href="https://brainvineai.github.io/showcase/mastertools-ui-example.html">interface</a> voor controle voordat ze worden verzonden. Het Mastertools team behoudt volledige controle terwijl uren repetitief werk worden bespaard.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">📊</div>
+                <h3>Intelligente Inzichten</h3>
+                <p>Volg reactietijden en detecteer veelvoorkomende vragen. Gebruik data om zowel AI-antwoorden als bedrijfsprocessen te verbeteren. Ideaal voor het optimaliseren van jullie zakelijke offerteproces.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">🔄</div>
+                <h3>Naadloze Integratie</h3>
+                <p>Werkt met de bestaande Magento webshop en CM.com klantenservice setup. Geen noodzaak om de workflow te veranderen - wij verbeteren deze.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hoe het werkt -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Hoe Het Werkt</h2>
+            <p>Intelligente automatisering die perfect past in de bestaande workflow</p>
+        </div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>E-mail komt binnen</h4>
+                    <p>Klant stuurt een e-mail naar jullie supportadres (klantenservice@mastertools.nl)</p>
+                    <p>De e-mail wordt automatisch gesynchroniseerd met CM.com zoals gewoonlijk.</p>
+                    <p>De e-mail wordt naar onze workflow gestuurd.</p>
+                    <span class="step-tech">CM.com API</span>
+                    <span class="step-tech">Brainvine AI workflow</span>
+                    <span class="step-tech">Magento Sync</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>AI Analyse & Taaldetectie</h4>
+                    <p>Ons systeem detecteert direct de e-mailtaal en analyseert de inhoud.</p>
+                    <p>Identificeert intentie: productvraag, technische specificaties, offerte-aanvraag, orderstatus, zakelijke levering, btw-vrije bestelling, etc.</p>
+                    <span class="step-tech">Natural Language Processing</span>
+                    <span class="step-tech">Intent Classificatie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Kennisbank doorzoeken</h4>
+                    <p>Doorzoekt alle Mastertools kennis:</p>
+                    <p>• Productcatalogus met specs, compatibiliteit, beschikbaarheid<br>
+                        • Technische datasheets en handboeken<br>
+                        • Verzend- en retourbeleid<br>
+                        • Zakelijke voorwaarden en btw-regelgeving<br>
+                        • Offerteprocessen en staffelkortingen<br>
+                        • Eerdere vergelijkbare vragen</p>
+                    <span class="step-tech">Vector Search</span>
+                    <span class="step-tech">RAG Pipeline</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Concept generatie</h4>
+                    <p>AI genereert een professioneel antwoord in de taal van de klant.</p>
+                    <p>Inclusief relevante productlinks, technische specs, prijsinformatie met staffelkorting indien van toepassing.</p>
+                    <span class="step-tech">GPT-5</span>
+                    <span class="step-tech">Context Injectie</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Concept review in <a href="https://brainvineai.github.io/showcase/mastertools-ui-example.html">dashboard</a></h4>
+                    <p>Het concept verschijnt direct in ons review dashboard.</p>
+                    <p>Inclusief betrouwbaarheidsscore en bronreferenties voor transparantie.</p>
+                    <span class="step-tech"><a href="https://brainvineai.github.io/showcase/mastertools-ui-example.html">Review Dashboard</a></span>
+                    <span class="step-tech">Conceptbeheer</span>
+                </div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Controle door medewerker & Verzenden</h4>
+                    <p>Het Mastertools team controleert het concept, maakt eventuele aanpassingen en verzendt.</p>
+                    <p>Gemiddelde bewerkingstijd: minder dan 30 seconden voor 85% van de e-mails.</p>
+                    <span class="step-tech">Menselijk toezicht</span>
+                    <span class="step-tech">Kwaliteitsborging</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Zie het in actie</h2>
+            <p>Echt voorbeeld van hoe Mastertools e-mails worden verwerkt</p>
+        </div>
+
+        <div class="demo-container">
+            <h3 style="margin-bottom: 20px;">📧 Inkomende zakelijke e-mail</h3>
+            <div class="demo-screen">
+                <div class="email-preview">
+                    <div class="email-meta">
+                        <strong>Van:</strong> p.jansen@bouwbedrijf-jansen.nl<br>
+                        <strong>Onderwerp:</strong> Offerte-aanvraag accu-gereedschap
+                    </div>
+                    <div class="email-content">
+                        <p>Beste Mastertools team,</p>
+                        <p>Wij zijn een bouwbedrijf uit Groningen en op zoek naar een compleet accu-gereedschap pakket voor ons nieuwe team van 5 monteurs.</p>
+                        <p>We denken aan:</p>
+                        <p>- 5x Milwaukee M18 accuboormachine (met 2 accu's per set)<br>
+                        - 5x Milwaukee M18 slagschroevendraaier<br>
+                        - 10x extra M18 accu's (5.0Ah)<br>
+                        - 5x Milwaukee opladers<br>
+                        - Milwaukee gereedschapskoffer/systainer voor de sets</p>
+                        <p>Kunnen jullie hiervoor een scherpe offerte maken? We willen graag weten of er staffelkorting mogelijk is en wat de levertijd zou zijn naar Groningen. Betaling graag op factuur met 30 dagen betalingstermijn.</p>
+                        <p>Voor onze administratie: kunnen jullie bevestigen dat wij btw-vrij kunnen bestellen met ons Nederlands btw-nummer?</p>
+                        <p>Met vriendelijke groet,<br>
+                        Peter Jansen<br>
+                        Bouwbedrijf Jansen B.V.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="display: inline-block; background: #FF8C00; color: white; padding: 10px 20px; border-radius: 20px;">
+                        ⚡ AI verwerking (5-30 seconden)
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 30px;">🤖 Gegenereerd conceptantwoord <small>(let op: niet getraind op echte Mastertools data)</small></h4>
+                <div class="response-draft">
+                    <p>Beste Peter,</p>
+                    <p>Dank voor jullie interesse in Milwaukee gereedschap! Mooi dat jullie kiezen voor professionele kwaliteit voor jullie montageteam.</p>
+
+                    <p><strong>Offerte accu-gereedschap pakket (5 monteurs):</strong></p>
+
+                    <p><strong>Producten:</strong><br>
+                    • 5x Milwaukee M18 FPD2-502X (boormachine, 2x 5.0Ah accu, oplader) - €899,- per set<br>
+                    • 5x Milwaukee M18 FID2-0 (slagschroevendraaier, body) - €249,- per stuk<br>
+                    • 10x Milwaukee M18 B5 accu 5.0Ah - €79,- per stuk<br>
+                    • Milwaukee PACKOUT koffer 3-delig (per team) - €189,- per set (5x)</p>
+
+                    <p><strong>Berekening:</strong><br>
+                    Subtotaal: €9.530,- excl. btw<br>
+                    Staffelkorting (>€2.500): -8%<br>
+                    <strong>Totaal: €8.768,- excl. btw</strong></p>
+
+                    <p><strong>Zakelijke voorwaarden:</strong><br>
+                    ✓ Als Nederlands bedrijf kunnen jullie gewoon inclusief btw bestellen - btw-vrij bestellen is alleen voor leveringen naar België of Duitsland via intracommunautaire handel.<br>
+                    ✓ Betaling op factuur met 30 dagen betalingstermijn is mogelijk na aanmaken zakelijk account en creditcheck (standaard procedure).<br>
+                    ✓ Gratis verzending (bestelling > €45,- excl. btw)</p>
+
+                    <p><strong>Levertijd Groningen:</strong><br>
+                    Alle producten zijn op voorraad. Bij bestelling voor 22:00 uur leveren we volgende werkdag in Groningen. Levering in één zending met track & trace.</p>
+
+                    <p><strong>Garantie & service:</strong><br>
+                    • Milwaukee gereedschap: 3 jaar fabrieksgarantie<br>
+                    • Accu's: 2 jaar garantie<br>
+                    • Gratis servicecontract beschikbaar voor zakelijke klanten</p>
+
+                    <p>Stuur mij jullie btw-nummer en KVK-nummer, dan maak ik direct een zakelijk account voor jullie aan en stuur ik een formele offerte PDF.</p>
+
+                    <p>Vragen over de specificaties of andere Milwaukee combinaties? Laat het weten!</p>
+
+                    <p>Met vriendelijke groet,<br>
+                    Mastertools Zakelijke Service<br>
+                    050-4041040 | offerte@mastertools.nl</p>
+
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666;">
+                        <strong>AI Context Gebruikt:</strong> Product DB (Milwaukee M18), Prijzen & Staffelkorting, Zakelijke Voorwaarden, Verzendbeleid, BTW-regelgeving NL<br>
+                        <strong>Betrouwbaarheid:</strong> 96%<br>
+                        <strong>Taal:</strong> Nederlands (automatisch gedetecteerd)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technische Architectuur -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Technische Excellentie</h2>
+            <p>Enterprise-grade technologie op maat voor Mastertools</p>
+        </div>
+
+        <div class="workflow-container">
+            <h3>🏗️ Systeemarchitectuur</h3>
+            <p style="margin: 20px 0;">Onze oplossing integreert naadloos met de bestaande infrastructuur:</p>
+
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <span>🛒</span>
+                    <strong>Magento E-commerce</strong>
+                </div>
+                <div class="tech-item">
+                    <span>💬</span>
+                    <strong>CM.com Platform</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🤖</span>
+                    <strong>GPT-5 of vergelijkbaar</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🔍</span>
+                    <strong>Pinecone Vector DB</strong>
+                </div>
+                <div class="tech-item">
+                    <span>🔒</span>
+                    <strong>Enterprise Beveiliging</strong>
+                </div>
+            </div>
+
+            <h4 style="margin-top: 40px;">🔒 Beveiliging & Compliance</h4>
+            <ul style="margin: 20px 0; line-height: 2;">
+                <li>✅ AVG-compliant</li>
+                <li>✅ End-to-end encryptie voor alle dataoverdrachten</li>
+                <li>✅ Geen klantdata gebruikt voor AI-training</li>
+                <li>✅ Regelmatige beveiligingsaudits</li>
+                <li>✅ BTW-regelgeving compliance (NL/BE/DE)</li>
+            </ul>
+
+            <h4 style="margin-top: 40px;">📊 Mastertools Kennisbank Integratie (indien beschikbaar)</h4>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Productcatalogus:</strong> Volledige Magento catalogus met specs en compatibiliteit</p>
+                <p><strong>Technische data:</strong> Datasheets, handleidingen, veiligheidsvoorschriften</p>
+                <p><strong>Voorraad:</strong> Real-time voorraadniveaus en beschikbaarheid</p>
+                <p><strong>Zakelijk:</strong> Staffelkortingen, offerteprocessen, btw-regelgeving, betalingsvoorwaarden</p>
+                <p><strong>Beleid:</strong> Verzending, retouren, garanties in meerdere talen</p>
+                <p><strong>Merkinformatie:</strong> Makita, Milwaukee, Bosch Professional, DeWALT, Stanley productlijnen</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prijzen -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Investering & ROI</h2>
+            <p>Transparante prijzen met gegarandeerde return on investment</p>
+        </div>
+
+        <div class="pricing-table">
+            <div class="pricing-header">
+                <h3>Mastertools Maatwerk Oplossing</h3>
+                <p>Afgestemd op volume en vereisten</p>
+            </div>
+            <div class="pricing-body">
+                <div class="price-row">
+                    <span>Setup & Integratie (Magento + CM.com)</span>
+                    <span>€3.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Kennisbank Import & Training</span>
+                    <span>€1.500 (eenmalig)</span>
+                </div>
+                <div class="price-row">
+                    <span>Maandelijks Abonnement</span>
+                    <span>€450/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>AI Verwerkingskosten (GPT-5)</span>
+                    <span>~€50/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Vector Database (Pinecone)</span>
+                    <span>€80/maand</span>
+                </div>
+                <div class="price-row">
+                    <span>Data updates</span>
+                    <span>€70/maand</span>
+                </div>
+                <div class="price-row">
+                    <span><strong>Totale Maandelijkse Kosten</strong></span>
+                    <span><strong>€650/maand</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; margin: 40px 0;">
+            <h3 style="color: #2e7d32; margin-bottom: 20px;">💰 Return on Investment</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h4>Kostenbesparing</h4>
+                    <p>Tijd bespaard: 125 uur/maand</p>
+                    <p>Arbeidskosten: €30/uur</p>
+                    <p><strong>Maandelijkse besparing: €3.750</strong></p>
+                </div>
+                <div>
+                    <h4>ROI Berekening</h4>
+                    <p>Maandelijkse besparing: €3.750</p>
+                    <p>Maandelijkse kosten: €650</p>
+                    <p><strong>Netto voordeel: €3.100/maand</strong></p>
+                    <p><strong>ROI: 375% 🚀</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vergelijking -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Wat onze oplossing beter maakt</h2>
+            <p>Zie hoe wij ons verhouden tot alternatieven</p>
+        </div>
+
+        <table class="feature-comparison">
+            <thead>
+            <tr>
+                <th>Functie</th>
+                <th>Onze Oplossing</th>
+                <th>Generieke Chatbots</th>
+                <th>Handmatig Proces</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Meertalige Ondersteuning</td>
+                <td><span class="check">✓</span> 100+ talen</td>
+                <td><span class="check">✓</span> Beperkt</td>
+                <td><span class="cross">✗</span> Afhankelijk van personeel</td>
+            </tr>
+            <tr>
+                <td>Productkennis</td>
+                <td><span class="check">✓</span> Volledige catalogus</td>
+                <td><span class="cross">✗</span> Alleen basis</td>
+                <td><span class="check">✓</span> Als getraind</td>
+            </tr>
+            <tr>
+                <td>Technische Specificaties</td>
+                <td><span class="check">✓</span> Volledige datasheets</td>
+                <td><span class="cross">✗</span> Beperkt</td>
+                <td><span class="check">✓</span> Variabel</td>
+            </tr>
+            <tr>
+                <td>Zakelijke Offertes</td>
+                <td><span class="check">✓</span> Geautomatiseerd</td>
+                <td><span class="cross">✗</span> Niet ondersteund</td>
+                <td><span class="cross">✗</span> Tijdrovend</td>
+            </tr>
+            <tr>
+                <td>Reactietijd</td>
+                <td><span class="check">✓</span> 30 seconden</td>
+                <td><span class="check">✓</span> Direct</td>
+                <td><span class="cross">✗</span> 5+ minuten</td>
+            </tr>
+            <tr>
+                <td>Nauwkeurigheid</td>
+                <td><span class="check">✓</span> >95%</td>
+                <td><span class="cross">✗</span> 60-70%</td>
+                <td><span class="check">✓</span> Variabel</td>
+            </tr>
+            <tr>
+                <td>Menselijk Toezicht</td>
+                <td><span class="check">✓</span> Altijd</td>
+                <td><span class="cross">✗</span> Nee</td>
+                <td><span class="check">✓</span> Ja</td>
+            </tr>
+            <tr>
+                <td>Kosten per E-mail</td>
+                <td><span class="check">✓</span> €0,00 - €0,03 </td>
+                <td><span class="check">✓</span> €0,05</td>
+                <td><span class="cross">✗</span> €2,50</td>
+            </tr>
+            <tr>
+                <td>Schaalbaarheid</td>
+                <td><span class="check">✓</span> Onbeperkt</td>
+                <td><span class="check">✓</span> Onbeperkt</td>
+                <td><span class="cross">✗</span> Beperkt</td>
+            </tr>
+            <tr>
+                <td>Magento Integratie</td>
+                <td><span class="check">✓</span> Volledig</td>
+                <td><span class="cross">✗</span> Beperkt</td>
+                <td>N.v.t.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Ondersteuning -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Uitgebreide ondersteuning</h2>
+            <p>Wij staan elke stap aan jullie zijde</p>
+        </div>
+
+        <div class="value-props">
+            <div class="value-card">
+                <div class="icon">🎓</div>
+                <h3>Trainingsprogramma</h3>
+                <p>• Onboarding / trainingssessie<br>
+                    • Snelle referentiegidsen</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">💬</div>
+                <h3>Toegewijde Support</h3>
+                <p>• Toegewijd Slack kanaal<br>
+                    • Snelle reactie<br>
+                    • Toegewezen accountmanager</p>
+            </div>
+
+            <div class="value-card">
+                <div class="icon">📈</div>
+                <h3>Continue Verbetering</h3>
+                <p>• Nieuwe functie-uitrol<br>
+                    • AI model updates inbegrepen<br>
+                    • Regelmatige performance reviews</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

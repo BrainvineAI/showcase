@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastertools AI Email Assistant - Dashboard (MOCKUP)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header .subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(255,140,0,0.2);
+            border-left: 3px solid #FF8C00;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #FF8C00;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: #FF8C00;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 8px 12px 8px 35px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        /* Inbox View */
+        .inbox-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .inbox-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #FF8C00;
+            color: white;
+            border-color: #FF8C00;
+        }
+
+        .email-list {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .email-item {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: start;
+            gap: 15px;
+        }
+
+        .email-item:hover {
+            background: #f8f9fa;
+        }
+
+        .email-checkbox {
+            margin-top: 2px;
+        }
+
+        .email-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .email-status.unread {
+            background: #FF8C00;
+        }
+
+        .email-content {
+            flex: 1;
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .email-from {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .email-time {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .email-subject {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .email-preview {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .email-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .email-tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: #f0f0f0;
+        }
+
+        .email-tag.language {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .email-tag.intent {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .email-tag.confidence {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .email-tag.confidence.low {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        /* Draft View */
+        .draft-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .draft-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .draft-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .draft-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,140,0,0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .draft-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .draft-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .draft-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .draft-editor {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 300px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .draft-toolbar {
+            background: white;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-btn {
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Rules Management */
+        .rules-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .rule-item {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rule-content {
+            flex: 1;
+        }
+
+        .rule-trigger {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .rule-action {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .rule-toggle {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .rule-toggle.active {
+            background: #4caf50;
+        }
+
+        .rule-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .rule-toggle.active::after {
+            transform: translateX(26px);
+        }
+
+        /* FAQ Collection */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .faq-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .faq-answer {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .faq-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card.primary {
+            background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .stat-change {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .stat-change.positive {
+            color: #4caf50;
+        }
+
+        .stat-change.negative {
+            color: #f44336;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(to right, #f0f0f0 0%, #f8f9fa 50%, #f0f0f0 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Settings */
+        .settings-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .settings-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .setting-label {
+            flex: 1;
+        }
+
+        .setting-label h4 {
+            font-size: 15px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .setting-label p {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-field {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .select-field {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,140,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255,140,0,0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>🔧 Mastertools Assistant</h2>
+        <div class="subtitle">Email Assistant Dashboard (MOCKUP)</div>
+    </div>
+    <nav class="nav-menu">
+        <a href="#inbox" class="nav-item active" onclick="showSection('inbox')">
+            <span class="nav-icon">📧</span>
+            <span>Inbox</span>
+            <span class="nav-badge">15</span>
+        </a>
+        <a href="#rules" class="nav-item" onclick="showSection('rules')">
+            <span class="nav-icon">⚙️</span>
+            <span>Rules</span>
+        </a>
+        <a href="#faq" class="nav-item" onclick="showSection('faq')">
+            <span class="nav-icon">❓</span>
+            <span>FAQ Collection</span>
+        </a>
+        <a href="#stats" class="nav-item" onclick="showSection('stats')">
+            <span class="nav-icon">📊</span>
+            <span>Statistics</span>
+        </a>
+        <a href="#settings" class="nav-item" onclick="showSection('settings')">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+        </a>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Top Bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="search-box">
+                <input type="text" placeholder="Zoek emails, klanten, producten...">
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="btn btn-primary">Sync CM.com</button>
+            <div class="user-info">
+                <span>Admin User</span>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content">
+        <!-- Inbox Section -->
+        <div id="inbox-section" class="section-content">
+            <div class="inbox-header">
+                <h1>Email Inbox</h1>
+                <div class="inbox-filters">
+                    <button class="filter-btn active">Alles</button>
+                    <button class="filter-btn">Onverwerkt</button>
+                    <button class="filter-btn">Hoge Prioriteit</button>
+                    <button class="filter-btn">Lage Zekerheid</button>
+                </div>
+            </div>
+
+            <div class="email-list">
+                <div class="email-item" onclick="showDraft('peter-jansen')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status unread"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Peter Jansen - Bouwbedrijf Jansen B.V.</span>
+                            <span class="email-time">3 min geleden</span>
+                        </div>
+                        <div class="email-subject">Offerte-aanvraag accu-gereedschap</div>
+                        <div class="email-preview">Wij zijn een bouwbedrijf uit Groningen en op zoek naar een compleet Milwaukee M18 pakket voor ons team van 5 monteurs...</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇳🇱 Dutch</span>
+                            <span class="email-tag intent">Zakelijke Offerte</span>
+                            <span class="email-tag confidence">96% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('thomas-mueller')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Thomas Müller</span>
+                            <span class="email-time">18 min geleden</span>
+                        </div>
+                        <div class="email-subject">Lieferung nach Deutschland - MwSt</div>
+                        <div class="email-preview">Können Sie mir bitte mitteilen, ob ich als deutsches Unternehmen die Mehrwertsteuer bei der Lieferung sparen kann?</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇩🇪 German</span>
+                            <span class="email-tag intent">BTW Informatie</span>
+                            <span class="email-tag confidence">94% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('jan-de-vries')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status unread"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Jan de Vries</span>
+                            <span class="email-time">45 min geleden</span>
+                        </div>
+                        <div class="email-subject">Makita vs DeWALT - wat adviseren jullie?</div>
+                        <div class="email-preview">Ik ben een doe-het-zelver en wil investeren in kwaliteitsgereedschap. Wat is het verschil tussen Makita en DeWALT accuboormachines?</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇳🇱 Dutch</span>
+                            <span class="email-tag intent">Product Vergelijking</span>
+                            <span class="email-tag confidence">98% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="email-item" onclick="showDraft('sophie-laurent')">
+                    <input type="checkbox" class="email-checkbox">
+                    <div class="email-status"></div>
+                    <div class="email-content">
+                        <div class="email-header">
+                            <span class="email-from">Sophie Laurent</span>
+                            <span class="email-time">1 uur geleden</span>
+                        </div>
+                        <div class="email-subject">Livraison en Belgique</div>
+                        <div class="email-preview">Bonjour, je voudrais savoir si vous livrez en Belgique et quels sont les frais de port?</div>
+                        <div class="email-meta">
+                            <span class="email-tag language">🇫🇷 French</span>
+                            <span class="email-tag intent">Verzending</span>
+                            <span class="email-tag confidence low">78% Confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draft Edit/Verify Section -->
+        <div id="draft-section" class="section-content" style="display: none;">
+            <div class="draft-container">
+                <div class="draft-header">
+                    <h1 class="draft-title">Review Draft Response</h1>
+                    <div class="draft-actions">
+                        <button class="btn btn-outline">Concept Opslaan</button>
+                        <button class="btn btn-secondary">Opnieuw Genereren</button>
+                        <button class="btn btn-primary">Goedkeuren & Verzenden</button>
+                    </div>
+                </div>
+
+                <div class="draft-split">
+                    <div class="draft-section">
+                        <h3>Originele Email</h3>
+                        <div class="draft-editor" contenteditable="false">
+                            <strong>Van:</strong> p.jansen@bouwbedrijf-jansen.nl<br><br>
+                            Beste Mastertools team,<br><br>
+                            Wij zijn een bouwbedrijf uit Groningen en op zoek naar een compleet accu-gereedschap pakket voor ons nieuwe team van 5 monteurs.<br><br>
+                            We denken aan:<br>
+                            - 5x Milwaukee M18 accuboormachine (met 2 accu's per set)<br>
+                            - 5x Milwaukee M18 slagschroevendraaier<br>
+                            - 10x extra M18 accu's (5.0Ah)<br>
+                            - 5x Milwaukee opladers<br>
+                            - Milwaukee gereedschapskoffer/systainer voor de sets<br><br>
+                            Kunnen jullie hiervoor een scherpe offerte maken? We willen graag weten of er staffelkorting mogelijk is en wat de levertijd zou zijn naar Groningen.<br><br>
+                            Met vriendelijke groet,<br>
+                            Peter Jansen<br>
+                            Bouwbedrijf Jansen B.V.
+                        </div>
+                    </div>
+
+                    <div class="draft-section">
+                        <h3>AI Draft Response</h3>
+                        <div class="draft-toolbar">
+                            <button class="toolbar-btn">Vet</button>
+                            <button class="toolbar-btn">Cursief</button>
+                            <button class="toolbar-btn">Link</button>
+                            <button class="toolbar-btn">Product</button>
+                        </div>
+                        <div class="draft-editor" contenteditable="true">
+                            Beste Peter,<br><br>
+                            Dank voor jullie interesse in Milwaukee gereedschap! Mooi dat jullie kiezen voor professionele kwaliteit voor jullie montageteam.<br><br>
+                            <strong>Offerte accu-gereedschap pakket (5 monteurs):</strong><br><br>
+                            <strong>Producten:</strong><br>
+                            • 5x Milwaukee M18 FPD2-502X (boormachine, 2x 5.0Ah accu, oplader) - €899,- per set<br>
+                            • 5x Milwaukee M18 FID2-0 (slagschroevendraaier, body) - €249,- per stuk<br>
+                            • 10x Milwaukee M18 B5 accu 5.0Ah - €79,- per stuk<br>
+                            • 5x Milwaukee PACKOUT koffer 3-delig - €189,- per set<br><br>
+                            <strong>Berekening:</strong><br>
+                            Subtotaal: €9.530,- excl. btw<br>
+                            Staffelkorting (>€2.500): -8%<br>
+                            <strong>Totaal: €8.768,- excl. btw</strong><br><br>
+                            <strong>Levertijd Groningen:</strong><br>
+                            Alle producten zijn op voorraad. Bij bestelling voor 22:00 uur leveren we volgende werkdag in Groningen!<br><br>
+                            Stuur mij jullie btw-nummer en KVK-nummer, dan maak ik direct een zakelijk account aan en stuur ik een formele offerte PDF.<br><br>
+                            Met vriendelijke groet,<br>
+                            Mastertools Zakelijke Service<br>
+                            050-4041040 | offerte@mastertools.nl
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <h4>AI Context & Metadata</h4>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 15px;">
+                        <div>
+                            <strong>Confidence:</strong> 96%<br>
+                            <strong>Language:</strong> Dutch
+                        </div>
+                        <div>
+                            <strong>Intent:</strong> Zakelijke Offerte<br>
+                            <strong>Processing Time:</strong> 1.2s
+                        </div>
+                        <div>
+                            <strong>Sources Used:</strong><br>
+                            - Product Catalog<br>
+                            - Zakelijke Voorwaarden<br>
+                            - Staffelkorting DB
+                        </div>
+                        <div>
+                            <strong>Products Referenced:</strong><br>
+                            - Milwaukee M18 serie<br>
+                            - PACKOUT systeem
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggested Rule Section -->
+                <div id="suggested-rule" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border: 1px solid #81c784; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h4 style="color: #2e7d32; margin-bottom: 10px;">💡 Voorgestelde Nieuwe Regel</h4>
+                            <p style="margin-bottom: 10px; color: #1b5e20; font-weight: 500;">Gebaseerd op deze email raden we aan deze automatiseringsregel toe te voegen:</p>
+                            <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; color: #333; margin-bottom: 8px;">
+                                    Wanneer klant vraagt om zakelijke offerte >€2.500
+                                </div>
+                                <div style="color: #666; font-size: 14px;">
+                                    → Automatisch staffelkorting berekenen en toevoegen + vraag om btw-nummer en KVK-nummer
+                                </div>
+                            </div>
+                            <p style="font-size: 13px; color: #555; margin-bottom: 15px;">
+                                Deze regel werd getriggerd omdat de klant vroeg: <em>"Kunnen jullie hiervoor een scherpe offerte maken?"</em> met een totaal >€2.500
+                            </p>
+                        </div>
+                        <div style="margin-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn btn-primary" onclick="approveRule()" style="background: #4caf50; border: none;">
+                                ✓ Regel Goedkeuren
+                            </button>
+                            <button class="btn btn-outline" onclick="dismissRule()" style="font-size: 14px;">
+                                Afwijzen
+                            </button>
+                        </div>
+                    </div>
+                    <div id="rule-approved" style="display: none; background: #4caf50; color: white; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center;">
+                        ✓ Regel goedgekeurd! Deze wordt toegepast op alle toekomstige zakelijke offertes.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Section -->
+        <div id="rules-section" class="section-content" style="display: none;">
+            <div class="inbox-header">
+                <h1>Automatiseringsregels</h1>
+                <button class="btn btn-primary" onclick="showModal('add-rule')">+ Regel Toevoegen</button>
+            </div>
+
+            <div class="rules-container">
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">Wanneer email "levertijd" of "delivery" bevat</div>
+                        <div class="rule-action">→ Voeg automatisch standaard levertijdentabel toe en link naar tracking</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">Wanneer confidence score &lt; 80%</div>
+                        <div class="rule-action">→ Markeer voor handmatige review en waarschuw teamleider</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">Wanneer email over btw-vrij bestellen gaat</div>
+                        <div class="rule-action">→ Include BTW-regelgeving voor BE/DE en link naar account aanmaken</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">Wanneer klant vraagt om zakelijke offerte >€2.500</div>
+                        <div class="rule-action">→ Automatisch staffelkorting berekenen en toevoegen + vraag om btw-nummer en KVK-nummer</div>
+                    </div>
+                    <div class="rule-toggle active"></div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-content">
+                        <div class="rule-trigger">Wanneer email merkvergelijking vraagt (bijv. Makita vs Milwaukee)</div>
+                        <div class="rule-action">→ Include vergelijkingstabel met specificaties en prijzen</div>
+                    </div>
+                    <div class="rule-toggle"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Collection Section -->
+        <div id="faq-section" class="section-content" style="display: none;">
+            <div class="inbox-header">
+                <h1>FAQ Collectie</h1>
+                <button class="btn btn-primary" onclick="showModal('add-faq')">+ Toevoegen aan FAQ</button>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <div class="faq-question">Wat is het verschil tussen Milwaukee M18 en M12?</div>
+                    <div class="faq-answer">M18 is ons 18V platform voor professionele gebruikers met zwaar werk. M12 is het compacte 12V platform, ideaal voor lichtere klussen en werk in krappe ruimtes. Beide gebruiken dezelfde accu-technologie.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 67 keer</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Kann ich als deutsches Unternehmen MwSt-frei bestellen?</div>
+                    <div class="faq-answer">Ja! Als u een geldig Duits btw-nummer heeft en wij verzenden naar Duitsland, is er sprake van intracommunautaire levering. Vul uw btw-nummer in bij het afrekenen voor automatische validatie.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 34 keer</span>
+                        <span>🇩🇪 DE</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Bieden jullie staffelkorting voor zakelijke klanten?</div>
+                    <div class="faq-answer">Ja, voor zakelijke bestellingen vanaf €750,- kunt u een offerte aanvragen. Bij bestellingen >€2.500 krijgt u automatisch staffelkorting. Stuur een email naar offerte@mastertools.nl.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 89 keer</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Wat is de levertijd naar België?</div>
+                    <div class="faq-answer">Bij bestelling voor 22:00 uur leveren we binnen 2-3 werkdagen in België. Gratis verzending vanaf €45,- excl. btw. Track & trace informatie ontvangt u per email.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 45 keer</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Zijn Makita accu's compatibel met DeWALT gereedschap?</div>
+                    <div class="faq-answer">Nee, elk merk heeft zijn eigen accu-platform. Makita gebruikt LXT (18V), Milwaukee M18, DeWALT XR, etc. Binnen één merk zijn accu's wel cross-compatible binnen hetzelfde voltage platform.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 28 keer</span>
+                        <span>🇳🇱 NL</span>
+                    </div>
+                </div>
+
+                <div class="faq-card">
+                    <div class="faq-question">Quelle est la garantie sur les outils Bosch Professional?</div>
+                    <div class="faq-answer">Bosch Professional biedt 3 jaar fabrieksgarantie op elektrisch gereedschap en 2 jaar op accu's. Registratie via de Bosch website verlengt sommige garanties.</div>
+                    <div class="faq-meta">
+                        <span>Gebruikt 12 keer</span>
+                        <span>🇫🇷 FR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div id="stats-section" class="section-content" style="display: none;">
+            <h1 style="margin-bottom: 30px;">Performance Statistieken</h1>
+
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-value">1,582</div>
+                    <div class="stat-label">Emails Verwerkt</div>
+                    <div class="stat-change positive">↑ 18% vs vorige week</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">1.2s</div>
+                    <div class="stat-label">Gem. Verwerkingstijd</div>
+                    <div class="stat-change positive">↓ 0.2s verbetering</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">95%</div>
+                    <div class="stat-label">Concept Nauwkeurigheid</div>
+                    <div class="stat-change positive">↑ 3% verbetering</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-value">€3,750</div>
+                    <div class="stat-label">Maandelijkse Besparing</div>
+                    <div class="stat-change">125 uur bespaard</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Email Volume per Taal</h3>
+                    <select class="select-field" id="language-chart-range" onchange="updateLanguageChart()">
+                        <option value="7">Laatste 7 dagen</option>
+                        <option value="30">Laatste 30 dagen</option>
+                        <option value="90" selected>Laatste 90 dagen</option>
+                    </select>
+                </div>
+                <canvas id="languageChart" width="800" height="300" style="max-width: 100%;"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Response Tijd Trend</h3>
+                    <select class="select-field" id="response-chart-period" onchange="updateResponseChart()">
+                        <option value="daily">Dagelijks</option>
+                        <option value="weekly" selected>Wekelijks</option>
+                        <option value="monthly">Maandelijks</option>
+                    </select>
+                </div>
+                <canvas id="responseChart" width="800" height="300" style="max-width: 100%;"></canvas>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-section" class="section-content" style="display: none;">
+            <h1 style="margin-bottom: 30px;">Instellingen</h1>
+
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>AI Configuratie</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Confidence Drempel</h4>
+                            <p>Minimum confidence score voor auto-draft generatie</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="number" class="input-field" value="75" min="0" max="100">
+                            <span>%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Standaard Antwoordtaal</h4>
+                            <p>Taal om te gebruiken wanneer detectie onzeker is</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="select-field">
+                                <option>Nederlands</option>
+                                <option>Engels</option>
+                                <option>Duits</option>
+                                <option>Frans</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Inclusief Productlinks</h4>
+                            <p>Automatisch product URLs toevoegen aan antwoorden</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Magento Integratie</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>API Key</h4>
+                            <p>Jouw Magento API sleutel</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="password" class="input-field" value="••••••••••••">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Voorraad Sync Frequentie</h4>
+                            <p>Hoe vaak voorraad gesynchroniseerd wordt</p>
+                        </div>
+                        <div class="setting-control">
+                            <select class="select-field">
+                                <option>Elke minuut</option>
+                                <option>Elke 5 minuten</option>
+                                <option>Elke 10 minuten</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>CM.com Integratie</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>CM.com API Key</h4>
+                            <p>Jouw CM.com platform API sleutel</p>
+                        </div>
+                        <div class="setting-control">
+                            <input type="password" class="input-field" value="••••••••••••">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Email Sync</h4>
+                            <p>Synchroniseer emails vanaf CM.com platform</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Notificaties</h3>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>Email Notificaties</h4>
+                            <p>Ontvang alerts voor high-priority emails</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle active"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <h4>WhatsApp Notificaties</h4>
+                            <p>Stuur notificaties naar WhatsApp (050-4041040)</p>
+                        </div>
+                        <div class="setting-control">
+                            <div class="rule-toggle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<div class="fab" onclick="showModal('compose')">+</div>
+
+<!-- Modal for Adding Rules/FAQ -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Nieuwe Regel Toevoegen</h2>
+            <span class="modal-close" onclick="closeModal()">×</span>
+        </div>
+        <div id="modal-body">
+            <!-- Dynamic content based on action -->
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(section) {
+        // Hide all sections
+        document.querySelectorAll('.section-content').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Show selected section
+        document.getElementById(section + '-section').style.display = 'block';
+
+        // Update nav active state
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.remove('active');
+        });
+        if (event && event.target) {
+            const navItem = event.target.closest('.nav-item');
+            if (navItem) navItem.classList.add('active');
+        }
+    }
+
+    function showDraft(emailId) {
+        // Prevent checkbox from being checked when clicking on email
+        if (event.target.type === 'checkbox') return;
+
+        // Hide all sections
+        document.querySelectorAll('.section-content').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Show draft section
+        document.getElementById('draft-section').style.display = 'block';
+
+        // Update content based on which email was clicked
+        updateDraftContent(emailId);
+    }
+
+    function updateDraftContent(emailId) {
+        // Add a back button to return to inbox
+        const draftHeader = document.querySelector('.draft-header');
+        if (draftHeader && !document.getElementById('back-to-inbox')) {
+            const backButton = document.createElement('button');
+            backButton.id = 'back-to-inbox';
+            backButton.className = 'btn btn-outline';
+            backButton.innerHTML = '← Terug naar Inbox';
+            backButton.onclick = () => showSection('inbox');
+            draftHeader.insertBefore(backButton, draftHeader.firstChild);
+        }
+    }
+
+    function approveRule() {
+        // Show success message
+        document.getElementById('rule-approved').style.display = 'block';
+
+        // Hide the action buttons
+        const ruleSection = document.getElementById('suggested-rule');
+        const buttons = ruleSection.querySelectorAll('button');
+        buttons.forEach(btn => btn.style.display = 'none');
+
+        // After 3 seconds, fade out the entire suggestion
+        setTimeout(() => {
+            ruleSection.style.opacity = '0.7';
+        }, 3000);
+    }
+
+    function dismissRule() {
+        // Hide the suggested rule section
+        const ruleSection = document.getElementById('suggested-rule');
+        ruleSection.style.display = 'none';
+    }
+
+    function showModal(type) {
+        const modal = document.getElementById('modal');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+
+        if (type === 'add-rule') {
+            title.textContent = 'Nieuwe Automatiseringsregel Toevoegen';
+            body.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Trigger Conditie</label>
+                        <input type="text" class="input-field" style="width: 100%;" placeholder="bijv. Wanneer email 'urgent' bevat">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Actie</label>
+                        <textarea class="input-field" style="width: 100%; min-height: 100px;" placeholder="Wat moet er gebeuren wanneer aan deze conditie voldaan wordt?"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuleren</button>
+                        <button class="btn btn-primary">Regel Toevoegen</button>
+                    </div>
+                `;
+        } else if (type === 'add-faq') {
+            title.textContent = 'Toevoegen aan FAQ Collectie';
+            body.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Vraag</label>
+                        <input type="text" class="input-field" style="width: 100%;" placeholder="Voer de veelgestelde vraag in">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Antwoord</label>
+                        <textarea class="input-field" style="width: 100%; min-height: 150px;" placeholder="Voer het standaard antwoord in"></textarea>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Taal</label>
+                        <select class="select-field" style="width: 100%;">
+                            <option>Nederlands</option>
+                            <option>Engels</option>
+                            <option>Duits</option>
+                            <option>Frans</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="closeModal()">Annuleren</button>
+                        <button class="btn btn-primary">Toevoegen aan FAQ</button>
+                    </div>
+                `;
+        }
+
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('active');
+    }
+
+    // Toggle switches
+    document.querySelectorAll('.rule-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    });
+
+    // Chart functions (same as Fitwinkel but adapted for Mastertools data)
+    function generateLanguageData(days) {
+        const data = [];
+        const languages = ['Dutch', 'English', 'German', 'French', 'Spanish', 'Other'];
+        const basePercentages = [70, 15, 10, 3, 1, 1]; // More Dutch for NL market
+
+        for (let i = 0; i < days; i++) {
+            const dayData = {};
+            let total = 0;
+            basePercentages.forEach((base, index) => {
+                const variation = (Math.random() - 0.5) * 10;
+                const value = Math.max(0, base + variation);
+                dayData[languages[index]] = Math.round(value);
+                total += dayData[languages[index]];
+            });
+            // Normalize to 100%
+            Object.keys(dayData).forEach(lang => {
+                dayData[lang] = Math.round((dayData[lang] / total) * 100);
+            });
+            data.push(dayData);
+        }
+        return data;
+    }
+
+    function generateResponseTimeData(days, period) {
+        const data = [];
+        const startTime = 300;
+        const endTime = 18;
+
+        const points = period === 'daily' ? days : period === 'weekly' ? Math.ceil(days / 7) : Math.ceil(days / 30);
+        const decayRate = Math.log(endTime / startTime) / points;
+
+        for (let i = 0; i < points; i++) {
+            const baseTime = startTime * Math.exp(decayRate * i);
+            let variation = 0;
+            if (period === 'daily') {
+                variation = (Math.random() - 0.5) * 0.1;
+                const dayOfWeek = i % 7;
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    variation += 0.05;
+                }
+            } else if (period === 'weekly') {
+                variation = (Math.random() - 0.5) * 0.16;
+            } else {
+                variation = (Math.random() - 0.5) * 0.2;
+            }
+
+            if (Math.random() < 0.1) {
+                variation += 0.1 + Math.random() * 0.1;
+            }
+
+            data.push(Math.max(0.3, baseTime + variation));
+        }
+
+        return data;
+    }
+
+    function drawLanguageChart() {
+        const canvas = document.getElementById('languageChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const range = parseInt(document.getElementById('language-chart-range')?.value || '90');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const data = generateLanguageData(range);
+        const aggregated = {
+            'Dutch': 0,
+            'English': 0,
+            'German': 0,
+            'French': 0,
+            'Spanish': 0,
+            'Other': 0
+        };
+
+        data.forEach(day => {
+            Object.keys(day).forEach(lang => {
+                aggregated[lang] += day[lang];
+            });
+        });
+
+        Object.keys(aggregated).forEach(lang => {
+            aggregated[lang] = Math.round(aggregated[lang] / data.length);
+        });
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 40;
+
+        const colors = ['#FF8C00', '#2c3e50', '#3498db', '#9b59b6', '#1abc9c', '#95a5a6'];
+        const languages = Object.keys(aggregated);
+        let currentAngle = -Math.PI / 2;
+
+        languages.forEach((lang, index) => {
+            const percentage = aggregated[lang];
+            const sliceAngle = (percentage / 100) * Math.PI * 2;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+            ctx.closePath();
+            ctx.fillStyle = colors[index];
+            ctx.fill();
+
+            const labelAngle = currentAngle + sliceAngle / 2;
+            const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+            const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            if (percentage > 5) {
+                ctx.fillText(`${lang}`, labelX, labelY - 10);
+                ctx.fillText(`${percentage}%`, labelX, labelY + 10);
+            }
+
+            currentAngle += sliceAngle;
+        });
+
+        let legendY = 30;
+        languages.forEach((lang, index) => {
+            ctx.fillStyle = colors[index];
+            ctx.fillRect(canvas.width - 120, legendY, 15, 15);
+
+            ctx.fillStyle = '#333';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${lang} (${aggregated[lang]}%)`, canvas.width - 95, legendY + 12);
+
+            legendY += 25;
+        });
+    }
+
+    function drawResponseChart() {
+        const canvas = document.getElementById('responseChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const range = parseInt(document.getElementById('language-chart-range')?.value || '90');
+        const period = document.getElementById('response-chart-period')?.value || 'weekly';
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const data = generateResponseTimeData(range, period);
+
+        const padding = 50;
+        const chartWidth = canvas.width - padding * 2;
+        const chartHeight = canvas.height - padding * 2;
+
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding);
+        ctx.stroke();
+
+        ctx.fillStyle = '#666';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+
+        const maxTime = Math.max(...data);
+        const minTime = Math.min(...data);
+        const ySteps = 5;
+
+        for (let i = 0; i <= ySteps; i++) {
+            const y = padding + (chartHeight / ySteps) * i;
+            const value = maxTime - ((maxTime - minTime) / ySteps) * i;
+
+            ctx.fillText(value.toFixed(1) + 's', padding - 10, y);
+
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(canvas.width - padding, y);
+            ctx.stroke();
+        }
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+
+        const xStep = chartWidth / (data.length - 1);
+        const labelInterval = Math.max(1, Math.floor(data.length / 10));
+
+        for (let i = 0; i < data.length; i++) {
+            if (i % labelInterval === 0 || i === data.length - 1) {
+                const x = padding + xStep * i;
+                const label = period === 'daily' ? `Dag ${i + 1}` :
+                    period === 'weekly' ? `Week ${i + 1}` :
+                        `Maand ${i + 1}`;
+                ctx.fillText(label, x, canvas.height - padding + 10);
+            }
+        }
+
+        ctx.strokeStyle = '#FF8C00';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        data.forEach((value, index) => {
+            const x = padding + xStep * index;
+            const y = padding + ((maxTime - value) / (maxTime - minTime)) * chartHeight;
+
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+
+        ctx.stroke();
+
+        data.forEach((value, index) => {
+            const x = padding + xStep * index;
+            const y = padding + ((maxTime - value) / (maxTime - minTime)) * chartHeight;
+
+            ctx.fillStyle = '#FF8C00';
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (index % labelInterval === 0 || index === data.length - 1) {
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(value.toFixed(2) + 's', x, y - 8);
+            }
+        });
+
+        const firstValue = data[0];
+        const lastValue = data[data.length - 1];
+        const improvement = ((firstValue - lastValue) / firstValue * 100).toFixed(1);
+
+        ctx.fillStyle = '#4caf50';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`↓ ${improvement}% verbetering`, padding + 10, padding - 20);
+    }
+
+    function updateLanguageChart() {
+        drawLanguageChart();
+    }
+
+    function updateResponseChart() {
+        drawResponseChart();
+    }
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            drawLanguageChart();
+            drawResponseChart();
+        }, 100);
+    });
+
+    const originalShowSection = showSection;
+    window.showSection = function(section) {
+        originalShowSection(section);
+        if (section === 'stats') {
+            setTimeout(() => {
+                drawLanguageChart();
+                drawResponseChart();
+            }, 100);
+        }
+    };
+</script>
+</body>
+</html>
