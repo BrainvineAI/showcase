@@ -661,20 +661,245 @@
         }
 
         @media (max-width: 768px) {
+            /* Hero Section */
+            .hero {
+                padding: 60px 15px 80px;
+            }
+
             .hero h1 {
-                font-size: 36px;
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            .hero h1 img {
+                max-width: 200px;
+                margin-top: 15px !important;
+            }
+
+            .hero .subtitle {
+                font-size: 16px;
+            }
+
+            .hero-badges {
+                gap: 10px;
+            }
+
+            .hero-badge {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+
+            /* Container & Sections */
+            .container {
+                padding: 40px 15px;
+            }
+
+            .section {
+                margin-bottom: 60px;
+            }
+
+            .section-header {
+                margin-bottom: 40px;
             }
 
             .section-header h2 {
-                font-size: 32px;
+                font-size: 28px;
             }
 
+            .section-header p {
+                font-size: 16px;
+            }
+
+            .section-header img {
+                max-width: 200px !important;
+            }
+
+            /* Value Props Grid */
             .value-props {
                 grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .value-card {
+                padding: 25px;
+            }
+
+            /* Email Demo - Stack columns */
+            div[style*="grid-template-columns: 1fr 80px 1fr"] {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 20px !important;
+            }
+
+            .email-demo {
+                padding: 20px;
+            }
+
+            .response-draft {
+                padding: 20px;
+            }
+
+            /* Multi-deployment Grid */
+            div[style*="grid-template-columns: repeat(3, 1fr)"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+
+            /* Stats Grid */
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stat-card {
+                padding: 30px;
+            }
+
+            /* Integration Grid */
+            .integration-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            /* Workflow Container */
+            .workflow-container {
+                padding: 25px 20px;
+            }
+
+            .workflow-step {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .step-number {
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+
+            .workflow-step:not(:last-child)::after {
+                display: none;
+            }
+
+            /* Demo Container */
+            .demo-container {
+                padding: 25px 20px;
+            }
+
+            .demo-screen {
+                padding: 20px;
+            }
+
+            /* Chat Messages */
+            .chat-message {
+                max-width: 90%;
+                padding: 12px 16px;
+            }
+
+            /* Collapsible Triggers */
+            .collapsible-trigger {
+                padding: 20px 15px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
             .collapsible-trigger h3 {
-                font-size: 18px;
+                font-size: 16px;
+                line-height: 1.4;
+            }
+
+            .collapsible-trigger .arrow {
+                position: absolute;
+                top: 20px;
+                right: 15px;
+            }
+
+            /* Feature Comparison Table */
+            .feature-comparison {
+                font-size: 13px;
+            }
+
+            .feature-comparison th,
+            .feature-comparison td {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            /* Buttons */
+            .btn {
+                padding: 14px 30px;
+                font-size: 15px;
+                margin: 5px;
+            }
+
+            /* Footer */
+            footer {
+                padding: 40px 15px;
+            }
+
+            /* Hide large decorative image on mobile */
+            img[src="images/car7.webp"] {
+                display: none !important;
+            }
+
+            /* Tech Stack Badges */
+            .step-tech {
+                font-size: 11px;
+                padding: 5px 10px;
+                margin-top: 8px;
+            }
+
+            /* Pricing Stats */
+            div[style*="inline-flex"] {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+
+            /* Logo Container */
+            .logo-container {
+                gap: 10px;
+            }
+
+            .logo-container img {
+                height: 28px;
+            }
+
+            .logo-container span {
+                font-size: 24px !important;
+            }
+
+            /* Adjust inline styles for mobile */
+            h3[style*="font-size: 28px"] {
+                font-size: 22px !important;
+            }
+
+            h3[style*="font-size: 26px"] {
+                font-size: 20px !important;
+            }
+
+            h4[style*="font-size: 20px"] {
+                font-size: 16px !important;
+            }
+
+            div[style*="font-size: 48px"] {
+                font-size: 36px !important;
+            }
+
+            /* Email/Demo Headers */
+            h4[style*="margin-bottom: 20px"] {
+                font-size: 14px !important;
+            }
+
+            /* Demo title */
+            h3[style*="font-size: 28px; display: flex"] {
+                font-size: 20px !important;
+                flex-wrap: wrap;
+            }
+
+            /* Car images in chat */
+            .chat-message img {
+                max-width: 100px !important;
             }
         }
     </style>
@@ -695,7 +920,7 @@
 <!-- Hero Section -->
 <div class="hero">
     <div class="hero-content">
-        <h1>Premium Digitale Klantervaring voor <br><img style="margin-top: 25px;" src="images/vanpoelgeest.webp"/></h1>
+        <h1>Premium digitale klantervaring voor <br><img style="margin-top: 25px;" src="images/vanpoelgeest.webp"/></h1>
         <p class="subtitle">Van formulieren naar gesprekken: AI-gestuurde klantenservice op BMW-niveau</p>
 
         <div class="hero-badges">
@@ -732,7 +957,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                 </div>
-                <h3>Van Formulieren naar Gesprekken</h3>
+                <h3>Van formulieren naar gesprekken</h3>
                 <p>Vervang statische webformulieren door natuurlijke, intelligente gesprekken. Bezoekers krijgen direct antwoord op vragen over sales, onderhoud, financiering, accessoires en lopende acties - 24/7, in elke vestiging.</p>
             </div>
 
@@ -740,7 +965,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #1f2937 0%, #374151 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
-                <h3>RDW Kenteken Check Integratie</h3>
+                <h3>RDW kenteken check Integratie</h3>
                 <p>Automatisch voertuiggegevens ophalen via kenteken. De AI-agent kent direct merk, model, bouwjaar, motortype en onderhoudshistorie. Perfect voor inruilwaarderingen, onderhoudsvragen en accessoire-advies.</p>
             </div>
 
@@ -748,7 +973,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #7c2d12 0%, #ea580c 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
-                <h3>Slimme Lead Kwalificatie</h3>
+                <h3>Slimme lead kwalificatie</h3>
                 <p>De AI-agent kwalificeert leads in het gesprek: koopintentie, budget, tijdlijn, voorkeur vestiging. Warme leads gaan direct naar jullie LMS of vestigingsmailboxen met volledige context.</p>
             </div>
 
@@ -772,7 +997,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </div>
-                <h3>Intern Kennis Assistent</h3>
+                <h3>Interne kennisassistent</h3>
                 <p>Niet alleen voor klanten - ook jullie teams krijgen een AI-assistent. Medewerkers vinden direct antwoorden over productspecificaties, processen, beleid en klanthistorie. Organisatie-breed inzetbaar.</p>
             </div>
         </div>
@@ -786,7 +1011,7 @@
         </div>
 
         <div style="background: linear-gradient(135deg, #f5f5f7 0%, #e5e5e7 100%); padding: 50px; border-radius: 20px; margin: 40px 0;">
-            <h3 style="font-size: 28px; margin-bottom: 30px; color: #000; text-align: center;">📧 Van Inkomende E-mail naar Klaar Antwoord in 30 Seconden</h3>
+            <h3 style="font-size: 28px; margin-bottom: 30px; color: #000; text-align: center;">📧 Van inkomende E-mail naar perfect antwoord in 30 Seconden</h3>
 
             <div style="display: grid; grid-template-columns: 1fr 80px 1fr; gap: 30px; align-items: center; margin: 40px 0;">
                 <!-- Incoming Email -->
@@ -922,12 +1147,12 @@
                 </div>
                 <div style="text-align: center; padding: 20px;">
                     <div style="font-size: 48px; margin-bottom: 15px;">👥</div>
-                    <h4 style="color: #007AFF; margin-bottom: 10px;">Intern Kennis Assistent</h4>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Interne kennisassistent</h4>
                     <p style="font-size: 14px; color: #666;">Voor medewerkers organisatie-breed inzetbaar</p>
                 </div>
                 <div style="text-align: center; padding: 20px;">
                     <div style="font-size: 48px; margin-bottom: 15px;">🔧</div>
-                    <h4 style="color: #007AFF; margin-bottom: 10px;">Zelfbeheer Platform</h4>
+                    <h4 style="color: #007AFF; margin-bottom: 10px;">Zelfbeheer platform</h4>
                     <p style="font-size: 14px; color: #666;">Volledige controle over kennisbasis & training</p>
                 </div>
             </div>
@@ -939,7 +1164,7 @@
         <div class="collapsible-trigger" onclick="toggleSection('workflow-section')">
             <h3>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 28px; height: 28px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                On Page Alternatief: Proactieve Chat Interface voor Website Bezoekers
+                On Page alternatief: Proactieve chat interface voor website bezoekers
             </h3>
             <span class="arrow">▼</span>
         </div>
@@ -1163,7 +1388,7 @@
             <div style="text-align: center">
                 <img src="images/car1.png" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
             </div>
-            <h2>Naadloze Integraties</h2>
+            <h2>Naadloze integraties</h2>
             <p>Alle systemen verbonden in één intelligent platform</p>
         </div>
 
@@ -1221,7 +1446,7 @@
     <!-- Statistieken -->
     <div class="section">
         <div class="section-header">
-            <h2>Verwachte Impact</h2>
+            <h2>Verwachte impact</h2>
             <p>Gebaseerd op automotive retail benchmarks</p>
         </div>
 
@@ -1328,8 +1553,8 @@
             <tr>
                 <th>Functionaliteit</th>
                 <th>Brainvine AI Agent</th>
-                <th>Standaard Chatbots</th>
-                <th>Handmatig Proces</th>
+                <th>Standaard chatbots</th>
+                <th>Handmatig proces</th>
             </tr>
             </thead>
             <tbody>
@@ -1391,7 +1616,7 @@
             <div style="text-align: center">
                 <img src="images/engine.webp" alt="Premium Dashboard" style="width: 300px; height: auto; margin: auto;">
             </div>
-            <h2>Concrete Toepassingen</h2>
+            <h2>Concrete toepassingen</h2>
             <p>Hoe Van Poelgeest de AI-agent inzet</p>
         </div>
 
@@ -1400,7 +1625,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
-                <h3>Testrit Planning</h3>
+                <h3>Testrit inplannen</h3>
                 <p>Klant vraagt testrit → AI checkt beschikbaarheid per vestiging → planning direct in agenda → bevestiging naar klant en showroom.</p>
             </div>
 
@@ -1408,7 +1633,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </div>
-                <h3>Onderhoud Herinnering</h3>
+                <h3>Onderhoudsherinnering</h3>
                 <p>Via kenteken check: APK verloopt binnenkort? Agent stuurt proactieve reminder met afspraaklink en geschatte kosten.</p>
             </div>
 
@@ -1416,7 +1641,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3>Financiering Calculator</h3>
+                <h3>Financiering calculator</h3>
                 <p>Interactieve berekening van lease, financiering of private lease opties. Inclusief inruilwaarde en actievoorwaarden.</p>
             </div>
 
@@ -1424,7 +1649,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 </div>
-                <h3>Accessoires Advies</h3>
+                <h3>Accessoire-advies</h3>
                 <p>Op basis van gekocht model: agent suggereert passende accessoires (dakdragers, winterbanden, trekhaak). Direct bestellen mogelijk.</p>
             </div>
 
@@ -1432,7 +1657,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                 </div>
-                <h3>Interne Support Tool</h3>
+                <h3>Interne support tool</h3>
                 <p>Medewerkers vragen AI: "Wat is het beleid voor inruilgarantie?" of "Welke accessoires passen bij BMW X3 2024?" Direct antwoord met bronvermelding.</p>
             </div>
 
@@ -1440,7 +1665,7 @@
                 <div class="icon" style="background: linear-gradient(135deg, #713f12 0%, #d97706 100%);">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 </div>
-                <h3>Klachtanalyse Dashboard</h3>
+                <h3>Klachtanalyse dashboard</h3>
                 <p>Wekelijkse rapportage: meest voorkomende klachten, trend-analyse, automatische suggesties voor verbeteringen. Inzichten direct gekoppeld aan jullie managementsystemen.</p>
             </div>
         </div>
