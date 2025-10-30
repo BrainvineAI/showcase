@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelloPets - Intelligente Klantenservice & Klachtanalyse</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .hero-mesh {
+            background:
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-white {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(3deg); }
+        }
+
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-brutal {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.03),
+                0 2px 4px rgba(0,0,0,0.05),
+                0 12px 24px rgba(0,0,0,0.05),
+                0 24px 48px rgba(0,0,0,0.05);
+        }
+
+        .shadow-soft {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.02),
+                0 1px 2px rgba(0,0,0,0.04),
+                0 4px 8px rgba(0,0,0,0.04),
+                0 8px 16px rgba(0,0,0,0.04);
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #8b5cf6);
+            background-size: 200% 200%;
+            animation: gradient-shift 6s ease infinite;
+        }
+
+        .section-divider {
+            position: relative;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+            margin: 5rem 0;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, size = 24, className = "", ...props }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+            return <i data-lucide={name} className={className} style={{ width: size, height: size }} {...props}></i>;
+        };
+
+        const Card = ({ children, className = "", hoverable = false, ...props }) => {
+            return (
+                <div
+                    className={`bg-white rounded-3xl border border-gray-100 transition-all duration-700 ${
+                        hoverable ? 'hover:shadow-brutal hover:-translate-y-2 hover:border-purple-200' : 'shadow-soft'
+                    } ${className}`}
+                    {...props}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const Button = ({ children, variant = "solid", size = "md", className = "", ...props }) => {
+            const baseClasses = "font-semibold transition-all duration-500 rounded-2xl inline-flex items-center justify-center gap-3 shadow-soft";
+            const sizeClasses = {
+                sm: "px-5 py-2.5 text-sm",
+                md: "px-7 py-4 text-base",
+                lg: "px-10 py-5 text-lg"
+            };
+            const variantClasses = {
+                solid: "bg-gradient-to-r from-purple-600 to-violet-600 text-white hover:shadow-brutal hover:-translate-y-1 hover:scale-105",
+                outline: "border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white",
+                ghost: "text-purple-600 hover:bg-purple-50"
+            };
+
+            return (
+                <button className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`} {...props}>
+                    {children}
+                </button>
+            );
+        };
+
+        const Chip = ({ children, icon, className = "" }) => {
+            return (
+                <span className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-semibold glass text-white ${className}`}>
+                    {icon && <Icon name={icon} size={16} />}
+                    {children}
+                </span>
+            );
+        };
+
+        const HelloPetsPremium = () => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
+                    {/* Hero Section */}
+                    <section className="hero-mesh text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0 overflow-hidden">
+                            <div className="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -top-48 -left-48"></div>
+                            <div className="absolute w-96 h-96 bg-violet-500/10 rounded-full blur-3xl -bottom-48 -right-48"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto text-center relative z-10">
+                            <div className="animate-float inline-block mb-10">
+                                <div className="w-28 h-28 mx-auto glass rounded-3xl flex items-center justify-center border border-white/20 shadow-brutal">
+                                    <Icon name="heart" size={56} className="text-purple-400" />
+                                </div>
+                            </div>
+
+                            <div className="max-w-5xl mx-auto space-y-8">
+                                <h1 className="text-6xl md:text-8xl font-black leading-tight tracking-tight">
+                                    Minder klachten,
+                                    <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-400">
+                                        Meer tijd voor mensen
+                                    </span>
+                                </h1>
+
+                                <p className="text-2xl md:text-3xl font-medium text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                                    AI-gestuurde klantcontact analyse voor HelloPets en alle merken
+                                </p>
+
+                                <div className="flex flex-wrap justify-center gap-4 pt-8">
+                                    <Chip icon="package">4 Merken, 1 Platform</Chip>
+                                    <Chip icon="sparkles">Proactieve Inzichten</Chip>
+                                    <Chip icon="zap">Automatische Analyse</Chip>
+                                    <Chip icon="trending-down">Minder Klachten</Chip>
+                                </div>
+
+                                <div className="pt-4 text-lg text-gray-400 font-medium">
+                                    wooof.com • hayesbrothers.nl • hopperselective.nl • yourdog.nl
+                                </div>
+
+                                <div className="pt-8">
+                                    <Button size="lg">
+                                        <Icon name="play-circle" size={24} />
+                                        Bekijk Demo
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* De Filosofie */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-6">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Een <span className="text-gradient">ervaring</span> die gewoon goed is
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium max-w-3xl mx-auto leading-relaxed">
+                                Klantenservice die je niet hoeft te geven. Dat is waar we in geloven. Door actief te controleren of mensen die goede ervaring hebben gehad, voorkom je klachten.
+                            </p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-purple-50 to-violet-50 border-2 border-purple-200">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="target" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold tracking-tight">Wat we voor jullie kunnen betekenen</h3>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {[
+                                    {
+                                        icon: "layers",
+                                        title: "Bundelen",
+                                        desc: "Al jullie klantcontact uit mail, telefoon, chat en social media in één overzicht. Over alle 4 merken heen."
+                                    },
+                                    {
+                                        icon: "bar-chart-3",
+                                        title: "Analyseren",
+                                        desc: "AI detecteert patronen in klachten, complimenten en vragen. Wat gaat goed? Waar lopen klanten tegenaan?"
+                                    },
+                                    {
+                                        icon: "lightbulb",
+                                        title: "Actieadviezen",
+                                        desc: "Concrete, prioritized suggesties om problemen bij de bron aan te pakken voordat ze klachten worden."
+                                    }
+                                ].map((item, idx) => (
+                                    <div key={idx} className="bg-white p-8 rounded-2xl shadow-soft">
+                                        <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-violet-100 rounded-2xl flex items-center justify-center mb-6">
+                                            <Icon name={item.icon} size={32} className="text-purple-600" />
+                                        </div>
+                                        <h4 className="text-2xl font-bold mb-4 text-gray-900">{item.title}</h4>
+                                        <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Value Proposition */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Het <span className="text-gradient">HelloPets</span> voordeel
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium">Multi-merk klantenservice die écht werkt</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "store",
+                                    title: "4 Merken, 1 Platform",
+                                    desc: "Alle klantcontact van wooof.com, hayesbrothers.nl, hopperselective.nl en yourdog.nl in één dashboard. Geen versnipperde data meer.",
+                                    color: "purple"
+                                },
+                                {
+                                    icon: "clock",
+                                    title: "5 Minuten → 30 Seconden",
+                                    desc: "Van handmatig e-mails beantwoorden naar AI-gegenereerde conceptantwoorden. 90% tijdsbesparing op repetitieve vragen over leveringen, producten en retouren.",
+                                    color: "blue"
+                                },
+                                {
+                                    icon: "globe",
+                                    title: "Echt Meertalig",
+                                    desc: "Automatisch reageren in Nederlands, Engels, Duits en Frans. Perfect voor jullie internationale klanten.",
+                                    color: "green"
+                                },
+                                {
+                                    icon: "brain",
+                                    title: "Productkennis per Merk",
+                                    desc: "AI kent alle producten, prijzen, breed-specifieke voeding, ingrediënten en beleid van alle 4 merken. Elk antwoord is accuraat en merkconsistent.",
+                                    color: "orange"
+                                },
+                                {
+                                    icon: "alert-circle",
+                                    title: "Proactieve Klachtdetectie",
+                                    desc: "Signaleer patronen voordat ze escaleren. AI herkent terugkerende problemen en suggereert preventieve maatregelen.",
+                                    color: "red"
+                                },
+                                {
+                                    icon: "settings",
+                                    title: "Freshworks & Monday Integratie",
+                                    desc: "Werkt naadloos met jullie bestaande Freshdesk, Freshchat, Freshcaller en Monday.com setup. Inclusief Facebook Business integratie.",
+                                    color: "indigo"
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10 group">
+                                    <div className={`w-20 h-20 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-3xl flex items-center justify-center mb-8 shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                        <Icon name={item.icon} size={36} className="text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold mb-4 text-gray-900 tracking-tight">{item.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Live Demo */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Zie het in actie</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Echt voorbeeld van klantcontact analyse</p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-gray-50 to-white">
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="mail" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold tracking-tight">Inkomende klant e-mail</h3>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8 mb-12">
+                                {/* Incoming Email */}
+                                <Card className="p-8 bg-white">
+                                    <div className="flex items-center gap-2 mb-6 text-blue-600">
+                                        <Icon name="inbox" size={24} />
+                                        <h4 className="font-bold text-xl">Inkomend</h4>
+                                    </div>
+                                    <div className="bg-gray-50 p-5 rounded-2xl mb-6 text-sm text-gray-700 space-y-1">
+                                        <p><strong>Van:</strong> petra.jansen@email.nl</p>
+                                        <p><strong>Aan:</strong> info@wooof.com</p>
+                                        <p><strong>Onderwerp:</strong> Vraag over Salmon brokken voor mijn labrador</p>
+                                    </div>
+                                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
+                                        <p>Beste WOOOF team,</p>
+                                        <p>Mijn labrador Luna (4 jaar) heeft altijd jullie Regular brokken gegeten, maar ik zie nu dat jullie ook Salmon hebben. Ze heeft soms een beetje een gevoelige huid.</p>
+                                        <p>Is de Salmon variant beter voor haar? En wat is het verschil met de Regular qua samenstelling? Ook vraag ik me af wat de beste portiegrootte is voor een 32kg labrador.</p>
+                                        <p>Oh, en ik zag dat jullie nu vers vlees worsten hebben - kan ik die ook dagelijks geven of is dat teveel?</p>
+                                        <p>Groetjes,<br/>Petra</p>
+                                    </div>
+                                </Card>
+
+                                {/* Processing */}
+                                <div className="flex flex-col items-center justify-center">
+                                    <div className="w-24 h-24 animated-gradient rounded-3xl flex items-center justify-center mb-6 shadow-brutal">
+                                        <Icon name="cpu" size={48} className="text-white" />
+                                    </div>
+                                    <div className="text-5xl mb-4 text-gray-300">→</div>
+                                    <div className="bg-gradient-to-r from-purple-600 to-violet-600 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-soft">
+                                        AI verwerking
+                                    </div>
+                                    <p className="text-gray-500 text-sm mt-3 font-medium">5-30 seconden</p>
+                                </div>
+
+                                {/* Response */}
+                                <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                                    <div className="flex items-center gap-2 mb-6 text-green-700">
+                                        <Icon name="check-circle" size={24} />
+                                        <h4 className="font-bold text-xl">Conceptantwoord</h4>
+                                    </div>
+                                    <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
+                                        <p className="font-semibold">Beste Petra,</p>
+                                        <p>Wat leuk dat Luna altijd van onze Regular brokken geniet! Voor een labrador met een gevoelige huid is onze Salmon variant inderdaad een uitstekende keuze.</p>
+
+                                        <p className="font-semibold mt-4">Waarom Salmon voor gevoelige huid:</p>
+                                        <p className="text-xs">Zalm is rijk aan Omega-3 vetzuren (EPA & DHA) die ontstekingsremmend werken en de huid ondersteunen. Ook bevat Salmon natuurlijke vetzuren voor een glanzende vacht...</p>
+
+                                        <p className="font-semibold mt-3">Portiegrootte Luna (32kg, 4 jaar):</p>
+                                        <p className="text-xs">• 350-400 gram per dag verdeeld over 2 maaltijden<br/>• Bij gematigde activiteit: 350g<br/>• Bij veel beweging: 400g</p>
+
+                                        <div className="bg-white p-4 rounded-2xl mt-5 border border-green-200 shadow-soft">
+                                            <p className="text-xs text-gray-600 space-y-1">
+                                                <strong className="block mb-2">AI Context:</strong>
+                                                WOOOF Product DB (Salmon specs), Voedingsadviezen database, Ras-specifieke info (Labrador)<br/>
+                                                <strong>Betrouwbaarheid:</strong> 98%<br/>
+                                                <strong>Merk:</strong> WOOOF
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+
+                            {/* Complaint Analysis Example */}
+                            <Card className="p-10 bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 mt-12">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                        <Icon name="alert-triangle" size={32} className="text-white" />
+                                    </div>
+                                    <h3 className="text-3xl font-bold tracking-tight">Proactieve Klachtdetectie</h3>
+                                </div>
+
+                                <div className="bg-white p-8 rounded-2xl shadow-soft">
+                                    <h4 className="text-xl font-bold mb-6 text-gray-900">Gedetecteerde patronen deze week:</h4>
+
+                                    <div className="space-y-6">
+                                        {[
+                                            {
+                                                severity: "Hoog",
+                                                count: 12,
+                                                issue: "Leververtragingen naar België",
+                                                brand: "hayesbrothers.nl",
+                                                action: "PostNL heeft vertraging in grensgebied. Adviseer: Update leveringstijden op website + proactieve mail naar BE klanten",
+                                                color: "red"
+                                            },
+                                            {
+                                                severity: "Medium",
+                                                count: 8,
+                                                issue: "Vragen over nieuw Lamb & Rice recept",
+                                                brand: "wooof.com",
+                                                action: "Veel verwarring over ingrediënten wijziging. Adviseer: FAQ toevoegen + duidelijkere productbeschrijving",
+                                                color: "orange"
+                                            },
+                                            {
+                                                severity: "Laag",
+                                                count: 5,
+                                                issue: "Complimenten over nieuwe verpakking",
+                                                brand: "yourdog.nl",
+                                                action: "Positieve feedback! Overweeg deze verpakking ook voor andere merken",
+                                                color: "green"
+                                            }
+                                        ].map((pattern, idx) => (
+                                            <div key={idx} className={`border-l-4 border-${pattern.color}-500 pl-6 py-4 bg-${pattern.color}-50/50 rounded-r-xl`}>
+                                                <div className="flex items-center justify-between mb-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <span className={`px-3 py-1 rounded-full text-xs font-bold bg-${pattern.color}-100 text-${pattern.color}-700`}>
+                                                            {pattern.severity}
+                                                        </span>
+                                                        <span className="text-gray-600 text-sm">{pattern.count} meldingen</span>
+                                                        <span className="text-purple-600 text-sm font-semibold">{pattern.brand}</span>
+                                                    </div>
+                                                </div>
+                                                <p className="font-bold text-gray-900 mb-2">{pattern.issue}</p>
+                                                <p className="text-gray-600 text-sm leading-relaxed">
+                                                    <strong>Actieadvies:</strong> {pattern.action}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </Card>
+
+                            {/* Stats */}
+                            <div className="grid md:grid-cols-3 gap-8 mt-12">
+                                {[
+                                    { number: "4", label: "merken in één platform", icon: "store" },
+                                    { number: "85%", label: "klachten voorkomen", icon: "shield-check" },
+                                    { number: "24/7", label: "analyse en monitoring", icon: "clock" }
+                                ].map((stat, idx) => (
+                                    <Card key={idx} className="p-8 text-center bg-gradient-to-br from-purple-600 to-violet-600 text-white shadow-brutal hover:scale-105 transition-transform duration-500">
+                                        <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+                                            <Icon name={stat.icon} size={32} className="text-white" />
+                                        </div>
+                                        <div className="text-6xl font-black mb-3">{stat.number}</div>
+                                        <div className="text-white/90 font-medium">{stat.label}</div>
+                                    </Card>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Technical Architecture */}
+                    <section className="py-32 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-purple-500/5 rounded-full blur-3xl top-0 left-1/4"></div>
+                            <div className="absolute w-96 h-96 bg-violet-500/5 rounded-full blur-3xl bottom-0 right-1/4"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto relative z-10">
+                            <div className="text-center mb-20 space-y-4">
+                                <h2 className="text-6xl font-black tracking-tight text-white">Technische Excellentie</h2>
+                                <p className="text-2xl text-gray-400 font-medium">Enterprise-grade technologie voor HelloPets</p>
+                            </div>
+
+                            <Card className="p-12 glass-white">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                        <Icon name="building" size={32} className="text-white" />
+                                    </div>
+                                    <h3 className="text-4xl font-bold tracking-tight">Systeemarchitectuur</h3>
+                                </div>
+
+                                <p className="text-gray-600 text-xl mb-10 leading-relaxed">
+                                    Onze oplossing integreert naadloos met jullie bestaande infrastructuur:
+                                </p>
+
+                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                                    {[
+                                        { icon: "headphones", label: "Freshworks Suite", desc: "Freshdesk, Freshchat, Freshcaller" },
+                                        { icon: "facebook", label: "Facebook Business", desc: "Social media integratie" },
+                                        { icon: "trello", label: "Monday.com", desc: "Klachtenregistratie" },
+                                        { icon: "cpu", label: "GPT-5 AI", desc: "Intelligente analyse" }
+                                    ].map((item, idx) => (
+                                        <Card key={idx} hoverable className="p-8 text-center group">
+                                            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-500">
+                                                <Icon name={item.icon} size={32} className="text-white" />
+                                            </div>
+                                            <p className="font-bold text-gray-900 mb-2">{item.label}</p>
+                                            <p className="text-sm text-gray-600">{item.desc}</p>
+                                        </Card>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Icon name="package" size={28} className="text-gray-900" />
+                                    <h4 className="text-3xl font-bold tracking-tight">HelloPets Productkennis Integratie</h4>
+                                </div>
+                                <Card className="p-10 bg-gradient-to-br from-purple-50 to-violet-50 border-purple-200">
+                                    <div className="grid md:grid-cols-2 gap-8">
+                                        {[
+                                            { label: "WOOOF", value: "Premium geperste brokken, zalm & lam varianten, 100-dagen garantie" },
+                                            { label: "Hayes Brothers", value: "Budget-vriendelijk, hond & kat voeding, praktische porties" },
+                                            { label: "Hopper Selective", value: "Selectieve voeding, premium ingrediënten, specialistische range" },
+                                            { label: "YourDog", value: "Ras-specifieke voeding, 60+ rassen, natuurlijke additieven" },
+                                            { label: "Productcatalogus", value: "5.000+ producten met specs, ingrediënten, voedingswaarden" },
+                                            { label: "Beleid", value: "Levering (1-2 dagen NL/BE), retouren, gratis verzending €49+" }
+                                        ].map((item, idx) => (
+                                            <div key={idx}>
+                                                <p className="text-purple-600 font-bold mb-2 text-lg">{item.label}:</p>
+                                                <p className="text-gray-700 leading-relaxed">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </Card>
+                        </div>
+                    </section>
+
+                    {/* Pricing */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Investering & ROI</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Transparante prijzen met gegarandeerde return on investment</p>
+                        </div>
+
+                        <Card className="overflow-hidden max-w-4xl mx-auto shadow-brutal">
+                            <div className="animated-gradient text-white p-14 text-center">
+                                <h3 className="text-5xl font-black mb-4 tracking-tight">HelloPets Multi-Merk Oplossing</h3>
+                                <p className="text-2xl text-white/90 font-medium">Afgestemd op 4 webshops en volume</p>
+                            </div>
+                            <div className="p-12 bg-white">
+                                {[
+                                    { label: "Setup & Integratie (4 merken)", price: "€4.500 (eenmalig)" },
+                                    { label: "Kennisbank Import (4 productcatalogi)", price: "€2.000 (eenmalig)" },
+                                    { label: "Freshworks Suite Integratie", price: "€1.000 (eenmalig)" },
+                                    { label: "Maandelijks Abonnement", price: "€650/maand" },
+                                    { label: "AI Verwerkingskosten (GPT-5)", price: "~€80/maand" },
+                                    { label: "Vector Database (Pinecone)", price: "€120/maand" },
+                                    { label: "Data updates (4 merken)", price: "€100/maand" }
+                                ].map((row, idx) => (
+                                    <div key={idx} className="flex justify-between py-5 border-b border-gray-200">
+                                        <span className="text-gray-700 font-medium text-lg">{row.label}</span>
+                                        <span className="font-bold text-gray-900 text-lg">{row.price}</span>
+                                    </div>
+                                ))}
+                                <div className="flex justify-between py-8 mt-8 border-t-4 border-purple-500">
+                                    <span className="text-2xl font-black text-gray-900">Totale Maandelijkse Kosten</span>
+                                    <span className="text-5xl font-black text-gradient">€950/maand</span>
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* ROI */}
+                        <Card className="p-12 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 mt-12 max-w-4xl mx-auto shadow-brutal">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="trending-up" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold text-green-900 tracking-tight">Return on Investment</h3>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-12">
+                                <div>
+                                    <h4 className="text-3xl font-bold text-green-900 mb-6">Kostenbesparing</h4>
+                                    <div className="space-y-3 text-green-800">
+                                        <p className="text-xl">Tijd bespaard: <strong className="font-bold">200 uur/maand</strong></p>
+                                        <p className="text-xl">Arbeidskosten: <strong className="font-bold">€28/uur</strong></p>
+                                        <p className="text-xl">Minder klachten: <strong className="font-bold">-60%</strong></p>
+                                        <p className="text-3xl font-black text-green-600 mt-6">Maandelijkse besparing: €5.600</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="text-3xl font-bold text-green-900 mb-6">ROI Berekening</h4>
+                                    <div className="space-y-3 text-green-800">
+                                        <p className="text-xl">Maandelijkse besparing: <strong className="font-bold">€5.600</strong></p>
+                                        <p className="text-xl">Maandelijkse kosten: <strong className="font-bold">€950</strong></p>
+                                        <p className="text-3xl font-black text-green-600 mt-6">Netto voordeel: €4.650/maand</p>
+                                        <p className="text-4xl font-black text-green-600">ROI: 489%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Dog Images Gallery */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Voor alle <span className="text-gradient">honden</span>
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium">Van puppies tot seniors, kleine tot grote rassen</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                            {[1, 2, 3, 4, 5, 6].map((num) => (
+                                <Card key={num} hoverable className="overflow-hidden group">
+                                    <img
+                                        src={`images/dog${num}.png`}
+                                        alt={`Dog ${num}`}
+                                        className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                                    />
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* CTA Section */}
+                    <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto text-center relative z-10">
+                            <div className="w-28 h-28 mx-auto mb-10 animated-gradient rounded-full flex items-center justify-center shadow-brutal">
+                                <Icon name="heart" size={56} className="text-white" />
+                            </div>
+                            <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tight">Klaar om te starten?</h2>
+                            <p className="text-2xl text-gray-300 mb-12 leading-relaxed font-medium max-w-2xl mx-auto">
+                                Bundel al jullie klantcontact, analyseer patronen en krijg actieadviezen. Minder klachten, meer tijd voor wat écht belangrijk is.
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-6">
+                                <Button size="lg">
+                                    <Icon name="calendar" size={24} />
+                                    Plan een Demo
+                                </Button>
+                                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
+                                    <Icon name="mail" size={24} />
+                                    Neem Contact Op
+                                </Button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-gray-900 text-gray-400 py-16 px-4">
+                        <div className="max-w-7xl mx-auto text-center space-y-4">
+                            <p className="text-xl font-medium">© 2025 Brainvine AI</p>
+                            <p className="text-lg">Gespecialiseerd in AI oplossingen die écht werken.</p>
+                            <a href="mailto:info@brainvine.ai" className="text-purple-400 hover:text-purple-300 transition-colors text-lg font-medium">
+                                info@brainvine.ai
+                            </a>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<HelloPetsPremium />);
+    </script>
+</body>
+</html>

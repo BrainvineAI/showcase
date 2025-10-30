@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitwinkel - Intelligente E-mail Automatisering</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .hero-mesh {
+            background:
+                radial-gradient(at 0% 0%, rgba(255, 107, 53, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(247, 44, 37, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 107, 53, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(247, 44, 37, 0.15) 0px, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-white {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(3deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        .gradient-border {
+            position: relative;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            padding: 2px;
+            background: linear-gradient(135deg, #FF6B35, #F72C25);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #FF6B35, #F72C25);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-brutal {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.03),
+                0 2px 4px rgba(0,0,0,0.05),
+                0 12px 24px rgba(0,0,0,0.05),
+                0 24px 48px rgba(0,0,0,0.05);
+        }
+
+        .shadow-soft {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.02),
+                0 1px 2px rgba(0,0,0,0.04),
+                0 4px 8px rgba(0,0,0,0.04),
+                0 8px 16px rgba(0,0,0,0.04);
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(135deg, #FF6B35, #F72C25, #FF6B35);
+            background-size: 200% 200%;
+            animation: gradient-shift 6s ease infinite;
+        }
+
+        .section-divider {
+            position: relative;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,107,53,0.3), transparent);
+            margin: 5rem 0;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, size = 24, className = "", ...props }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+            return <i data-lucide={name} className={className} style={{ width: size, height: size }} {...props}></i>;
+        };
+
+        const Card = ({ children, className = "", hoverable = false, ...props }) => {
+            return (
+                <div
+                    className={`bg-white rounded-3xl border border-gray-100 transition-all duration-700 ${
+                        hoverable ? 'hover:shadow-brutal hover:-translate-y-2 hover:border-orange-200' : 'shadow-soft'
+                    } ${className}`}
+                    {...props}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const Button = ({ children, variant = "solid", size = "md", className = "", ...props }) => {
+            const baseClasses = "font-semibold transition-all duration-500 rounded-2xl inline-flex items-center justify-center gap-3 shadow-soft";
+            const sizeClasses = {
+                sm: "px-5 py-2.5 text-sm",
+                md: "px-7 py-4 text-base",
+                lg: "px-10 py-5 text-lg"
+            };
+            const variantClasses = {
+                solid: "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:shadow-brutal hover:-translate-y-1 hover:scale-105",
+                outline: "border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white",
+                ghost: "text-orange-600 hover:bg-orange-50"
+            };
+
+            return (
+                <button className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`} {...props}>
+                    {children}
+                </button>
+            );
+        };
+
+        const Chip = ({ children, icon, className = "" }) => {
+            return (
+                <span className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-semibold glass text-white ${className}`}>
+                    {icon && <Icon name={icon} size={16} />}
+                    {children}
+                </span>
+            );
+        };
+
+        const FitwinkelPremium = () => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-orange-50">
+                    {/* Hero Section */}
+                    <section className="hero-mesh text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0 overflow-hidden">
+                            <div className="absolute w-96 h-96 bg-orange-500/10 rounded-full blur-3xl -top-48 -left-48"></div>
+                            <div className="absolute w-96 h-96 bg-red-500/10 rounded-full blur-3xl -bottom-48 -right-48"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto text-center relative z-10">
+                            <div className="animate-float inline-block mb-10">
+                                <div className="w-28 h-28 mx-auto glass rounded-3xl flex items-center justify-center border border-white/20 shadow-brutal">
+                                    <Icon name="zap" size={56} className="text-orange-400" />
+                                </div>
+                            </div>
+
+                            <div className="max-w-5xl mx-auto space-y-8">
+                                <h1 className="text-6xl md:text-8xl font-black leading-tight tracking-tight">
+                                    Intelligente E-mail
+                                    <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
+                                        Automatisering
+                                    </span>
+                                </h1>
+
+                                <p className="text-2xl md:text-3xl font-medium text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                                    Transformeer de klantenservice met AI-Gestuurde antwoordgeneratie voor Fitwinkel
+                                </p>
+
+                                <div className="flex flex-wrap justify-center gap-4 pt-8">
+                                    <Chip icon="clock">95% Tijdsbesparing</Chip>
+                                    <Chip icon="globe">Meertalig</Chip>
+                                    <Chip icon="zap">30 Seconden Verwerking</Chip>
+                                    <Chip icon="book-open">Volledige Fitwinkel kennis</Chip>
+                                </div>
+
+                                <div className="pt-8">
+                                    <Button size="lg">
+                                        <Icon name="play-circle" size={24} />
+                                        Bekijk Demo
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Value Proposition */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Het <span className="text-gradient">Fitwinkel</span> voordeel
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium">Van garage-aanpak naar grootschalige e-mailexcellentie</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "clock",
+                                    title: "5 Minuten → 30 Seconden",
+                                    desc: "Verminder de voorbereidingstijd voor e-mailantwoorden met 90%. Onze AI analyseert inkomende e-mails en genereert nauwkeurige conceptantwoorden in minder dan 30 seconden, gebruikmakend van jullie productcatalogus en kennisbank.",
+                                    color: "blue"
+                                },
+                                {
+                                    icon: "globe",
+                                    title: "Echt Meertalig",
+                                    desc: "Detecteer automatisch de taal van de klant en reageer natuurlijk in Nederlands, Engels, Duits, Frans, Spaans en meer. Geen taalbarrières of vertaalvertragingen meer.",
+                                    color: "purple"
+                                },
+                                {
+                                    icon: "target",
+                                    title: "Fitwinkel Kennis",
+                                    desc: "Benut Fitwinkel's complete productcatalogus, maatgidsen, verzendbeleid en retourprocedures. Elk antwoord is accuraat, relevant en merkconsistent.",
+                                    color: "orange"
+                                },
+                                {
+                                    icon: "shield-check",
+                                    title: "Menselijk Toezicht",
+                                    desc: "Concepten verschijnen in de interface voor controle voordat ze worden verzonden. Het Fitwinkel team behoudt volledige controle terwijl uren repetitief werk worden bespaard.",
+                                    color: "green"
+                                },
+                                {
+                                    icon: "bar-chart-3",
+                                    title: "Intelligente Inzichten",
+                                    desc: "Volg reactietijden en detecteer veelvoorkomende vragen. Gebruik data om zowel AI-antwoorden als bedrijfsprocessen te verbeteren.",
+                                    color: "indigo"
+                                },
+                                {
+                                    icon: "refresh-cw",
+                                    title: "Naadloze Integratie",
+                                    desc: "Werkt met de bestaande Gmail en HubSpot setup. Geen noodzaak om de workflow te veranderen - wij verbeteren deze.",
+                                    color: "teal"
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10 group">
+                                    <div className={`w-20 h-20 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-3xl flex items-center justify-center mb-8 shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                        <Icon name={item.icon} size={36} className="text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold mb-4 text-gray-900 tracking-tight">{item.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* How It Works */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Hoe Het Werkt</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Intelligente automatisering die perfect past in de bestaande workflow</p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-gray-50 to-white">
+                            <div className="space-y-16">
+                                {[
+                                    {
+                                        num: 1,
+                                        title: "E-mail komt binnen in Gmail",
+                                        desc: "Klant stuurt een e-mail naar jullie supportadres (bijv. info@fitwinkel.nl). De e-mail wordt automatisch gesynchroniseerd met HubSpot zoals gewoonlijk. De e-mail wordt naar onze workflow gestuurd.",
+                                        icon: "mail",
+                                        tags: ["Gmail API", "Brainvine AI workflow", "HubSpot Sync"]
+                                    },
+                                    {
+                                        num: 2,
+                                        title: "AI Analyse & Taaldetectie",
+                                        desc: "Ons systeem detecteert direct de e-mailtaal en analyseert de inhoud. Identificeert intentie: productvraag, maatadvies, orderstatus, retouren, etc.",
+                                        icon: "brain",
+                                        tags: ["Natural Language Processing", "Intent Classificatie"]
+                                    },
+                                    {
+                                        num: 3,
+                                        title: "Kennisbank doorzoeken",
+                                        desc: "Doorzoekt alle Fitwinkel kennis: Productcatalogus met specs, maten, beschikbaarheid • FAQ database in meerdere talen • Verzend- en retourbeleid • Eerdere vergelijkbare vragen",
+                                        icon: "search",
+                                        tags: ["Vector Search", "RAG Pipeline"]
+                                    },
+                                    {
+                                        num: 4,
+                                        title: "Concept generatie",
+                                        desc: "AI genereert een professioneel antwoord in de taal van de klant. Inclusief relevante productlinks, maattabellen of beleidsinformatie.",
+                                        icon: "sparkles",
+                                        tags: ["GPT-5", "Context Injectie"]
+                                    },
+                                    {
+                                        num: 5,
+                                        title: "Concept review in dashboard",
+                                        desc: "Het concept verschijnt direct in ons review dashboard. Inclusief betrouwbaarheidsscore en bronreferenties voor transparantie.",
+                                        icon: "layout-dashboard",
+                                        tags: ["Review Dashboard", "Conceptbeheer"]
+                                    },
+                                    {
+                                        num: 6,
+                                        title: "Controle door medewerker & Verzenden",
+                                        desc: "Het Fitwinkel team controleert het concept, maakt eventuele aanpassingen en verzendt. Gemiddelde bewerkingstijd: minder dan 30 seconden voor 85% van de e-mails.",
+                                        icon: "send",
+                                        tags: ["Menselijk toezicht", "Kwaliteitsborging"]
+                                    }
+                                ].map((step) => (
+                                    <div key={step.num} className="flex gap-10 items-start group">
+                                        <div className="flex-shrink-0 relative">
+                                            <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl flex items-center justify-center text-4xl font-black text-white shadow-brutal group-hover:scale-110 transition-transform duration-500">
+                                                {step.num}
+                                            </div>
+                                            <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-soft">
+                                                <Icon name={step.icon} size={28} className="text-orange-500" />
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 pt-2">
+                                            <h4 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">{step.title}</h4>
+                                            <p className="text-gray-600 mb-6 leading-relaxed text-lg">{step.desc}</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                {step.tags.map((tag, idx) => (
+                                                    <span key={idx} className="px-5 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold border border-gray-200">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Live Demo */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Zie het in actie</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Echt voorbeeld van hoe Fitwinkel e-mails worden verwerkt</p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-gray-50 to-white">
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="mail" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold tracking-tight">Inkomende klant e-mail</h3>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8 mb-12">
+                                {/* Incoming Email */}
+                                <Card className="p-8 bg-white">
+                                    <div className="flex items-center gap-2 mb-6 text-blue-600">
+                                        <Icon name="inbox" size={24} />
+                                        <h4 className="font-bold text-xl">Inkomend</h4>
+                                    </div>
+                                    <div className="bg-gray-50 p-5 rounded-2xl mb-6 text-sm text-gray-700 space-y-1">
+                                        <p><strong>Van:</strong> mark.peters@gmail.com</p>
+                                        <p><strong>Onderwerp:</strong> Info over Evocardio roeimachine</p>
+                                    </div>
+                                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
+                                        <p>Beste Fitwinkel team,</p>
+                                        <p>Ik ben geïnteresseerd in de Evocardio Renegade ARP100 Pro Air Rower die ik bij jullie zag.</p>
+                                        <p>Mijn vraag: ik train momenteel 3x per week cardio in de sportschool. Is deze machine geschikt voor intensieve trainingen thuis? En kan ik mijn hartslag meten tijdens het roeien?</p>
+                                        <p>Ik woon in een appartement (70m2). Is deze machine stil genoeg voor de buren? En wat is de levertijd naar Rotterdam?</p>
+                                        <p>Groeten,<br/>Mark Peters</p>
+                                    </div>
+                                </Card>
+
+                                {/* Processing */}
+                                <div className="flex flex-col items-center justify-center">
+                                    <div className="w-24 h-24 animated-gradient rounded-3xl flex items-center justify-center mb-6 shadow-brutal">
+                                        <Icon name="cpu" size={48} className="text-white" />
+                                    </div>
+                                    <div className="text-5xl mb-4 text-gray-300">→</div>
+                                    <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-soft">
+                                        AI verwerking
+                                    </div>
+                                    <p className="text-gray-500 text-sm mt-3 font-medium">5-30 seconden</p>
+                                </div>
+
+                                {/* Response */}
+                                <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                                    <div className="flex items-center gap-2 mb-6 text-green-700">
+                                        <Icon name="check-circle" size={24} />
+                                        <h4 className="font-bold text-xl">Conceptantwoord</h4>
+                                    </div>
+                                    <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
+                                        <p className="font-semibold">Beste Mark,</p>
+                                        <p>Wat goed dat je kiest voor de Evocardio Renegade ARP100 Pro - een uitstekende keuze voor serieuze thuistraining!</p>
+
+                                        <p className="font-semibold mt-4">Perfect voor intensieve trainingen:</p>
+                                        <p className="text-xs">Deze Air Rower is ideaal voor jouw trainingsdoelen! Het unieke dubbele weerstandssysteem (lucht + magnetisch) met 16 niveaus maakt hem perfect voor HIIT-trainingen...</p>
+
+                                        <div className="bg-white p-4 rounded-2xl mt-5 border border-green-200 shadow-soft">
+                                            <p className="text-xs text-gray-600 space-y-1">
+                                                <strong className="block mb-2">AI Context:</strong>
+                                                Product DB, Accessoires DB, Verzendbeleid<br/>
+                                                <strong>Betrouwbaarheid:</strong> 97%<br/>
+                                                <strong>Taal:</strong> Nederlands (auto-detect)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {[
+                                    { number: "60-80%", label: "tickets direct verstuurbaar", icon: "check-circle" },
+                                    { number: "75%", label: "sneller dan handmatig", icon: "zap" },
+                                    { number: "24/7", label: "concepten klaar", icon: "clock" }
+                                ].map((stat, idx) => (
+                                    <Card key={idx} className="p-8 text-center bg-gradient-to-br from-orange-500 to-red-500 text-white shadow-brutal hover:scale-105 transition-transform duration-500">
+                                        <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+                                            <Icon name={stat.icon} size={32} className="text-white" />
+                                        </div>
+                                        <div className="text-6xl font-black mb-3">{stat.number}</div>
+                                        <div className="text-white/90 font-medium">{stat.label}</div>
+                                    </Card>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Technical Architecture */}
+                    <section className="py-32 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-orange-500/5 rounded-full blur-3xl top-0 left-1/4"></div>
+                            <div className="absolute w-96 h-96 bg-red-500/5 rounded-full blur-3xl bottom-0 right-1/4"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto relative z-10">
+                            <div className="text-center mb-20 space-y-4">
+                                <h2 className="text-6xl font-black tracking-tight text-white">Technische Excellentie</h2>
+                                <p className="text-2xl text-gray-400 font-medium">Enterprise-grade technologie op maat voor Fitwinkel</p>
+                            </div>
+
+                            <Card className="p-12 glass-white">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                        <Icon name="building" size={32} className="text-white" />
+                                    </div>
+                                    <h3 className="text-4xl font-bold tracking-tight">Systeemarchitectuur</h3>
+                                </div>
+
+                                <p className="text-gray-600 text-xl mb-10 leading-relaxed">
+                                    Onze oplossing integreert naadloos met de bestaande infrastructuur:
+                                </p>
+
+                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                                    {[
+                                        { icon: "settings", label: "HubSpot CRM", color: "orange" },
+                                        { icon: "cpu", label: "GPT-5 of vergelijkbaar", color: "purple" },
+                                        { icon: "database", label: "Pinecone Vector DB", color: "blue" },
+                                        { icon: "shield", label: "Enterprise Beveiliging", color: "green" }
+                                    ].map((item, idx) => (
+                                        <Card key={idx} hoverable className="p-8 text-center group">
+                                            <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-2xl flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                                <Icon name={item.icon} size={32} className="text-white" />
+                                            </div>
+                                            <p className="font-bold text-gray-900">{item.label}</p>
+                                        </Card>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Icon name="lock" size={28} className="text-gray-900" />
+                                    <h4 className="text-3xl font-bold tracking-tight">Beveiliging & Compliance</h4>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-4 mb-16">
+                                    {[
+                                        "AVG-compliant",
+                                        "End-to-end encryptie voor alle dataoverdrachten",
+                                        "Geen klantdata gebruikt voor AI-training",
+                                        "Regelmatige beveiligingsaudits"
+                                    ].map((item, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 bg-gray-50 p-5 rounded-2xl shadow-soft">
+                                            <Icon name="check-circle" size={24} className="text-green-500 flex-shrink-0" />
+                                            <span className="text-gray-700 font-medium">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Icon name="book-open" size={28} className="text-gray-900" />
+                                    <h4 className="text-3xl font-bold tracking-tight">Fitwinkel Kennisbank Integratie</h4>
+                                </div>
+                                <Card className="p-10 bg-gradient-to-br from-orange-50 to-red-50 border-orange-200">
+                                    <div className="grid md:grid-cols-2 gap-8">
+                                        {[
+                                            { label: "Productcatalogus", value: "50.000+ producten met volledige specificaties" },
+                                            { label: "Maatgidsen", value: "Benodigde ruimte voor apparatuur, opbergruimte etc" },
+                                            { label: "Voorraad", value: "Real-time voorraadniveaus en beschikbaarheid" },
+                                            { label: "Beleid", value: "Verzending, retouren, garanties in 12 talen" },
+                                            { label: "FAQ Database", value: "2.000+ veelgestelde vragen en antwoorden" },
+                                            { label: "Historische Data", value: "Leer van eerdere succesvolle antwoorden" }
+                                        ].map((item, idx) => (
+                                            <div key={idx}>
+                                                <p className="text-orange-600 font-bold mb-2 text-lg">{item.label}:</p>
+                                                <p className="text-gray-700 leading-relaxed">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </Card>
+                        </div>
+                    </section>
+
+                    {/* Pricing */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Investering & ROI</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Transparante prijzen met gegarandeerde return on investment</p>
+                        </div>
+
+                        <Card className="overflow-hidden max-w-4xl mx-auto shadow-brutal">
+                            <div className="animated-gradient text-white p-14 text-center">
+                                <h3 className="text-5xl font-black mb-4 tracking-tight">Fitwinkel Maatwerk Oplossing</h3>
+                                <p className="text-2xl text-white/90 font-medium">Afgestemd op volume en vereisten</p>
+                            </div>
+                            <div className="p-12 bg-white">
+                                {[
+                                    { label: "Setup & Integratie", price: "€3.500 (eenmalig)" },
+                                    { label: "Kennisbank Import & Training", price: "€1.500 (eenmalig)" },
+                                    { label: "Maandelijks Abonnement", price: "€450/maand" },
+                                    { label: "AI Verwerkingskosten (GPT-5)", price: "~€50/maand" },
+                                    { label: "Vector Database (Pinecone)", price: "€80/maand" },
+                                    { label: "Data updates", price: "€70/maand" }
+                                ].map((row, idx) => (
+                                    <div key={idx} className="flex justify-between py-5 border-b border-gray-200">
+                                        <span className="text-gray-700 font-medium text-lg">{row.label}</span>
+                                        <span className="font-bold text-gray-900 text-lg">{row.price}</span>
+                                    </div>
+                                ))}
+                                <div className="flex justify-between py-8 mt-8 border-t-4 border-orange-500">
+                                    <span className="text-2xl font-black text-gray-900">Totale Maandelijkse Kosten</span>
+                                    <span className="text-5xl font-black text-gradient">€650/maand</span>
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* ROI */}
+                        <Card className="p-12 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 mt-12 max-w-4xl mx-auto shadow-brutal">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="trending-up" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold text-green-900 tracking-tight">Return on Investment</h3>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-12">
+                                <div>
+                                    <h4 className="text-3xl font-bold text-green-900 mb-6">Kostenbesparing</h4>
+                                    <div className="space-y-3 text-green-800">
+                                        <p className="text-xl">Tijd bespaard: <strong className="font-bold">125 uur/maand</strong></p>
+                                        <p className="text-xl">Arbeidskosten: <strong className="font-bold">€30/uur</strong></p>
+                                        <p className="text-3xl font-black text-green-600 mt-6">Maandelijkse besparing: €3.750</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 className="text-3xl font-bold text-green-900 mb-6">ROI Berekening</h4>
+                                    <div className="space-y-3 text-green-800">
+                                        <p className="text-xl">Maandelijkse besparing: <strong className="font-bold">€3.750</strong></p>
+                                        <p className="text-xl">Maandelijkse kosten: <strong className="font-bold">€650</strong></p>
+                                        <p className="text-3xl font-black text-green-600 mt-6">Netto voordeel: €3.100/maand</p>
+                                        <p className="text-4xl font-black text-green-600">ROI: 375%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Comparison Table */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Wat onze oplossing beter maakt</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Zie hoe wij ons verhouden tot alternatieven</p>
+                        </div>
+
+                        <Card className="overflow-hidden shadow-brutal">
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="animated-gradient text-white">
+                                        <tr>
+                                            <th className="px-8 py-6 text-left font-black text-lg">Functie</th>
+                                            <th className="px-8 py-6 text-left font-black text-lg">Onze Oplossing</th>
+                                            <th className="px-8 py-6 text-left font-black text-lg">Generieke Chatbots</th>
+                                            <th className="px-8 py-6 text-left font-black text-lg">Handmatig Proces</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white">
+                                        {[
+                                            {
+                                                feature: "Meertalige Ondersteuning",
+                                                ours: { check: true, text: "100+ talen" },
+                                                generic: { check: true, text: "Beperkt" },
+                                                manual: { check: false, text: "Afhankelijk van personeel" }
+                                            },
+                                            {
+                                                feature: "Productkennis",
+                                                ours: { check: true, text: "Volledige catalogus" },
+                                                generic: { check: false, text: "Alleen basis" },
+                                                manual: { check: true, text: "Als getraind" }
+                                            },
+                                            {
+                                                feature: "Reactietijd",
+                                                ours: { check: true, text: "30 seconden" },
+                                                generic: { check: true, text: "Direct" },
+                                                manual: { check: false, text: "5+ minuten" }
+                                            },
+                                            {
+                                                feature: "Nauwkeurigheid",
+                                                ours: { check: true, text: ">95%" },
+                                                generic: { check: false, text: "60-70%" },
+                                                manual: { check: true, text: "Variabel" }
+                                            },
+                                            {
+                                                feature: "Menselijk Toezicht",
+                                                ours: { check: true, text: "Altijd" },
+                                                generic: { check: false, text: "Nee" },
+                                                manual: { check: true, text: "Ja" }
+                                            },
+                                            {
+                                                feature: "Kosten per E-mail",
+                                                ours: { check: true, text: "€0,00 - €0,03" },
+                                                generic: { check: true, text: "€0,05" },
+                                                manual: { check: false, text: "€2,50" }
+                                            },
+                                            {
+                                                feature: "Schaalbaarheid",
+                                                ours: { check: true, text: "Onbeperkt" },
+                                                generic: { check: true, text: "Onbeperkt" },
+                                                manual: { check: false, text: "Beperkt" }
+                                            },
+                                            {
+                                                feature: "Maatwerk Integratie",
+                                                ours: { check: true, text: "Volledig" },
+                                                generic: { check: false, text: "Beperkt" },
+                                                manual: { check: false, text: "N.v.t." }
+                                            }
+                                        ].map((row, idx) => (
+                                            <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                                <td className="px-8 py-6 font-bold text-gray-700 text-lg">{row.feature}</td>
+                                                <td className="px-8 py-6">
+                                                    <div className="flex items-center gap-3">
+                                                        <Icon name={row.ours.check ? "check-circle" : "x-circle"} size={24} className={row.ours.check ? "text-green-500" : "text-red-500"} />
+                                                        <span className="font-medium">{row.ours.text}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-8 py-6">
+                                                    <div className="flex items-center gap-3">
+                                                        <Icon name={row.generic.check ? "check-circle" : "x-circle"} size={24} className={row.generic.check ? "text-green-500" : "text-red-500"} />
+                                                        <span className="font-medium">{row.generic.text}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-8 py-6">
+                                                    <div className="flex items-center gap-3">
+                                                        <Icon name={row.manual.check ? "check-circle" : "x-circle"} size={24} className={row.manual.check ? "text-green-500" : "text-red-500"} />
+                                                        <span className="font-medium">{row.manual.text}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Support Section */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Uitgebreide ondersteuning</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Wij staan elke stap aan jullie zijde</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "graduation-cap",
+                                    title: "Trainingsprogramma",
+                                    items: ["onboarding / trainingssessie", "Snelle referentiegidsen"],
+                                    gradient: "from-blue-500 to-cyan-500"
+                                },
+                                {
+                                    icon: "message-square",
+                                    title: "Toegewijde Support",
+                                    items: ["Toegewijd Slack kanaal", "Snelle reactie", "Toegewezen accountmanager"],
+                                    gradient: "from-purple-500 to-pink-500"
+                                },
+                                {
+                                    icon: "trending-up",
+                                    title: "Continue Verbetering",
+                                    items: ["Nieuwe functie-uitrol", "AI model updates inbegrepen"],
+                                    gradient: "from-green-500 to-emerald-500"
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10">
+                                    <div className={`w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-3xl flex items-center justify-center mb-8 shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                        <Icon name={item.icon} size={36} className="text-white" />
+                                    </div>
+                                    <h3 className="text-3xl font-bold mb-6 tracking-tight">{item.title}</h3>
+                                    <ul className="space-y-3">
+                                        {item.items.map((point, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-600 text-lg">
+                                                <Icon name="check" size={24} className="text-green-500 flex-shrink-0 mt-1" />
+                                                <span>{point}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* CTA Section */}
+                    <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-orange-500/10 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto text-center relative z-10">
+                            <div className="w-28 h-28 mx-auto mb-10 animated-gradient rounded-full flex items-center justify-center shadow-brutal">
+                                <Icon name="rocket" size={56} className="text-white" />
+                            </div>
+                            <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tight">Klaar om te starten?</h2>
+                            <p className="text-2xl text-gray-300 mb-12 leading-relaxed font-medium max-w-2xl mx-auto">
+                                Transformeer jullie klantenservice met AI die écht werkt. Bespaar tijd, verhoog kwaliteit, schaal moeiteloos.
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-6">
+                                <Button size="lg">
+                                    <Icon name="calendar" size={24} />
+                                    Plan een Demo
+                                </Button>
+                                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
+                                    <Icon name="mail" size={24} />
+                                    Neem Contact Op
+                                </Button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-gray-900 text-gray-400 py-16 px-4">
+                        <div className="max-w-7xl mx-auto text-center space-y-4">
+                            <p className="text-xl font-medium">© 2025 Brainvine AI</p>
+                            <p className="text-lg">Gespecialiseerd in AI oplossingen die écht werken.</p>
+                            <a href="mailto:info@brainvine.ai" className="text-orange-400 hover:text-orange-300 transition-colors text-lg font-medium">
+                                info@brainvine.ai
+                            </a>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<FitwinkelPremium />);
+    </script>
+</body>
+</html>
