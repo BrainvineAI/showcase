@@ -588,6 +588,102 @@
 
                     </section>
 
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Maak het Compleet - Chatbot Section */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Maak het <span className="text-gradient">compleet</span>
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium">Breid je klantenservice uit met een slimme chatbot</p>
+                        </div>
+
+                        <Card className="overflow-hidden max-w-5xl mx-auto shadow-brutal">
+                            <div className="grid md:grid-cols-2 gap-0">
+                                {/* Left Side - Visual */}
+                                <div className="bg-gradient-to-br from-purple-600 to-violet-600 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent"></div>
+                                    <div className="relative z-10">
+                                        <div className="w-32 h-32 mx-auto mb-8 bg-white/20 rounded-3xl flex items-center justify-center shadow-brutal backdrop-blur">
+                                            <Icon name="message-circle" size={64} className="text-white" />
+                                        </div>
+                                        <h3 className="text-4xl font-black mb-4 text-center">Website Chatbot</h3>
+                                        <p className="text-xl text-white/90 text-center font-medium">24/7 directe antwoorden voor je bezoekers</p>
+                                    </div>
+                                </div>
+
+                                {/* Right Side - Content */}
+                                <div className="p-12 bg-white">
+                                    <h4 className="text-3xl font-bold mb-8 text-gray-900">Voeg een chatbot toe aan jullie websites</h4>
+
+                                    <div className="space-y-6 mb-8">
+                                        {[
+                                            {
+                                                icon: "brain",
+                                                title: "Volledige merkkennis",
+                                                desc: "Onze AI kent alle producten, prijzen en beleid van wooof.com, hayesbrothers.nl, hopperselective.nl én yourdog.nl"
+                                            },
+                                            {
+                                                icon: "clock",
+                                                title: "24/7 bereikbaar",
+                                                desc: "Bezoekers krijgen direct antwoord op hun vragen, ook buiten kantooruren"
+                                            },
+                                            {
+                                                icon: "zap",
+                                                title: "Instant antwoorden",
+                                                desc: "Vragen over producten, leveringen, voedingsadviezen en retouren worden meteen beantwoord"
+                                            },
+                                            {
+                                                icon: "trending-up",
+                                                title: "Verhoog conversie",
+                                                desc: "Bezoekers die hun vraag beantwoord krijgen, kopen vaker. Minder twijfel, meer verkoop"
+                                            }
+                                        ].map((item, idx) => (
+                                            <div key={idx} className="flex gap-4">
+                                                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-violet-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                                    <Icon name={item.icon} size={24} className="text-purple-600" />
+                                                </div>
+                                                <div>
+                                                    <h5 className="font-bold text-gray-900 mb-1 text-lg">{item.title}</h5>
+                                                    <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="bg-purple-50 border-2 border-purple-200 rounded-2xl p-6">
+                                        <p className="text-purple-900 font-semibold text-lg mb-2">
+                                            <Icon name="info" size={20} className="inline mr-2" />
+                                            Niet inbegrepen in bovenstaande prijs
+                                        </p>
+                                        <p className="text-purple-800">
+                                            De chatbot is een aparte module die we op maat voor jullie kunnen inrichten. Vraag naar de mogelijkheden!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* Mini Benefits Grid */}
+                        <div className="grid md:grid-cols-4 gap-6 mt-12 max-w-5xl mx-auto">
+                            {[
+                                { icon: "store", label: "4 merken", desc: "Alle webshops" },
+                                { icon: "globe", label: "Meertalig", desc: "NL, EN, DE, FR" },
+                                { icon: "smartphone", label: "Responsive", desc: "Mobiel & desktop" },
+                                { icon: "shield-check", label: "Veilig", desc: "GDPR-compliant" }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-6 text-center">
+                                    <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-soft">
+                                        <Icon name={item.icon} size={28} className="text-white" />
+                                    </div>
+                                    <p className="font-bold text-gray-900 mb-1">{item.label}</p>
+                                    <p className="text-sm text-gray-600">{item.desc}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
                     {/* CTA Section */}
                     <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-32 px-4 relative overflow-hidden">
                         <div className="absolute inset-0">
