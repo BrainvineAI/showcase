@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Comfora - Intelligente E-mail Automatisering</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .hero-mesh {
+            background:
+                radial-gradient(at 0% 0%, rgba(84, 172, 126, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(47, 73, 94, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(84, 172, 126, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(47, 73, 94, 0.15) 0px, transparent 50%),
+                linear-gradient(135deg, #1e293b 0%, #2f495e 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-white {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(3deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        .gradient-border {
+            position: relative;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            padding: 2px;
+            background: linear-gradient(135deg, #54AC7E, #2f495e);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #54AC7E, #3d8b68);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-brutal {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.03),
+                0 2px 4px rgba(0,0,0,0.05),
+                0 12px 24px rgba(0,0,0,0.05),
+                0 24px 48px rgba(0,0,0,0.05);
+        }
+
+        .shadow-soft {
+            box-shadow:
+                0 0 0 1px rgba(0,0,0,0.02),
+                0 1px 2px rgba(0,0,0,0.04),
+                0 4px 8px rgba(0,0,0,0.04),
+                0 8px 16px rgba(0,0,0,0.04);
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(135deg, #54AC7E, #2f495e, #54AC7E);
+            background-size: 200% 200%;
+            animation: gradient-shift 6s ease infinite;
+        }
+
+        .section-divider {
+            position: relative;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(84,172,126,0.3), transparent);
+            margin: 5rem 0;
+        }
+
+        .comfora-logo {
+            height: 25px;
+            width: auto;
+        }
+
+        .brainvine-logo {
+            height: 32px;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Icon = ({ name, size = 24, className = "", ...props }) => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+            return <i data-lucide={name} className={className} style={{ width: size, height: size }} {...props}></i>;
+        };
+
+        const Card = ({ children, className = "", hoverable = false, ...props }) => {
+            return (
+                <div
+                    className={`bg-white rounded-3xl border border-gray-100 transition-all duration-700 ${
+                        hoverable ? 'hover:shadow-brutal hover:-translate-y-2 hover:border-green-200' : 'shadow-soft'
+                    } ${className}`}
+                    {...props}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const Button = ({ children, variant = "solid", size = "md", className = "", ...props }) => {
+            const baseClasses = "font-semibold transition-all duration-500 rounded-2xl inline-flex items-center justify-center gap-3 shadow-soft";
+            const sizeClasses = {
+                sm: "px-5 py-2.5 text-sm",
+                md: "px-7 py-4 text-base",
+                lg: "px-10 py-5 text-lg"
+            };
+            const variantClasses = {
+                solid: "bg-gradient-to-r from-green-600 to-teal-600 text-white hover:shadow-brutal hover:-translate-y-1 hover:scale-105",
+                outline: "border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white",
+                ghost: "text-green-600 hover:bg-green-50"
+            };
+
+            return (
+                <button className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`} {...props}>
+                    {children}
+                </button>
+            );
+        };
+
+        const Chip = ({ children, icon, className = "" }) => {
+            return (
+                <span className={`inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-semibold glass text-white ${className}`}>
+                    {icon && <Icon name={icon} size={16} />}
+                    {children}
+                </span>
+            );
+        };
+
+        const ComforaPremium = () => {
+            useEffect(() => {
+                lucide.createIcons();
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50">
+                    {/* Navigation */}
+                    <nav className="bg-gradient-to-r from-emerald-600 to-teal-600 border-b border-emerald-600 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-20">
+                                <div className="flex items-center gap-6">
+                                    <img src="images/comfora-logo.svg" alt="Comfora" className="comfora-logo" />
+                                    <span className="text-white text-3xl">×</span>
+                                    <img src="images/brainvine-logo.svg" alt="Brainvine" className="brainvine-logo" />
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <section className="hero-mesh text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0 overflow-hidden">
+                            <div className="absolute w-96 h-96 bg-green-500/10 rounded-full blur-3xl -top-48 -left-48"></div>
+                            <div className="absolute w-96 h-96 bg-teal-500/10 rounded-full blur-3xl -bottom-48 -right-48"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto text-center relative z-10">
+
+                            <div className="max-w-5xl mx-auto space-y-8">
+                                <h1 className="text-6xl md:text-8xl font-black leading-tight tracking-tight">
+                                    Persoonlijke service
+                                    <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-400">
+                                        op schaal
+                                    </span>
+                                </h1>
+
+                                <p className="text-2xl md:text-3xl font-medium text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                                    AI-gestuurde e-mailautomatisering die de zorgzame, persoonlijke aanpak van Comfora behoudt
+                                </p>
+
+                                <div className="flex flex-wrap justify-center gap-4 pt-8">
+                                    <Chip icon="heart">Empathische antwoorden</Chip>
+                                    <Chip icon="users">Twee merken, één systeem</Chip>
+                                    <Chip icon="clock">90% tijdsbesparing</Chip>
+                                    <Chip icon="book-open">Complete productkennis</Chip>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Value Proposition */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">
+                                Het <span className="text-gradient">Comfora</span> voordeel
+                            </h2>
+                            <p className="text-2xl text-gray-500 font-medium">Persoonlijke zorg ontmoet slimme technologie</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "heart-handshake",
+                                    title: "Empathische Communicatie",
+                                    desc: "Onze AI begrijpt de gevoeligheid van uw klantenbestand. Elke respons weerspiegelt de warme, zorgzame toon waar Comfora om bekend staat - perfect afgestemd op ouderen en mensen met een beperking.",
+                                    color: "pink"
+                                },
+                                {
+                                    icon: "layers",
+                                    title: "Twee Merken, één kennisbank",
+                                    desc: "Benut de complete catalogus van zowel Meubelzorg als Well-Fair. Het systeem weet welk merk relevant is en kan naadloos verwijzen tussen beide assortimenten voor de beste klantenservice.",
+                                    color: "purple"
+                                },
+                                {
+                                    icon: "armchair",
+                                    title: "Specialistische productkennis",
+                                    desc: "Diepgaande kennis over sta-op-stoelen, verstelbare bedden, Flowsit® technologie, slaapcomfort, maatwerk opties en alle andere gespecialiseerde producten. Inclusief technische specs én praktisch advies.",
+                                    color: "blue"
+                                },
+                                {
+                                    icon: "map-pin",
+                                    title: "Locatie-intelligentie",
+                                    desc: "Automatische verwijzingen naar de dichtstbijzijnde showroom voor persoonlijke demonstraties. Plant proefzit-afspraken en stuurt relevante vestigingsinformatie op basis van klantlocatie.",
+                                    color: "orange"
+                                },
+                                {
+                                    icon: "shield-check",
+                                    title: "Expert review proces",
+                                    desc: "Concepten worden gecontroleerd door uw ervaren team voordat ze worden verzonden. Menselijke expertise blijft leidend, vooral bij medische vragen of complexe wensen.",
+                                    color: "green"
+                                },
+                                {
+                                    icon: "settings",
+                                    title: "HubSpot integratie",
+                                    desc: "Werkt naadloos met uw bestaande HubSpot-omgeving. Alle contactgeschiedenis, deals en notities blijven beschikbaar voor complete context bij elke klantinteractie.",
+                                    color: "indigo"
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10 group">
+                                    <div className={`w-20 h-20 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-3xl flex items-center justify-center mb-8 shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                        <Icon name={item.icon} size={36} className="text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold mb-4 text-gray-900 tracking-tight">{item.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* How It Works */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Hoe het werkt</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Zorgzame automatisering die past in uw huidige workflow</p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-gray-50 to-white">
+                            <div className="space-y-16">
+                                {[
+                                    {
+                                        num: 1,
+                                        title: "E-mail binnenkomst via HubSpot",
+                                        desc: "Klant stuurt een e-mail naar info@meubelzorg.nl of info@well-fair.nl. De e-mail wordt automatisch gesynchroniseerd in uw HubSpot CRM zoals gebruikelijk, inclusief alle contacthistorie en vorige interacties.",
+                                        icon: "mail",
+                                        tags: ["HubSpot Integration", "Multi-Brand Routing"]
+                                    },
+                                    {
+                                        num: 2,
+                                        title: "Context & toonanalyse",
+                                        desc: "AI analyseert niet alleen de vraag, maar ook de toon en context. Detecteert of het gaat om een medische situatie, urgentie, of gewoon productinformatie. Past de respons aan op de gevoeligheid van de vraag.",
+                                        icon: "brain",
+                                        tags: ["Sentiment Analyse", "Empathie Detectie"]
+                                    },
+                                    {
+                                        num: 3,
+                                        title: "Dubbele kennisbank doorzoeken",
+                                        desc: "Doorzoekt productcatalogi van Meubelzorg én Well-Fair • Flowsit® technologie specs • Sta-op-stoel functies • Verstelbare bedden en matrassen • Showroom locaties • Proefzit procedures • Garantie en service beleid",
+                                        icon: "search",
+                                        tags: ["Meubelzorg DB", "Well-Fair DB", "Unified Search"]
+                                    },
+                                    {
+                                        num: 4,
+                                        title: "Zorgzame antwoorden opstellen",
+                                        desc: "AI genereert een warm, professioneel antwoord in begrijpelijke taal. Gebruikt herkenbare woordkeuze, geen jargon. Inclusief relevante productlinks, showroom suggesties en praktisch advies.",
+                                        icon: "sparkles",
+                                        tags: ["Tone Matching", "Accessibility-First Language"]
+                                    },
+                                    {
+                                        num: 5,
+                                        title: "Expert review dashboard",
+                                        desc: "Het concept verschijnt in uw review interface met context-indicatoren. Medische vragen, complexe situaties of onzekere antwoorden worden gemarkeerd voor extra aandacht van uw specialisten.",
+                                        icon: "layout-dashboard",
+                                        tags: ["Priority Flagging", "Quality Assurance"]
+                                    },
+                                    {
+                                        num: 6,
+                                        title: "Persoonlijke touch & verzenden",
+                                        desc: "Uw team voegt de persoonlijke touch toe waar nodig, controleert medische sensitiviteit en verzendt. Het systeem leert van elke aanpassing om steeds beter te worden in de Comfora-stijl.",
+                                        icon: "send",
+                                        tags: ["Human Oversight", "Continuous Learning"]
+                                    }
+                                ].map((step) => (
+                                    <div key={step.num} className="flex gap-10 items-start group">
+                                        <div className="flex-shrink-0 relative">
+                                            <div className="w-24 h-24 bg-gradient-to-br from-green-600 to-teal-600 rounded-3xl flex items-center justify-center text-4xl font-black text-white shadow-brutal group-hover:scale-110 transition-transform duration-500">
+                                                {step.num}
+                                            </div>
+                                            <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-soft">
+                                                <Icon name={step.icon} size={28} className="text-green-600" />
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 pt-2">
+                                            <h4 className="text-3xl font-bold mb-4 text-gray-900 tracking-tight">{step.title}</h4>
+                                            <p className="text-gray-600 mb-6 leading-relaxed text-lg">{step.desc}</p>
+                                            <div className="flex flex-wrap gap-3">
+                                                {step.tags.map((tag, idx) => (
+                                                    <span key={idx} className="px-5 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold border border-gray-200">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Live Demo */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Zie het in actie</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Echt voorbeeld van hoe Comfora klantcontact wordt verwerkt</p>
+                        </div>
+
+                        <Card className="p-12 bg-gradient-to-br from-gray-50 to-white">
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-soft">
+                                    <Icon name="mail" size={32} className="text-white" />
+                                </div>
+                                <h3 className="text-4xl font-bold tracking-tight">Inkomende klant e-mail</h3>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8 mb-12">
+                                {/* Incoming Email */}
+                                <Card className="p-8 bg-white">
+                                    <div className="flex items-center gap-2 mb-6 text-blue-600">
+                                        <Icon name="inbox" size={24} />
+                                        <h4 className="font-bold text-xl">Inkomend</h4>
+                                    </div>
+                                    <div className="bg-gray-50 p-5 rounded-2xl mb-6 text-sm text-gray-700 space-y-1">
+                                        <p><strong>Van:</strong> m.janssen@hotmail.com</p>
+                                        <p><strong>Onderwerp:</strong> Vraag over sta-op-stoel voor mijn moeder</p>
+                                    </div>
+                                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
+                                        <p>Beste mensen,</p>
+                                        <p>Mijn moeder (78 jaar) heeft moeite met opstaan uit haar huidige stoel. Ze heeft artrose in haar knieën en heupen.</p>
+                                        <p>Ik zag bij jullie de Flowsit stoelen. Zijn die geschikt voor iemand met gewrichtsproblemen? En kan ze die eerst uitproberen voordat we besluiten?</p>
+                                        <p>We wonen in Nijmegen. Is er een winkel in de buurt waar we kunnen langskomen?</p>
+                                        <p>Groeten,<br/>Maria Janssen</p>
+                                    </div>
+                                </Card>
+
+                                {/* Processing */}
+                                <div className="flex flex-col items-center justify-center">
+                                    <div className="w-24 h-24 animated-gradient rounded-3xl flex items-center justify-center mb-6 shadow-brutal">
+                                        <Icon name="cpu" size={48} className="text-white" />
+                                    </div>
+                                    <div className="text-5xl mb-4 text-gray-300">→</div>
+                                    <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-2xl text-sm font-bold shadow-soft">
+                                        AI verwerking
+                                    </div>
+                                    <p className="text-gray-500 text-sm mt-3 font-medium">5-30 seconden</p>
+                                </div>
+
+                                {/* Response */}
+                                <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                                    <div className="flex items-center gap-2 mb-6 text-green-700">
+                                        <Icon name="check-circle" size={24} />
+                                        <h4 className="font-bold text-xl">Conceptantwoord</h4>
+                                    </div>
+                                    <div className="space-y-3 text-sm text-gray-700 leading-relaxed max-h-[500px] overflow-y-auto pr-2">
+                                        <p className="font-semibold">Beste Maria,</p>
+
+                                        <p>Wat fijn dat u contact met ons opneemt. Ik begrijp dat uw moeder moeite heeft met opstaan uit haar huidige stoel - dat is precies waar onze sta-op-stoelen voor ontwikkeld zijn.</p>
+
+                                        <p className="font-semibold mt-4">Perfect voor gewrichtsproblemen</p>
+                                        <p>Onze Flowsit® sta-op-stoelen zijn ideaal voor mensen met artrose in knieën en heupen. De elektrische sta-op-functie ondersteunt het hele opstaproces zachjes en geleidelijk, waardoor de druk op de gewrichten minimaal is. Het unieke Flowsit® systeem past zich bovendien automatisch aan het lichaamsgewicht aan, zodat uw moeder altijd optimaal comfort ervaart.</p>
+
+                                        <p className="font-semibold mt-4">Gratis thuisproef mogelijk</p>
+                                        <p>Natuurlijk kan uw moeder de stoel eerst uitproberen! Wij bieden altijd een gratis en vrijblijvende thuisproef aan. Zo kan zij in alle rust ervaren of de stoel goed bij haar past. U hoeft pas een beslissing te nemen nadat zij de stoel zelf heeft uitgeprobeerd in haar eigen woonkamer.</p>
+
+                                        <p className="font-semibold mt-4">Showroom in uw regio</p>
+                                        <p>Onze vestiging Meubelzorg Arnhem is helaas momenteel gesloten. De dichtstbijzijnde showroom waar u terecht kunt is:</p>
+                                        <p className="ml-4">
+                                            <strong>Meubelzorg Venlo</strong><br/>
+                                            Nijmeegseweg 6A<br/>
+                                            5916 PT Venlo (circa 1 uur rijden vanaf Nijmegen)<br/>
+                                            <span className="text-green-700 font-semibold">Openingstijden:</span><br/>
+                                            <span className="text-xs">
+                                            Ma: 11:00-17:30 • Di-vr: 10:00-17:30<br/>
+                                            Za: 10:00-17:00 • Zo: Gesloten
+                                            </span>
+                                        </p>
+
+                                        <p>In onze showroom heeft u de gelegenheid om diverse sta-op-stoelen uit te proberen en onze adviseurs kunnen u persoonlijk adviseren over de beste keuze voor de specifieke situatie van uw moeder.</p>
+
+                                        <p className="font-semibold mt-4">Volgende stappen</p>
+                                        <p>U kunt op twee manieren verder:</p>
+                                        <p className="ml-4">
+                                            1. <strong>Showroombezoek in Venlo:</strong> Gewoon langskomen tijdens openingstijden of bel voor een afspraak<br/>
+                                            2. <strong>Gratis thuisproef bij u in Nijmegen:</strong> Bel ons op <strong>085 065 52 92</strong> om een demonstratie bij u thuis in te plannen
+                                        </p>
+
+                                        <p className="mt-4">Heeft u nog vragen of wilt u meer informatie? Bel gerust naar 085 065 52 92, dan helpen we u graag verder!</p>
+
+                                        <p className="mt-4">
+                                            Met vriendelijke groet,<br/>
+                                            <strong>Team Comfora</strong><br/>
+                                            Meubelzorg<br/>
+                                            085 065 52 92
+                                        </p>
+
+                                        <div className="bg-white p-4 rounded-2xl mt-5 border border-green-200 shadow-soft">
+                                            <p className="text-xs text-gray-600 space-y-1">
+                                                <strong className="block mb-2">AI Context:</strong>
+                                                Meubelzorg Product DB, Showroom Locaties, Flowsit® Specs<br/>
+                                                <strong>Empathie Score:</strong> Hoog (medische situatie)<br/>
+                                                <strong>Toon:</strong> Warm & Ondersteunend<br/>
+                                                <strong>Betrouwbaarheid:</strong> 96%
+                                            </p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {[
+                                    { number: "70-85%", label: "concepten direct verstuurbaar", icon: "check-circle" },
+                                    { number: "90%", label: "sneller dan handmatig", icon: "zap" },
+                                    { number: "24/7", label: "klaar voor review", icon: "clock" }
+                                ].map((stat, idx) => (
+                                    <Card key={idx} className="p-8 text-center bg-gradient-to-br from-green-600 to-teal-600 text-white shadow-brutal hover:scale-105 transition-transform duration-500">
+                                        <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+                                            <Icon name={stat.icon} size={32} className="text-white" />
+                                        </div>
+                                        <div className="text-6xl font-black mb-3">{stat.number}</div>
+                                        <div className="text-white/90 font-medium">{stat.label}</div>
+                                    </Card>
+                                ))}
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Technical Architecture */}
+                    <section className="py-32 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-green-500/5 rounded-full blur-3xl top-0 left-1/4"></div>
+                            <div className="absolute w-96 h-96 bg-teal-500/5 rounded-full blur-3xl bottom-0 right-1/4"></div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto relative z-10">
+                            <div className="text-center mb-20 space-y-4">
+                                <h2 className="text-6xl font-black tracking-tight text-white">Technische excellentie</h2>
+                                <p className="text-2xl text-gray-400 font-medium">Enterprise-grade technologie voor zorgzame communicatie</p>
+                            </div>
+
+                            <Card className="p-12 glass-white">
+                                <div className="flex items-center gap-4 mb-10">
+                                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-soft">
+                                        <Icon name="building" size={32} className="text-white" />
+                                    </div>
+                                    <h3 className="text-4xl font-bold tracking-tight">Systeemarchitectuur</h3>
+                                </div>
+
+                                <p className="text-gray-600 text-xl mb-10 leading-relaxed">
+                                    Onze oplossing integreert naadloos met uw HubSpot infrastructuur:
+                                </p>
+
+                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                                    {[
+                                        { icon: "settings", label: "HubSpot CRM", color: "orange" },
+                                        { icon: "cpu", label: "GPT-5 of vergelijkbaar", color: "purple" },
+                                        { icon: "database", label: "Pinecone Vector DB", color: "blue" },
+                                        { icon: "shield", label: "Enterprise Beveiliging", color: "green" }
+                                    ].map((item, idx) => (
+                                        <Card key={idx} hoverable className="p-8 text-center group">
+                                            <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-2xl flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                                <Icon name={item.icon} size={32} className="text-white" />
+                                            </div>
+                                            <p className="font-bold text-gray-900">{item.label}</p>
+                                        </Card>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Icon name="lock" size={28} className="text-gray-900" />
+                                    <h4 className="text-3xl font-bold tracking-tight">Beveiliging & Privacy</h4>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-4 mb-16">
+                                    {[
+                                        "AVG-compliant voor medische gevoelige data",
+                                        "End-to-end encryptie voor alle communicatie",
+                                        "Geen klantdata gebruikt voor AI-training",
+                                        "Extra bescherming voor medische informatie"
+                                    ].map((item, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 bg-gray-50 p-5 rounded-2xl shadow-soft">
+                                            <Icon name="check-circle" size={24} className="text-green-500 flex-shrink-0" />
+                                            <span className="text-gray-700 font-medium">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Icon name="book-open" size={28} className="text-gray-900" />
+                                    <h4 className="text-3xl font-bold tracking-tight">Comfora Dubbele Kennisbank</h4>
+                                </div>
+                                <Card className="p-10 bg-gradient-to-br from-green-50 to-teal-50 border-green-200">
+                                    <div className="grid md:grid-cols-2 gap-8">
+                                        {[
+                                            { label: "Meubelzorg Catalogus", value: "Sta-op-stoelen, relaxfauteuils, Flowsit® technologie specs" },
+                                            { label: "Well-Fair Catalogus", value: "Verstelbare bedden, matrassen, slaapcomfort producten" },
+                                            { label: "Showroom Netwerk", value: "15+ locaties met routebeschrijvingen en openingstijden" },
+                                            { label: "Proefzit Procedures", value: "Gratis thuisproef procedures en planning" },
+                                            { label: "Medische Kennisbank", value: "Advies voor diverse aandoeningen en beperkingen" },
+                                            { label: "Service & Garantie", value: "Tot 7 jaar garantie, onderhoud en nazorg procedures" }
+                                        ].map((item, idx) => (
+                                            <div key={idx}>
+                                                <p className="text-green-700 font-bold mb-2 text-lg">{item.label}:</p>
+                                                <p className="text-gray-700 leading-relaxed">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </Card>
+                        </div>
+                    </section>
+
+                    {/* Pricing */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Investering & ROI</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Transparante prijzen met gegarandeerde return on investment</p>
+                        </div>
+
+                        <Card className="overflow-hidden max-w-4xl mx-auto shadow-brutal">
+                            <div className="animated-gradient text-white p-14 text-center">
+                                <h3 className="text-5xl font-black mb-4 tracking-tight">Comfora Maatwerk Oplossing</h3>
+                                <p className="text-2xl text-white/90 font-medium">Multi-brand integratie voor beide websites</p>
+                            </div>
+                            <div className="p-12 bg-white">
+                                {[
+                                    { label: "Setup & HubSpot Integratie", price: "€5.500 (eenmalig)" },
+                                    { label: "Dubbele Kennisbank Import (beide merken)", price: "€4.000 (eenmalig)" },
+                                    { label: "Model finetuning (tone of voice)", price: "€1.000 (eenmalig)" },
+                                    { label: "Maandelijks Abonnement", price: "€750/maand" },
+                                    { label: "AI Verwerkingskosten (GPT-5)", price: "~€60/maand" },
+                                    { label: "Vector Database (Pinecone)", price: "€90/maand" }
+                                ].map((row, idx) => (
+                                    <div key={idx} className="flex justify-between py-5 border-b border-gray-200">
+                                        <span className="text-gray-700 font-medium text-lg">{row.label}</span>
+                                        <span className="font-bold text-gray-900 text-lg">{row.price}</span>
+                                    </div>
+                                ))}
+                                <div className="flex justify-between py-8 mt-8 border-t-4 border-green-600">
+                                    <span className="text-2xl font-black text-gray-900">Totale maandelijkse kosten</span>
+                                    <span className="text-5xl font-black text-gradient">€900/maand</span>
+                                </div>
+                            </div>
+                        </Card>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Why Choose Us */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Waarom Comfora voor ons kiest</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Speciaal ontwikkeld voor de zorgmeubel sector</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-8">
+                            {[
+                                {
+                                    icon: "heart",
+                                    title: "Empathie & Sensitiviteit",
+                                    desc: "Ons systeem wordt getraind op de juiste toon voor communicatie met ouderen en mensen met beperkingen. We begrijpen dat uw klanten soms in kwetsbare situaties verkeren."
+                                },
+                                {
+                                    icon: "users",
+                                    title: "Multi-Brand Expertise",
+                                    desc: "Naadloze integratie van Meubelzorg én Well-Fair kennis in één systeem. Cross-selling opportuniteiten worden automatisch herkend waar relevant."
+                                },
+                                {
+                                    icon: "stethoscope",
+                                    title: "Medische Context",
+                                    desc: "Begrip van aandoeningen zoals artrose, reuma, rugklachten en mobiliteit. Veilige antwoorden die verwijzen naar professioneel advies waar nodig."
+                                },
+                                {
+                                    icon: "map",
+                                    title: "Locatie-Bewust",
+                                    desc: "Automatische showroom suggesties gebaseerd op klantlocatie. Stimuleert persoonlijke bezoeken en proefzit-afspraken - cruciaal voor uw verkoop."
+                                },
+                                {
+                                    icon: "settings",
+                                    title: "Maatwerk Focus",
+                                    desc: "Begrijpt de uniciteit van elk klantverzoek. 1000+ configuratieopties, verschillende formaten, kleuren en functies - allemaal beschikbaar in de AI kennisbank."
+                                },
+                                {
+                                    icon: "shield",
+                                    title: "Privacy & Vertrouwen",
+                                    desc: "Extra zorgvuldigheid met medische en persoonlijke informatie. Volledige AVG-compliance en transparante dataverwerking voor vertrouwen van uw klanten."
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10 group">
+                                    <div className="flex items-start gap-6">
+                                        <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
+                                            <Icon name={item.icon} size={32} className="text-white" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-2xl font-bold mb-3 text-gray-900 tracking-tight">{item.title}</h3>
+                                            <p className="text-gray-600 leading-relaxed text-lg">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    <div className="section-divider max-w-7xl mx-auto"></div>
+
+                    {/* Support Section */}
+                    <section className="max-w-7xl mx-auto px-4 py-32">
+                        <div className="text-center mb-20 space-y-4">
+                            <h2 className="text-6xl font-black tracking-tight">Uitgebreide ondersteuning</h2>
+                            <p className="text-2xl text-gray-500 font-medium">Wij staan elke stap aan uw zijde</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "graduation-cap",
+                                    title: "Team Training",
+                                    items: ["Uitgebreide onboarding voor beide merken", "Referentie documentatie"],
+                                    gradient: "from-blue-500 to-cyan-500"
+                                },
+                                {
+                                    icon: "message-square",
+                                    title: "Persoonlijke Support",
+                                    items: ["Snelle reactietijden", "Toegewezen accountmanager"],
+                                    gradient: "from-purple-500 to-pink-500"
+                                },
+                                {
+                                    icon: "trending-up",
+                                    title: "Continue Verbetering",
+                                    items: ["Regelmatige AI model updates", "Nieuwe functionaliteit", "Toon optimalisatie op basis van feedback"],
+                                    gradient: "from-green-500 to-emerald-500"
+                                }
+                            ].map((item, idx) => (
+                                <Card key={idx} hoverable className="p-10">
+                                    <div className={`w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-3xl flex items-center justify-center mb-8 shadow-soft group-hover:scale-110 transition-transform duration-500`}>
+                                        <Icon name={item.icon} size={36} className="text-white" />
+                                    </div>
+                                    <h3 className="text-3xl font-bold mb-6 tracking-tight">{item.title}</h3>
+                                    <ul className="space-y-3">
+                                        {item.items.map((point, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-600 text-lg">
+                                                <Icon name="check" size={24} className="text-green-500 flex-shrink-0 mt-1" />
+                                                <span>{point}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* CTA Section */}
+                    <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-32 px-4 relative overflow-hidden">
+                        <div className="absolute inset-0">
+                            <div className="absolute w-96 h-96 bg-green-500/10 rounded-full blur-3xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                        </div>
+
+                        <div className="max-w-4xl mx-auto text-center relative z-10">
+                            <div className="w-28 h-28 mx-auto mb-10 animated-gradient rounded-full flex items-center justify-center shadow-brutal">
+                                <Icon name="heart-handshake" size={56} className="text-white" />
+                            </div>
+                            <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tight">Klaar voor persoonlijke service op schaal?</h2>
+                            <p className="text-2xl text-gray-300 mb-12 leading-relaxed font-medium max-w-2xl mx-auto">
+                                Behoud de warmte en zorgzaamheid van Comfora, terwijl u efficiënt schaalt met AI-ondersteuning die écht begrijpt wat uw klanten nodig hebben.
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-6">
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-gray-900 text-gray-400 py-16 px-4">
+                        <div className="max-w-7xl mx-auto text-center space-y-4">
+                            <p className="text-xl font-medium">© 2025 Brainvine AI</p>
+                            <p className="text-lg">Gespecialiseerd in AI oplossingen die écht werken.</p>
+                            <a href="mailto:info@brainvine.ai" className="text-green-400 hover:text-green-300 transition-colors text-lg font-medium">
+                                info@brainvine.ai
+                            </a>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ComforaPremium />);
+    </script>
+</body>
+</html>
